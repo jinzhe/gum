@@ -278,7 +278,10 @@ class file {
 		}
 		return $mark;
 	}
-
+	// 是否存在
+	public static function has($path) {
+		return file_exists($path);
+	}
 	// 重命名
 	public static function rename($from, $to) {
 		rename($from, $to);
@@ -304,22 +307,20 @@ class file {
 
 	// 删除文件夹或文件
 	public static function delete($path) {
-		$handle = opendir($path);
-		while ($file = readdir($handle)) {
-			if ($file != "." && $file != "..") {
-				$fullpath = $path . "/" . $file;
-				if (!is_dir($fullpath)) {
-					unlink($fullpath);
-				} else {
-					self::delete($fullpath);
+		if (is_dir($path)) {
+			$handle = opendir($path);
+			while ($file = readdir($handle)) {
+				if ($file != "." && $file != "..") {
+					if ($file) {
+						unlink($file);
+					} else {
+						self::delete($file);
+					}
 				}
 			}
-		}
-		closedir($handle);
-		if (rmdir($path)) {
-			return true;
+			closedir($handle);
 		} else {
-			return false;
+			unlink($path);
 		}
 	}
 
@@ -351,7 +352,29 @@ class file {
 	 * @param	integer	$size	上传大小（单位M）
 	 * @return	string
 	 */
-	public static function upload($upload, $target = './', $exts = 'jpg,jpeg,gif,png,bmp,torrent,zip,rar,7z,doc,docx,xls,xlsx,ppt,pptx,csv,mp3,wma,swf,flv,txt', $size = 20, $rename = '') {
+	public static function upload($options) {
+		$upload = $options['upload'];
+		if (isset($options['target'])) {
+			$target = $options['upload'];
+		} else {
+			$target = './';
+		}
+		if (isset($options['rename'])) {
+			$rename = $options['rename'];
+		} else {
+			$rename = '';
+		}
+
+		if (isset($options['size'])) {
+			$size = $options['size'];
+		} else {
+			$size = 5;
+		}
+		if (isset($options['exts'])) {
+			$exts = $options['exts'];
+		} else {
+			$exts = 'jpg,jpeg,gif,png,bmp,torrent,zip,rar,7z,doc,docx,xls,xlsx,ppt,pptx,csv,mp3,wma,swf,flv,txt';
+		}
 		self::create($target);
 		if (is_array($upload['name'])) {
 			$return = array();
@@ -396,16 +419,16 @@ class file {
 		return $return;
 	}
 
-	private static function uploadName($ext) {
+	public static function uploadName($ext) {
 		$name = date('YmdHis');
 		for ($i = 0; $i < 3; $i++) {
 			$name .= chr(mt_rand(97, 122));
 		}
-		$name = strtoupper(md5($name)) . "." . $ext;
+		$name = md5($name) . "." . $ext;
 		return (string) $name;
 	}
 
-	private static function uploadRename($rename, $ext) {
+	public static function uploadRename($rename, $ext) {
 		$name = $rename . "." . $ext;
 		return (string) $name;
 	}
@@ -416,7 +439,7 @@ class file {
 	 * @param	string	$target 移动目标地
 	 * @return	boolean
 	 */
-	private static function uploadMove($from, $target = '') {
+	public static function uploadMove($from, $target = '') {
 		if (function_exists("move_uploaded_file")) {
 			if (move_uploaded_file($from, $target)) {
 				@chmod($target, 0755);

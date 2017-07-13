@@ -1,5 +1,5 @@
 <?php
-define('VERSION', 'v0.1');
+define('VERSION', 'v0.2');
 
 require "config.php";
 require "server.php";
@@ -54,7 +54,7 @@ class gum {
 	public static function query($name, $default = false) {
 		$_REQUEST = array_merge($_GET, $_POST);
 		// var_dump($name);
-		$name   = trim($name);
+		$name = trim($name);
 		$action = isset($_REQUEST[$name]) ? $_REQUEST[$name] : ($default == false ? "" : $default);
 		return $action;
 	}
@@ -78,7 +78,7 @@ class gum {
 	 * @return  string  加密后的字符串
 	 */
 	function encode($str, $key = KEY) {
-		$tmp       = '';
+		$tmp = '';
 		$keylength = strlen($key);
 		for ($i = 0, $count = strlen($str); $i < $count; $i += $keylength) {
 			$tmp .= substr($str, $i, $keylength) ^ $key;
@@ -93,9 +93,9 @@ class gum {
 	 * @return  string  加密前的字符串
 	 */
 	function decode($str, $key = KEY) {
-		$tmp       = '';
+		$tmp = '';
 		$keylength = strlen($key);
-		$str       = base64_decode($str);
+		$str = base64_decode($str);
 		for ($i = 0, $count = strlen($str); $i < $count; $i += $keylength) {
 			$tmp .= substr($str, $i, $keylength) ^ $key;
 		}
@@ -110,8 +110,8 @@ class gum {
 	 * @param	boolean	$append		是否打印省略号移
 	 * @return	string
 	 */
-	public static function truncate($string, $length, $append = true) {
-		$string    = trim($string);
+	public static function cut($string, $length, $append = true) {
+		$string = trim($string);
 		$strlength = strlen($string);
 		if ($length == 0 || $length >= $strlength) {
 			return $string;
@@ -132,11 +132,11 @@ class gum {
 					$i++;
 					if ($i < $length) {
 						$newstring[] = substr($string, 0, 3);
-						$string      = substr($string, 3);
+						$string = substr($string, 3);
 					}
 				} else {
 					$newstring[] = substr($string, 0, 1);
-					$string      = substr($string, 1);
+					$string = substr($string, 1);
 				}
 			}
 			$newstr = join($newstring);
@@ -161,7 +161,7 @@ class gum {
 			if (!is_array($item_list)) {
 				$item_list = explode(',', $item_list);
 			}
-			$item_list     = array_unique($item_list);
+			$item_list = array_unique($item_list);
 			$item_list_tmp = '';
 			foreach ($item_list AS $item) {
 				if ($item !== '') {
@@ -197,7 +197,7 @@ class gum {
 			$options['auth'] = 1;
 		}
 		$options['subject'] = '=?' . $options['charset'] . '?B?' . base64_encode($options['subject']) . '?=';
-		$options['body']    = chunk_split(base64_encode(preg_replace("/(^|(\r\n))(\.)/", "\1.\3", $options['body'])));
+		$options['body'] = chunk_split(base64_encode(preg_replace("/(^|(\r\n))(\.)/", "\1.\3", $options['body'])));
 
 		$headers = "";
 		$headers .= "MIME-Version:1.0\r\n";
