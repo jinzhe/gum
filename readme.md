@@ -21,6 +21,7 @@ $db->insert("table",[
 	"title" => "title",
 	"content" => "content",
 ]);
+
 // 获取新插入的自动编号id
 $db->id();
 
@@ -48,13 +49,7 @@ $db->export();
 > 参考demo-model.php
 
 # 文件处理
-	## 缩放图片
-	## 图片加水印
-	## 上传文件
-	## 下载文件
-	## 创建／读取／删除／重命名
-	## 读取文件权限
-	## 缓存
+
 
 # 发送e-mail
 ```php
@@ -78,56 +73,7 @@ gum::json([
 ```
 
 # 表单验证
-```php
-echo json_encode(check::validate([
-	[
-		"name"     => "title",
-		"required" => true,
-		"max"      => 100,
-		"min"      => 5,
-		"tips"     => [
-			"required" => "标题不能为空",
-			"max"      => "标题不能大于{{max}}",
-			"min"      => "标题不能小于{{min}}",
-		],
-	],
-	[
-		"name"     => "content",
-		"required" => true,
-		"max"      => 50000,
-		"min"      => 20,
-		"tips"     => [
-			"required" => "内容不能为空",
-			"max"      => "内容不能大于{{max}}",
-			"min"      => "内容不能小于{{min}}",
-		],
-	],
-	[
-		"name"     => "email",
-		"required" => true,
-		"max"      => 256,
-		"type"     => "email",
-		"tips"     => [
-			"required" => "邮箱不能为空",
-			"email"    => "邮箱地址不合法",
-		],
-	],
-	[
-		"name"     => "status",
-		"required" => true,
-		"values"   => [0, 1],
-		"tips"     => [
-			"required" => "状态不能为空",
-			"values"   => "提交的参数不合法",
-		],
-	],
-], [
-	"title"   => "",
-	"content" => "123",
-	"email"   => "129@jinzhe.net",
-	"status"  => 3,
-]));
-```
+> 参考demo-validate.php
 
 # 格式化
 - 金额

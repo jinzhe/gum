@@ -293,11 +293,13 @@ class file {
 	}
 
 	// 创建文件夹或文件
-	public static function create($path = '.', $data = '') {
+	public static function create($path = './', $data = '') {
 		if ($data == '') {
 			if (!is_dir($path)) {
 				self::create(dirname($path));
-				mkdir($path);
+				if (!mkdir($path, 0777)) {
+					return false;
+				}
 			}
 		} else {
 			file_put_contents($path, $data);
@@ -355,7 +357,7 @@ class file {
 	public static function upload($options) {
 		$upload = $options['upload'];
 		if (isset($options['target'])) {
-			$target = $options['upload'];
+			$target = $options['target'];
 		} else {
 			$target = './';
 		}
@@ -403,8 +405,8 @@ class file {
 				$ext = self::ext($upload['name']);
 				if (strpos($exts, $ext) !== false && $upload['size'] < $size * 1024 * 1024) {
 					$name = empty($rename) ? self::uploadName($ext) : self::uploadRename($rename, $ext);
+					var_dump($target . $name);
 					if (self::uploadMove($upload['tmp_name'], $target . $name)) {
-
 						$return = array(
 							'name' => $name,
 							'title' => $upload['name'],

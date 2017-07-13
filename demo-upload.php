@@ -18,8 +18,16 @@ if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
 	exit;
 }
 
+if (isset($_FILES["file"]["name"])) {
+	echo json_encode(file::upload([
+		"upload" => $_FILES["file"],
+		"target" => "./data/",
+	]));
+	exit;
+}
+
 $chunked = gum::query("chunked");
-// exit($chunked);
+
 if ($chunked == "true") {
 	ini_set("memory_limit", "-1");
 	$chunkedID = gum::query("chunkedID");
@@ -61,9 +69,4 @@ if ($chunked == "true") {
 		file::create("./data/" . $chunkedID . ".tmp", 1);
 	}
 	echo true;
-} else {
-	echo json_encode(file::upload([
-		"upload" => $_FILES["file"],
-		"target" => "./data/",
-	]));
 }
