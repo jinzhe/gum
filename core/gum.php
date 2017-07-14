@@ -1,5 +1,5 @@
 <?php
-define('VERSION', 'v0.2');
+define('VERSION', 'v0.3');
 
 require "config.php";
 require "server.php";

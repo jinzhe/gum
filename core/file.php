@@ -405,7 +405,6 @@ class file {
 				$ext = self::ext($upload['name']);
 				if (strpos($exts, $ext) !== false && $upload['size'] < $size * 1024 * 1024) {
 					$name = empty($rename) ? self::uploadName($ext) : self::uploadRename($rename, $ext);
-					var_dump($target . $name);
 					if (self::uploadMove($upload['tmp_name'], $target . $name)) {
 						$return = array(
 							'name' => $name,

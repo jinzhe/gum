@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == "OPTIONS") {
 }
 
 if (isset($_FILES["file"]["name"])) {
-	echo json_encode(file::upload([
+	gum::json(file::upload([
 		"upload" => $_FILES["file"],
 		"target" => "./data/",
 	]));
@@ -68,5 +68,4 @@ if ($chunked == "true") {
 	} else {
 		file::create("./data/" . $chunkedID . ".tmp", 1);
 	}
-	echo true;
 }
