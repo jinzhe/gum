@@ -32,10 +32,7 @@ $db->update("table",[
 ],"id=1");
 
 // 删除
-$db->delete("table",[
-	"title" => "title",
-	"content" => "content",
-],"id=1");
+$db->delete("table","id=1");
 
 // 清空表数据
 $db->clear(["table1","table2"]);
