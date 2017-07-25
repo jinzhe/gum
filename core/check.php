@@ -83,7 +83,7 @@ class check {
 
 				// 验证邮箱
 				if (isset($item["type"]) && $item["type"] == 'email') {
-					if (!self::isEmail($value)) {
+					if (!self::email($value)) {
 						$tip = "email";
 						if (isset($item["tips"]) && isset($item["tips"]["email"])) {
 							$tip = $item["tips"]["email"];
@@ -133,10 +133,10 @@ class check {
 	}
 
 	// 检测E-MAIL 合法性
-	public static function isEmail($email) {
-		$chars = "/^([a-z0-9+_]|\\-|\\.)+@(([a-z0-9_]|\\-)+\\.)+[a-z]{2,6}\$/i";
+	public static function email($email) {
+		$regexp = "/^([a-z0-9+_]|\\-|\\.)+@(([a-z0-9_]|\\-)+\\.)+[a-z]{2,6}\$/i";
 		if (strpos($email, '@') !== false && strpos($email, '.') !== false) {
-			if (preg_match($chars, $email)) {
+			if (preg_match($regexp, $email)) {
 				return true;
 			} else {
 				return false;
@@ -146,6 +146,15 @@ class check {
 		}
 	}
 
+	// 检测网址
+	public static function url($url) {
+		$regexp = '/^((http|ftp|https):\/\/)?[\w-_.]+(\/[\w-_]+)*\/?$/';
+		if (preg_match($regexp, $url)) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 	// 中国身份证
 	// 手机号码
 
