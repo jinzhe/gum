@@ -11,10 +11,10 @@ class server {
 
 	//获取当前运行位置
 	public static function base() {
-		$php_self   = self::path();
-		$self       = explode('/', $php_self);
+		$php_self = self::path();
+		$self = explode('/', $php_self);
 		$self_count = count($self);
-		$url        = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'];
+		$url = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['SERVER_NAME'];
 		if ($self_count > 1) {
 			$url .= str_replace('/' . $self[$self_count - 1], '', $php_self);
 		}
@@ -39,22 +39,12 @@ class server {
 			return '0.0.0.0';
 		}
 	}
-
-	// 检测ip合法性
 	private static function checkIP($ip) {
-		$oct = explode('.', $ip);
-		if (count($oct) != 4) {
+		if (!filter_var($ip, FILTER_VALIDATE_IP)) {
 			return false;
+		} else {
+			return true;
 		}
-		for ($i = 0; $i < 4; $i++) {
-			if (!is_numeric($oct[$i])) {
-				return false;
-			}
-			if ($oct[$i] < 0 || $oct[$i] > 255) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	// 获取操作系统
@@ -152,9 +142,9 @@ class server {
 
 	// 判断是否为机器人、爬虫
 	public static function isSpider($useragent = '') {
-		static $kw_spiders  = 'Bot|Crawl|Spider|slurp|sohu-search|lycos|robozilla';
+		static $kw_spiders = 'Bot|Crawl|Spider|slurp|sohu-search|lycos|robozilla';
 		static $kw_browsers = 'MSIE|Netscape|Opera|Konqueror|Mozilla';
-		$useragent          = empty($useragent) ? $_SERVER['HTTP_USER_AGENT'] : $useragent;
+		$useragent = empty($useragent) ? $_SERVER['HTTP_USER_AGENT'] : $useragent;
 		if (!strexists($useragent, 'http://') && preg_match("/($kw_browsers)/i", $useragent)) {
 			return false;
 		} elseif (preg_match("/($kw_spiders)/i", $useragent)) {
