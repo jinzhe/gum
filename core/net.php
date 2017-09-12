@@ -16,7 +16,7 @@ class net {
 
 	public static function ipAddress($ip) {
 		$data = "http://ip.taobao.com/service/getIpInfo.php?ip=" . $ip;
-		$data = getRemote($data);
+		$data = self::fetch($data);
 		if (empty($data)) {
 			return '中国';
 		}
@@ -34,7 +34,7 @@ class net {
 			$result[] = $json->data->city;
 			$result[] = $json->data->area;
 			$result[] = " " . $json->data->isp;
-			$result   = implode("", $result);
+			$result = implode("", $result);
 			// print_r($result);exit;
 			return $result;
 
