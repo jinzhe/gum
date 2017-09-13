@@ -145,7 +145,7 @@ class server {
 		static $kw_spiders = 'Bot|Crawl|Spider|slurp|sohu-search|lycos|robozilla';
 		static $kw_browsers = 'MSIE|Netscape|Opera|Konqueror|Mozilla';
 		$useragent = empty($useragent) ? $_SERVER['HTTP_USER_AGENT'] : $useragent;
-		if (!strexists($useragent, 'http://') && preg_match("/($kw_browsers)/i", $useragent)) {
+		if (!strpos($useragent, 'http://') && preg_match("/($kw_browsers)/i", $useragent)) {
 			return false;
 		} elseif (preg_match("/($kw_spiders)/i", $useragent)) {
 			return true;
