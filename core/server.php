@@ -156,15 +156,10 @@ class server {
 
 	// 判断是否为移动设备
 	public static function isMobile() {
-		static $keyword = 'iPhone|Android|phone|WAP|NetFront|JAVA|Opera\sMini|UCWEB|Windows\sCE|Symbian|Series|webOS|SonyEricsson|Sony|BlackBerry|IEMobile|dopod|Nokia|samsung|PalmSource|Xda|PIEPlus|MEIZU|MIDP|CLDC';
-		if (preg_match("/$mobilebrowser_list/i", $_SERVER['HTTP_USER_AGENT'], $keyword)) {
+		if (preg_match("/iPhone|Android|phone|WAP|NetFront|JAVA|Opera\sMini|UCWEB|Windows\sCE|Symbian|Series|webOS|SonyEricsson|Sony|BlackBerry|IEMobile|dopod|Nokia|samsung|PalmSource|Xda|PIEPlus|MEIZU|MIDP|CLDC/i", $_SERVER['HTTP_USER_AGENT'])) {
 			return true;
 		} else {
-			if (preg_match('/(mozilla|chrome|safari|opera|m3gate|winwap|openwave|myop)/i', $_SERVER['HTTP_USER_AGENT'])) {
-				return false;
-			} else {
-				return false;
-			}
+			return false;
 		}
 	}
 
