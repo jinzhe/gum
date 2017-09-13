@@ -134,25 +134,20 @@ class check {
 
 	// 检测E-MAIL 合法性
 	public static function email($email) {
-		$regexp = "/^([a-z0-9+_]|\\-|\\.)+@(([a-z0-9_]|\\-)+\\.)+[a-z]{2,6}\$/i";
-		if (strpos($email, '@') !== false && strpos($email, '.') !== false) {
-			if (preg_match($regexp, $email)) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
+		if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 			return false;
+		} else {
+			return true;
 		}
+
 	}
 
 	// 检测网址
 	public static function url($url) {
-		$regexp = '/^((http|ftp|https):\/\/)?[\w-_.]+(\/[\w-_]+)*\/?$/';
-		if (preg_match($regexp, $url)) {
-			return true;
-		} else {
+		if (!filter_var($url, FILTER_VALIDATE_URL)) {
 			return false;
+		} else {
+			return true;
 		}
 	}
 	// 中国身份证
