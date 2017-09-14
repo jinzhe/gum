@@ -115,14 +115,18 @@ class db {
 		foreach ($tables as $v) {
 			$sql .= "DROP TABLE IF EXISTS `$v`;\n";
 			$rs = $this->row("show create table $v");
-			$sql .= $rs[1] . ";\n\n";
+
+			$sql .= $rs["Create Table"] . ";\n\n";
 		}
 		foreach ($tables as $v) {
-			while ($rs = $this->rows("select * from $v")) {
+			$stmt = $this->link->query("select * from $v");
+			$rows = $stmt->fetchAll(PDO::FETCH_NUM);
+			$columnCount = $stmt->columnCount();
+			foreach ($rows as $row) {
 				$comma = "";
 				$sql .= "INSERT INTO $v values(";
-				for ($i = 0; $i < $fild; $i++) {
-					$sql .= $comma . "'" . mysql_escape_string($rs[$i]) . "'";
+				for ($i = 0; $i < $columnCount; $i++) {
+					$sql .= $comma . "'" . addslashes($row[$i]) . "'";
 					$comma = ",";
 				}
 				$sql .= ");\n";

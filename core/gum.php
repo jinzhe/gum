@@ -203,7 +203,7 @@ class gum {
 		$headers .= "MIME-Version:1.0\r\n";
 		$headers .= "Content-type:text/html\r\n";
 		$headers .= "Content-Transfer-Encoding: base64\r\n";
-		$headers .= "From: " . $options['from'] . ">\r\n";
+		$headers .= "From: " . $options['from'] . "\r\n";
 		$headers .= "Date: " . date("r") . "\r\n";
 		list($msec, $sec) = explode(" ", microtime());
 		$headers .= "Message-ID: <" . date("YmdHis", $sec) . "." . ($msec * 1000000) . "." . $options['from'] . ">\r\n";
@@ -288,6 +288,10 @@ class gum {
 			return "END - " . $message;
 		}
 		fputs($fp, "QUIT\r\n");
+	}
+
+	public static function randomCode($length = 6) {
+		echo substr(str_shuffle("012345678901234567890123456789"), 0, $length);
 	}
 
 	public static function json($data) {
