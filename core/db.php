@@ -110,7 +110,9 @@ class db {
 	}
 
 	function export() {
-		$tables = $this->row("SHOW TABLES", PDO::FETCH_NUM);
+		$tables = [];
+		$tables = $this->rows("SHOW TABLES", PDO::FETCH_NUM);
+		$tables = array_column($tables, 0);
 		$sql = '';
 		foreach ($tables as $v) {
 			$sql .= "DROP TABLE IF EXISTS `$v`;\n";
