@@ -2,12 +2,21 @@
 class db {
 	public $link;
 
-	function __construct($dbname, $password = '123456', $user = 'root', $host = '127.0.0.1', $port = 3306, $charset = 'utf8') {
+	function __construct($type,$db, $password = '123456', $user = 'root', $host = '127.0.0.1', $port = 3306, $charset = 'utf8') {
 		try {
-			$this->link = new PDO("mysql:host=$host;dbname=$dbname;port=$port;charset=$charset", $user, $password, array(
-				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, //默认是PDO::ERRMODE_SILENT, 0, (忽略错误模式)
-				PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, // 默认是PDO::FETCH_BOTH, 4
-			));
+			switch ($type) {
+				case 'sqlite':
+					$this->link = new PDO("sqlite:".$db);
+					break;
+				
+				default:
+					$this->link = new PDO("mysql:host=$host;dbname=$db;port=$port;charset=$charset", $user, $password, array(
+						PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, //默认是PDO::ERRMODE_SILENT, 0, (忽略错误模式)
+						PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, // 默认是PDO::FETCH_BOTH, 4
+					));
+					break;
+			}
+			
 		} catch (PDOException $e) {
 			die($e->getMessage());
 		}

@@ -5,7 +5,8 @@
 # 数据库
 ```php
 // 链接数据库
-$db = new db("table","password","root","127.0.0.1",3306);
+$db = new db("mysql",table","password","root","127.0.0.1",3306);//mysql
+$db = new db("sqlite","./file.db");//sqlite
 
 // 查询一条记录
 $row=$db->row("SELECT * FROM table");
@@ -46,7 +47,7 @@ $db->export();
 > 参考demo-model.php
 
 # 文件处理
-
+> 参考demo-file.php
 
 # 发送e-mail
 ```php
@@ -65,7 +66,7 @@ gum::mail([
 # 输出json
 ```php
 gum::json([
- "success"	=>	true,
+	"success"=>true,
 ]);
 ```
 
