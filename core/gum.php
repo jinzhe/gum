@@ -1,5 +1,5 @@
 <?php
-define('VERSION', 'v0.3');
+define('VERSION', 'v0.0.4');
 
 require "config.php";
 require "server.php";
@@ -25,7 +25,11 @@ class gum {
 
 		// SESSION开启
 		if (isset($options['session'])) {
-			session_start();
+			@session_start();
+			if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
+				@ini_set('session.lazy_write', 0);
+				@ini_set('session.use_trans_sid', 1);
+			}
 		}
 
 		header("X-Powered-By:Gum " . VERSION);
@@ -51,9 +55,12 @@ class gum {
 	 * @param   string  $name    get或者post
 	 * @return  string
 	 */
-	public static function query($name, $default = false) {
+	public static function query($name = "", $default = false) {
+		if ($name == "") {
+			return $_SERVER["QUERY_STRING"];
+		}
 		$_REQUEST = array_merge($_GET, $_POST);
-		// var_dump($name);
+		// var_dump($_REQUEST);
 		$name = trim($name);
 		$action = isset($_REQUEST[$name]) ? $_REQUEST[$name] : ($default == false ? "" : $default);
 		return $action;
@@ -77,7 +84,7 @@ class gum {
 	 * @param   string  $key    密钥
 	 * @return  string  加密后的字符串
 	 */
-	function encode($str, $key = KEY) {
+	public static function encode($str, $key = KEY) {
 		$tmp = '';
 		$keylength = strlen($key);
 		for ($i = 0, $count = strlen($str); $i < $count; $i += $keylength) {
@@ -92,7 +99,7 @@ class gum {
 	 * @param   string  $key    密钥
 	 * @return  string  加密前的字符串
 	 */
-	function decode($str, $key = KEY) {
+	public static function decode($str, $key = KEY) {
 		$tmp = '';
 		$keylength = strlen($key);
 		$str = base64_decode($str);
@@ -288,15 +295,26 @@ class gum {
 			return "END - " . $message;
 		}
 		fputs($fp, "QUIT\r\n");
+		return true;
 	}
 
 	public static function randomCode($length = 6) {
 		echo substr(str_shuffle("012345678901234567890123456789"), 0, $length);
 	}
 
-	public static function json($data) {
+	public static function uuid($prefix = "") {
+		$str = md5(uniqid(mt_rand(), true));
+		$uuid = substr($str, 0, 8) . '-';
+		$uuid .= substr($str, 8, 4) . '-';
+		$uuid .= substr($str, 12, 4) . '-';
+		$uuid .= substr($str, 16, 4) . '-';
+		$uuid .= substr($str, 20, 12);
+		return $prefix . $uuid;
+	}
+
+	public static function json($data, $mode = JSON_NUMERIC_CHECK) {
 		header("content-type: application/json;charset=utf-8");
-		echo json_encode($data);
+		echo json_encode($data, $mode);
 		die();
 	}
 }

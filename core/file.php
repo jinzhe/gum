@@ -115,7 +115,6 @@ class file {
 	 */
 	public static function thumbnail($image, $toW, $toH, $image_thumb = "", $mode = false) {
 		if ($image_thumb == "") {
-#目标图像为空则替换原始图像
 			$image_thumb = $image;
 		}
 		//获取原始图片大小
@@ -534,16 +533,18 @@ class file {
 	}
 
 	// 获取CVS文件
-	function getCsv($handle) {
+	function csv($file) {
+		$file = fopen($file, "r");
 		$out = array();
 		$n = 0;
-		while ($data = fgetcsv($handle, 10000)) {
+		while ($data = fgetcsv($handle)) {
 			$num = count($data);
 			for ($i = 0; $i < $num; $i++) {
 				$out[$n][$i] = $data[$i];
 			}
 			$n++;
 		}
+		fclose($file);
 		return $out;
 	}
 
