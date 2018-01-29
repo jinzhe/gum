@@ -83,8 +83,12 @@ gum::redirect("https://im.zee.kim");
 $db = db::create("mysql", "table","password","root","127.0.0.1",3306);
 
 // 链接数据库
+<<<<<<< HEAD
 $db = new db("mysql","table","password","root","127.0.0.1",3306);//mysql
 $db = new db("sqlite","./file.db");//sqlite
+=======
+$db = new db("table","password","root","127.0.0.1",3306);
+>>>>>>> parent of 93f799c... sqlite add
 
 // 查询一条记录
 $row=$db->row("SELECT * FROM table");
@@ -125,6 +129,7 @@ $db->export();
 > 参考demo-model.php
 
 # 文件处理
+<<<<<<< HEAD
 ```php
 //创建文件
 file::create("./data/test.txt", "Hello world!");
@@ -167,6 +172,9 @@ file::thumbnail("./test.jpg", 100, 100); //按比例缩放图片
 
 file::thumbnail("./test.jpg", 100, 100,"./target.jpg",true); //按大小裁剪图片
 ```
+=======
+
+>>>>>>> parent of 93f799c... sqlite add
 
 # 发送e-mail
 ```php
@@ -182,6 +190,15 @@ gum::mail([
 ]);
 ```
 
+<<<<<<< HEAD
+=======
+# 输出json
+```php
+gum::json([
+ "success"	=>	true,
+]);
+```
+>>>>>>> parent of 93f799c... sqlite add
 
 # 表单验证
 > 参考demo-validate.php

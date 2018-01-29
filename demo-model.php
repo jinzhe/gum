@@ -8,7 +8,7 @@ gum::init([
 	"session" => true,
 ]);
 
-$db = new db("mysql", "homepage");
+$db = new db("homepage");
 
 $model = new model($db, [
 	"table" => "db_post",

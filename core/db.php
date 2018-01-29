@@ -2,6 +2,7 @@
 class db {
 	public $link;
 
+<<<<<<< HEAD
 	function __construct($type = DB_TYPE, $db = DB_NAME, $password = DB_PASSWORD, $user = DB_USER, $host = DB_HOST, $port = DB_PORT, $charset = 'utf8') {
 		try {
 			switch ($type) {
@@ -17,6 +18,14 @@ class db {
 				break;
 			}
 
+=======
+	function __construct($dbname, $password = '123456', $user = 'root', $host = '127.0.0.1', $port = 3306, $charset = 'utf8') {
+		try {
+			$this->link = new PDO("mysql:host=$host;dbname=$dbname;port=$port;charset=$charset", $user, $password, array(
+				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION, //默认是PDO::ERRMODE_SILENT, 0, (忽略错误模式)
+				PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC, // 默认是PDO::FETCH_BOTH, 4
+			));
+>>>>>>> parent of 93f799c... sqlite add
 		} catch (PDOException $e) {
 			die($e->getMessage());
 		}
