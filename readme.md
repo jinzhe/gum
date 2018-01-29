@@ -85,7 +85,7 @@ $db = db::create("mysql", "table","password","root","127.0.0.1",3306);
 // 链接数据库
 $db = new db("mysql","table","password","root","127.0.0.1",3306);//mysql
 $db = new db("sqlite","./file.db");//sqlite
-=======
+
 $db = new db("table","password","root","127.0.0.1",3306);
 
 // 查询一条记录
