@@ -48,7 +48,7 @@ gum::json(["success"=>true]);
 // http请求
 gum::fetch("http://baidu.com");
 
-// 获取ip屋里地址
+// 获取ip物理地址
 gum::ipAddress("115.29.43.145");
 
 // 获取当前路径
@@ -80,13 +80,13 @@ gum::redirect("https://im.zee.kim");
 # 数据库
 ```php
 //创建数据库并连接(一般安装程序用)
-$db = db::create("mysql", "table","password","root","127.0.0.1",3306);
+$db = db::create("mysql", "db","password","root","127.0.0.1",3306);
 
 // 链接数据库
-$db = new db("mysql","table","password","root","127.0.0.1",3306);//mysql
+$db = new db("mysql","db","password","root","127.0.0.1",3306);//mysql
 $db = new db("sqlite","./file.db");//sqlite
 
-$db = new db("table","password","root","127.0.0.1",3306);
+$db = new db("db","password","root","127.0.0.1",3306);
 
 // 查询一条记录
 $row=$db->row("SELECT * FROM table");
