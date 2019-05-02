@@ -34,7 +34,7 @@
 <?php endif;?>
 <link rel="icon" href="data:image/ico;base64,aWNv">
 <link rel="stylesheet" href="<?=DOMAIN?>/theme/light/static/main.css">
-
+<link rel="alternate" type="application/rss+xml" title="<?=TITLE?> RSS 2.0" href="<?=DOMAIN?>/rss.php">
 <title><?=@$title?><?=TITLE?></title>
 </head>
 <body>
