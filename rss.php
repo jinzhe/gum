@@ -19,12 +19,13 @@ $xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n";
 $xml .= "<rss version=\"2.0\">\r\n";
 $xml .= "<channel>\r\n";
 $xml .= "<title>" . TITLE . "</title>\r\n";
+$xml .= "<description>" . DESCRIPTION . "</description>\r\n";
 $xml .= "<link>" . DOMAIN . "</link>\r\n";
 foreach ($rows as $row) {
 
     $xml .= "<item>\r\n";
     $xml .= "\t<link>" . $protocol . $_SERVER['HTTP_HOST'] . "/post/" . $row['id'] . ".html</link>\r\n";
-    $xml .= "\t<pubDate>" . date('d m Y H:i:s ', $row['time']) . "</pubDate>\r\n";
+    $xml .= "\t<pubDate>" . date('D, d M Y H:i:s O', $row['time']) . "</pubDate>\r\n";
     $xml .= "\t<description><![CDATA[ " . $row['content'] . " ]]></description>\r\n";
     $xml .= "\t<title><![CDATA[ " . $row['title'] . " ]]></title>\r\n";
     $xml .= "</item>\r\n";
