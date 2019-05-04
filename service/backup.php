@@ -27,7 +27,7 @@ class backup {
             $no = 0;
             while (false !== ($file = readdir($handle))) {
                 if (strpos($file, '.sql') !== false) {
-                    // $files[$no]['name'] = "/backup/" . $file;
+                    $files[$no]['name'] = "/backup/" . $file;
                     $files[$no]['time'] = date('Y-m-d H:i:s', filemtime(ROOT . "/backup/" . $file));
                     $no++;
                 }
@@ -67,19 +67,32 @@ class backup {
         user::check($this->db, [
             "level" => 255,
         ]);
-        $file = gum::query("file");
+        $file = urldecode(gum::query("file"));
         $file = ROOT . $file;
         if (file_exists($file)) {
             $content = file_get_contents($file);
-            $line    = explode(";\n", $content);
-            foreach ($line as $sql) {
+            // echo $content;
+            $sqls  = explode("\r\n\r\n\r\n", $content);
+            $count = count($sqls);
+            $total = 1;
+            foreach ($sqls as $sql) {
+
                 if (!empty(trim($sql))) {
                     $this->db->exec($sql);
+                    $total++;
                 }
             }
-            gum::json([
-                "code" => 200,
-            ]);
+            // exit;
+            if ($count == $total) {
+                gum::json([
+                    "code" => 200,
+                ]);
+            } else {
+                gum::json([
+                    "code" => 502,
+                ]);
+            }
+
         } else {
             gum::json([
                 "code" => 500,

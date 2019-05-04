@@ -69,7 +69,7 @@ class db {
         $ks = '';
         $vs = '';
         foreach ($values as $key => $value) {
-            $value=addslashes($value);
+            $value = addslashes($value);
             $ks .= $ks ? ",`$key`" : "`$key`";
             $vs .= $vs ? ",'$value'" : "'$value'";
         }
@@ -152,22 +152,31 @@ class db {
         // exit;
         $sql = '';
         foreach ($tables as $v) {
-            $sql .= "DROP TABLE IF EXISTS `$v`;\n";
-            $rs = $this->row("show create table $v");
-            $sql .= str_replace("\n","",$rs["Create Table"]) . ";\n";
+            $sql .= "DROP TABLE IF EXISTS `$v`;\r\n\r\n\r\n";
+            $rs = $this->row("SHOW CREATE TABLE $v");
+            $sql .= str_replace("\n", "", $rs["Create Table"]) . ";\r\n\r\n\r\n";
         }
         foreach ($tables as $v) {
+            // 获取字段名称
+            $stmt = $this->link->prepare("DESC $v");
+            $stmt->execute();
+            $fields = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+            foreach ($fields as &$field) {
+                $field = "`" . $field . "`";
+            }
+
             $stmt        = $this->link->query("select * from $v");
             $rows        = $stmt->fetchAll(PDO::FETCH_NUM);
             $columnCount = $stmt->columnCount();
             foreach ($rows as $row) {
                 $comma = "";
-                $sql .= "INSERT INTO $v values(";
+                $sql .= "INSERT INTO $v(" . implode(",", $fields) . ") values(";
                 for ($i = 0; $i < $columnCount; $i++) {
                     $sql .= $comma . "'" . addslashes($row[$i]) . "'";
                     $comma = ",";
                 }
-                $sql .= ");\n";
+                $sql .= ");\r\n\r\n\r\n";
             }
         }
         return $sql;
