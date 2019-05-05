@@ -1,5 +1,4 @@
 <?php
-// last update 20190419
 class file {
 
     /**
@@ -193,17 +192,14 @@ class file {
                 imagecopyresized($canvas, $im, 0, 0, 0, 0, $ftoW, $ftoH, $srcW, $srcH);
             }
         } else {
-            $toWH  = $options["width"] / $options["height"]; //获取缩图比例
-            $srcWH = $srcW / $srcH; //获取原始图比例
-
             if (!isset($options["crop"])) {
                 #按比例缩放图像算法
-                if ($toWH < $srcWH) {
+                if ($srcW < $srcH) {
+                    $ftoW = $options["height"] * ($srcW / $srcH);
                     $ftoH = $options["height"];
-                    $ftoW = $ftoH * ($srcW / $srcH);
                 } else {
                     $ftoW = $options["width"];
-                    $ftoH = $ftoW * ($srcH / $srcW);
+                    $ftoH = $options["width"] * ($srcH / $srcW);
                 }
                 //创建画布并且复制原始图像到画布
                 if (function_exists('imagecreatetruecolor') && function_exists('imagecopyresampled')) {
