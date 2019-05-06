@@ -63,6 +63,7 @@ class link {
 
         $id     = gum::query("id");
         $image  = gum::query("image");
+        $image_id  = gum::query("image_id");
         $title  = gum::query("title");
         $url    = gum::query("url");
         $tag    = gum::query("tag");
@@ -74,6 +75,7 @@ class link {
         $action = false;
         $data   = [
             "image"  => $image,
+            "image_id"  => $image_id,
             "title"  => $title,
             "url"    => $url,
             "tag"    => $tag,
@@ -83,8 +85,13 @@ class link {
             $data["time"] = time();
             $data["sort"] = 0;
             $action       = $this->db->insert("link", $data);
+            $id                  = $this->db->id();
         } else {
             $action = $this->db->update("link", $data, "id=$id");
+            upload::remove_bind($this->db, "link", $id);
+        }
+        if ($image_id != "") {
+            upload::bind($this->db, "link", $id, $image_id);
         }
         if ($action) {
             gum::json(["code" => 200]);

@@ -24,6 +24,7 @@ CREATE TABLE `post` (
   `description` varchar(1000) NOT NULL,
   `author` varchar(50) CHARACTER SET utf8 NOT NULL,
   `cover` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `cover_id` bigint(20) unsigned NOT NULL DEFAULT '0',
   `view` int(4) unsigned NOT NULL DEFAULT '0',
   `time` int(10) unsigned NOT NULL DEFAULT '0',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0',

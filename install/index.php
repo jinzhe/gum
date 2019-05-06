@@ -81,9 +81,9 @@ if ($_POST) {
         $content .= "define('STATUS_JOIN', true); //注册开关\n";
         $content .= "define('UPLOAD_IMAGE_OPACITY', 80); //上传图片质量 1～100\n";
         $content .= "define('DOMAIN', '$domain'); //发布域名\n";
-        $content .= "define('TITLE', '$title'); //网站标题\n";
-        $content .= "define('KEYWORDS', '$keywords'); //网站关键字\n";
-        $content .= "define('DESCRIPTION', '$description'); //网站描述\n";
+        $content .= "define('TITLE', '$title'); //站点标题\n";
+        $content .= "define('KEYWORDS', '$keywords'); //关键字\n";
+        $content .= "define('DESCRIPTION', '$description'); //描述\n";
         $content .= "define('ICP', '$icp'); //备案号\n";
         $content .= "define('COPYRIGHT', '$copyright'); //版权信息\n";
         $content .= "define('THEME', 'light'); //默认主题\n";

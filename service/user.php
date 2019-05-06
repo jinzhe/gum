@@ -130,19 +130,24 @@ if (!class_exists('user')) {
                 gum::json(["code" => 403, "info" => "token is empty"]);
             }
             if (isset($options["level"])) {
-                $sql = "SELECT id FROM user WHERE token='$token' AND level>=" . $options["level"];
+                $sql = "SELECT id,login_time FROM user WHERE token='$token' AND level>=" . $options["level"];
             } else {
-                $sql = "SELECT id FROM user WHERE token='$token'";
+                $sql = "SELECT id,login_time FROM user WHERE token='$token'";
             }
 
             $row = $db->row($sql);
+
             if (isset($options["bool"])) {
                 return !!$row;
             }
+            // 不存在过期
             if ($row == false) {
                 gum::json(["code" => 403]);
             }
-
+            // 7天自动过期
+            if (time() - $row["login_time"] > 7 * 24 * 3600) {
+                gum::json(["code" => 403]);
+            }
         }
 
         // 获取一个用户信息
@@ -440,11 +445,10 @@ if (!class_exists('user')) {
         function update_password() {
             user::check($this->db, ["level" => 255]);
 
-            $id          = gum::query("id");
-            $token       = gum::query("token");
+            $id       = gum::query("id");
+            $token    = gum::query("token");
             $password = gum::query("password");
 
-    
             $action = false;
             $data   = [
                 "password" => gum::hash($password),

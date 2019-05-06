@@ -163,6 +163,7 @@ class post {
         user::check($this->db, ["level" => 255]);
         $id          = gum::query("id");
         $cover       = gum::query("cover", ["strip_tags" => true]);
+        $cover_id      = gum::query("cover_id", ["int" => true]);
         $title       = gum::query("title", ["strip_tags" => true]);
         $content     = gum::query("content");
         $author      = gum::query("author", ["strip_tags" => true]);
@@ -181,6 +182,7 @@ class post {
         $action = false;
         $data   = [
             "cover"       => $cover,
+            "cover_id"       => $cover_id,
             "title"       => $title,
             "content"     => $content,
             "author"      => $author,
@@ -192,20 +194,21 @@ class post {
             "tag_name"    => $tag_name,
 
         ];
-        // print_r($data);exit;
         if ($id == "") {
             $data["time"]        = time();
             $data["update_time"] = 0;
             $action              = $this->db->insert("post", $data);
             $id                  = $this->db->id();
-            upload::bind($this->db, "post", $id, $file_ids);
         } else {
             $data["update_time"] = time();
             $action              = $this->db->update("post", $data, "id=$id");
             upload::remove_bind($this->db, "post", $id);
-            upload::bind($this->db, "post", $id, $file_ids);
         }
-        // HTML生成
+        // 缩图绑定
+        if ($cover_id != "") {
+            upload::bind($this->db, "post", $id, $cover_id);
+        }
+        upload::bind($this->db, "post", $id, $file_ids);
 
         if ($action) {
             gum::json(["code" => 200]);

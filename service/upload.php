@@ -70,7 +70,7 @@ class upload {
         if (isset($data->bind_id) && isset($data->bind_type)) {
             $result["bind"] = $this->db->rows("SELECT id,path,name,type FROM upload WHERE bind_id='" . $data->bind_id . "' AND bind_type='" . $data->bind_type . "'");
             foreach ($result["bind"] as &$row) {
-                $row["url"] = DOMAIN . $row["path"];
+                $row["url"] = DOMAIN ."/" . $row["path"];
                 if (in_array($row["type"], ["image/jpeg", "image/png", "image/gif"])) {
                     $row["image"] = true;
                 } else {
@@ -85,7 +85,7 @@ class upload {
     // 上传文件
     function go() {
         user::check($this->db);
-        @ini_set ('memory_limit', '1024M');
+        @ini_set('memory_limit', '1024M');
         if (isset($_FILES["file"]["name"])) {
             $original  = gum::query("original"); //是否保留原图
             $thumbnail = gum::query("thumbnail"); //是否生成缩图，1200x1200,600x600
@@ -100,30 +100,30 @@ class upload {
             }
 
             // 验证上传文件错误
-            switch ($_FILES["file"]["error"]) { 
-                case UPLOAD_ERR_INI_SIZE: 
-                    $info = "The uploaded file exceeds the upload_max_filesize directive in php.ini"; 
-                    break; 
-                case UPLOAD_ERR_FORM_SIZE: 
-                    $info = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form"; 
-                    break; 
-                case UPLOAD_ERR_PARTIAL: 
-                    $info = "The uploaded file was only partially uploaded"; 
-                    break; 
-                case UPLOAD_ERR_NO_FILE: 
-                    $info = "No file was uploaded"; 
-                    break; 
-                case UPLOAD_ERR_NO_TMP_DIR: 
-                    $info = "Missing a temporary folder"; 
-                    break; 
-                case UPLOAD_ERR_CANT_WRITE: 
-                    $info = "Failed to write file to disk"; 
-                    break; 
-                case UPLOAD_ERR_EXTENSION: 
-                    $info = "File upload stopped by extension"; 
-                    break; 
-            } 
-            if ($_FILES["file"]["error"]>0) {
+            switch ($_FILES["file"]["error"]) {
+            case UPLOAD_ERR_INI_SIZE:
+                $info = "The uploaded file exceeds the upload_max_filesize directive in php.ini";
+                break;
+            case UPLOAD_ERR_FORM_SIZE:
+                $info = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form";
+                break;
+            case UPLOAD_ERR_PARTIAL:
+                $info = "The uploaded file was only partially uploaded";
+                break;
+            case UPLOAD_ERR_NO_FILE:
+                $info = "No file was uploaded";
+                break;
+            case UPLOAD_ERR_NO_TMP_DIR:
+                $info = "Missing a temporary folder";
+                break;
+            case UPLOAD_ERR_CANT_WRITE:
+                $info = "Failed to write file to disk";
+                break;
+            case UPLOAD_ERR_EXTENSION:
+                $info = "File upload stopped by extension";
+                break;
+            }
+            if ($_FILES["file"]["error"] > 0) {
                 gum::json([
                     "code" => 500,
                     "info" => $info,
@@ -138,16 +138,34 @@ class upload {
                 ]);
             }
 
-            $to="upload/" . $bind_type . "/" . date("Ym") . "/";//相对路径
-            $path=ROOT.$to;//物理路径
+            $to   = "upload/" . $bind_type . "/" . date("Ym") . "/"; //相对路径
+            $path = ROOT . $to; //物理路径
+            if (file::permissions(ROOT . "upload") != 15) {
+                gum::json([
+                    "code" => 503,
+                    "info" => "upload文件夹无法写入",
+                ]);
+            }
+            if (is_dir(ROOT . "upload/" . $bind_type . "/") && file::permissions(ROOT . "upload/" . $bind_type . "/") != 15) {
+                gum::json([
+                    "code" => 503,
+                    "info" => "upload/" . $bind_type . "/文件夹无法写入",
+                ]);
+            }
+            if (is_dir($path) && file::permissions($path) != 15) {
+                gum::json([
+                    "code" => 503,
+                    "info" => $to . "文件夹无法写入",
+                ]);
+            }
             // 上传文件
-            $file = file::upload(["upload" => $_FILES["file"],"to" =>$path]);
+            $file = file::upload(["upload" => $_FILES["file"], "to" => $path]);
 
             if (is_string($file)) {
                 $mimes = [
                     "image/jpeg" => "jpg",
-                    "image/png" => "png",
-                    "image/gif" => "gif"
+                    "image/png"  => "png",
+                    "image/gif"  => "gif",
                 ];
                 // 如果是图片且设置了缩图大小(多个小图)
                 if ($thumbnail != "" && in_array($_FILES["file"]["type"], array_keys($mimes))) {
@@ -157,7 +175,7 @@ class upload {
                         foreach ($thumbnail_size as $item) {
                             $size = explode("x", $item);
                             file::thumbnail([
-                                "source"  => $path.$file,
+                                "source"  => $path . $file,
                                 "target"  => $path . str_replace("." . $find, "_" . $item, $file) . ".jpg",
                                 "width"   => (int) $size[0],
                                 "height"  => (int) $size[1],
@@ -171,14 +189,14 @@ class upload {
                 if ($_FILES["file"]["type"] == "image/jpeg" && $original != "") {
                     $original_size = explode("x", $original);
                     file::thumbnail([
-                        "source"  => $path.$file,
+                        "source"  => $path . $file,
                         "width"   => (int) $original_size[0],
                         "height"  => (int) $original_size[1],
                         "opacity" => UPLOAD_IMAGE_OPACITY,
                     ]);
                 }
                 $this->db->insert("upload", [
-                    "path"      => $to.$file,
+                    "path"      => $to . $file,
                     "name"      => $_FILES["file"]["name"],
                     "type"      => $_FILES["file"]["type"],
                     "size"      => $_FILES["file"]["size"],
@@ -190,26 +208,26 @@ class upload {
                     "code"   => 200,
                     "result" => [
                         "id"    => $this->db->id(),
-                        "url"   => DOMAIN . "/".$to.$file,
+                        "url"   => DOMAIN . "/" . $to . $file,
                         "name"  => $_FILES["file"]["name"],
                         "type"  => $_FILES["file"]["type"],
                         "image" => in_array($_FILES["file"]["type"], [
                             "image/jpeg",
                             "image/png",
-                            "image/gif"
+                            "image/gif",
                         ]),
                     ],
                 ]);
             } else {
                 gum::json([
                     "code" => 500,
-                    "info"=>"文件上传失败，请检查文件写入权限"
+                    "info" => "文件上传失败，请检查文件写入权限",
                 ]);
             }
         } else {
             gum::json([
                 "code" => 404,
-                "info"=>"文件未上传"
+                "info" => "文件未上传",
             ]);
         }
     }
@@ -221,7 +239,7 @@ class upload {
             "bind_id"   => $bind_id,
         ], "id IN ($ids)");
     }
-    
+
     // 解除绑定
     public static function remove_bind($db, $bind_type, $bind_id, $ids = "") {
         if ($ids != "") {

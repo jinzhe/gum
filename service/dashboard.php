@@ -25,6 +25,7 @@ class dashboard {
                 "time"                => date("Y-m-d h:i:s", time()),
                 "language"            => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
                 "os"                  => @PHP_OS,
+                "php_version"         => @PHP_VERSION,
                 "document_root"       => $_SERVER['DOCUMENT_ROOT'],
                 "domain"              => $_SERVER['SERVER_NAME'],
                 "software"            => $_SERVER['SERVER_SOFTWARE'],
@@ -39,5 +40,19 @@ class dashboard {
                 "extensions"          => get_loaded_extensions(),
             ],
         ]);
+    }
+
+    // 清理upload附件
+    function clear() {
+        user::check($this->db, ["level" => 255]);
+        $rows = $this->db->rows("SELECT `path` FROM upload where bind_id='0'");
+        if (count($rows) == 0) {
+            gum::json(["code" => 400, "info" => "不需要清理"]);
+        }
+        foreach ($rows as $row) {
+            @unlink(ROOT . $row["path"]);
+        }
+        $this->db->delete("upload", "bind_id=0");
+        gum::json(["code" => 200]);
     }
 }

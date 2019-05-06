@@ -1,5 +1,5 @@
 <?php
-define('VERSION', 'v0.0.15 20190501');
+define('VERSION', 'v0.0.16 20190505');
 
 define('ROOT', str_replace("/core", "/", dirname(__FILE__)));
 
@@ -48,9 +48,9 @@ class gum {
 
     // 初始化页面
     public static function init($options = array()) {
-        // php 5.5以上版本
-        if (version_compare(PHP_VERSION, '5.5.0', '<')) {
-            die('PHP version must be higher then v5.5.0.');
+        // php 5.6以上版本
+        if (version_compare(PHP_VERSION, '5.6.0', '<')) {
+            die('PHP version must be higher then v5.6.0.');
         }
         // 容错
         error_reporting(DEBUG ? E_ALL : 0);
