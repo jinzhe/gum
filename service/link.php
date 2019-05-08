@@ -10,10 +10,10 @@ class link {
     // 依赖文件
     public static function depend() {
         return [
-            "user",
+            "user", "upload",
         ];
     }
- 
+
     public static function init() {
         new link();
     }
@@ -36,7 +36,7 @@ class link {
 
         if ($keyword != "") {
             $sql .= " AND (INSTR(title,'" . $keyword . "') OR INSTR(url,'" . $keyword . "') OR INSTR(tag,'" . $keyword . "'))";
- 
+
         }
 
         $total = $this->db->count($sql); //先查数量
@@ -61,31 +61,31 @@ class link {
     function save() {
         user::check($this->db, ["level" => 255]);
 
-        $id     = gum::query("id");
-        $image  = gum::query("image");
-        $image_id  = gum::query("image_id");
-        $title  = gum::query("title");
-        $url    = gum::query("url");
-        $tag    = gum::query("tag");
-        $status = gum::query("status", "1");
+        $id       = gum::query("id");
+        $image    = gum::query("image");
+        $image_id = gum::query("image_id");
+        $title    = gum::query("title");
+        $url      = gum::query("url");
+        $tag      = gum::query("tag");
+        $status   = gum::query("status", "1");
 
         if ($title == "" || $url == "") {
             gum::json(["code" => 400, "info" => "未填写完整"]);
         }
         $action = false;
         $data   = [
-            "image"  => $image,
-            "image_id"  => $image_id,
-            "title"  => $title,
-            "url"    => $url,
-            "tag"    => $tag,
-            "status" => $status,
+            "image"    => $image,
+            "image_id" => $image_id,
+            "title"    => $title,
+            "url"      => $url,
+            "tag"      => $tag,
+            "status"   => $status,
         ];
         if ($id == "") {
             $data["time"] = time();
             $data["sort"] = 0;
             $action       = $this->db->insert("link", $data);
-            $id                  = $this->db->id();
+            $id           = $this->db->id();
         } else {
             $action = $this->db->update("link", $data, "id=$id");
             upload::remove_bind($this->db, "link", $id);

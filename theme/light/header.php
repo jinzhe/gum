@@ -13,7 +13,7 @@
 <meta name="format-detection" content="telephone=no">
 <meta name="format-detection" content="email=no">
 <meta name="theme-color" content="#ffffff">
- 
+
 <?php if (isset($post)): ?>
 <meta property="og:site_name" content="<?=TITLE?>">
 <meta property="og:type" content="article">

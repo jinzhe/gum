@@ -1,3 +1,7 @@
+<?php
+$keywords    = KEYWORDS;
+$description    = DESCRIPTION;
+?>
 <?php include 'header.php';?>
 
 <div class="layout home">
