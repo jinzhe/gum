@@ -12,19 +12,36 @@ $description    = DESCRIPTION;
 
     <?php if (count($posts) > 0): ?>
         <h3 class="title"><?=$tag["name"]?></h3>
+        <?php if ($tag["tag"]=="photo"): ?>
+            <div class="photos">
+                <?php foreach ($posts as $post): ?>
+                <div class="photo">
+                    <a href="<?=DOMAIN?>/post/<?=$post["id"]?>.html" class="cover"<?php if (!empty($post["cover"])): ?> style="background-image:url(<?=$post["cover"]?>)"<?php endif;?>></a>
+                    <div class="info">
+                        <div class="title"><?=$post["title"]?></div>
+                        <div class="description"><?=$post["description"]?></div>
+                    </div>
+                    <?php if ($post["best"]==1): ?>
+                        <div class="best">推荐</div>
+                    <?php endif;?> 
+                </div>
+                <?php endforeach;?>
+            </div>
+        <?php else:?>
         <ul class="list">
             <?php foreach ($posts as $post): ?>
             <li>
-                <span class="link">
-                    <a href="<?=DOMAIN?>/post/<?=$post["id"]?>.html"><?=$post["title"]?></a>
-                    <?php if ($post["best"]==1): ?>
-                    <span class="best">推荐</span>
-                    <?php endif;?>
-                </span>
+               
+                <a href="<?=DOMAIN?>/post/<?=$post["id"]?>.html"><?=$post["title"]?> <?php if ($post["best"]==1): ?>
+                <span class="best">推荐</span>
+                <?php endif;?></a>
+               
+     
                 <span class="date" title="<?=date("d F, Y", $post["time"])?>"><?=date("m/d", $post["time"])?></span>
             </li>
             <?php endforeach;?>
         </ul>
+        <?php endif;?>
     <?php endif;?>
 <?php endforeach;?>
 

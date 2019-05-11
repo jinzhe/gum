@@ -44,12 +44,12 @@
   <a  href="<?=DOMAIN?>" class="logo"><img src="<?=DOMAIN?>/theme/light/static/logo.svg"></a>
   <nav>
 
-  <?php $tags = $db->rows("SELECT * FROM tag WHERE status=1 ORDER BY sort ASC");?>
-  <?php foreach ($tags as $key => $tag): ?>
-    <?php if ($key > 0): ?>
+  <?php $nav_tags = $db->rows("SELECT * FROM tag WHERE status=1 ORDER BY sort ASC");?>
+  <?php foreach ($nav_tags as $nav_key => $nav_tag): ?>
+    <?php if ($nav_key > 0): ?>
       <span></span>
     <?php endif;?>
-    <a href="<?=DOMAIN?>/tag/<?=$tag["id"]?>.html" <?=(isset($active) && $active == $tag["id"] ? "class='active'" : "");?>><?=$tag["name"]?></a>
+    <a href="<?=DOMAIN?>/tag/<?=$nav_tag["id"]?>.html" <?=(isset($active) && $active == $nav_tag["id"] ? "class='active'" : "");?>><?=$nav_tag["name"]?></a>
   <?php endforeach;?>
   </nav>
   </header>

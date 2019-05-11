@@ -38,17 +38,24 @@ $db->update("post", "view=view+1", "id='" . $id . "'");
 	<?php if (!empty($post["update_time"])): ?>
 		<div class="update-time">[编辑于 <?=date("Y/m/d H:i", $post["update_time"])?>]</div>
 	<?php endif;?>
-	<div class="next">
-		<?php if (!empty($prev)): ?>
-		<a href="<?=DOMAIN?>/post/<?=$prev["id"]?>.html" title="<?=$prev["title"]?>">PREV</a>
-		<?php endif;?>
-
-		<?php if (!empty($next)): ?>
-		<a href="<?=DOMAIN?>/post/<?=$next["id"]?>.html" title="<?=$next["title"]?>">NEXT</a>
-		<?php endif;?>
-	</div>
 
 </article>
+
+<div class="pagination">
+	<?php if (!empty($prev)): ?>
+	<a class="prev" href="<?=DOMAIN?>/post/<?=$prev["id"]?>.html" title="<?=$prev["title"]?>"></a>
+	<?php else:?>
+	<a class="prev disabled"></a>
+	<?php endif;?>
+
+	<?php if (!empty($next)): ?>
+	<a class="next" href="<?=DOMAIN?>/post/<?=$next["id"]?>.html" title="<?=$next["title"]?>"></a>
+	<?php else:?>
+	<a class="next disabled"></a>
+	<?php endif;?>
+</div>
+
+
 </div>
 <?php if (strpos($post["content"], "language-") != false): //只有内容包含代码块才引用?>
 	<link rel="stylesheet" href="<?=DOMAIN?>/theme/light/static/prism.css">

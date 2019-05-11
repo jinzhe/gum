@@ -14,7 +14,7 @@ function css(cb) {
 			})
 		)
 		.pipe(minifycss())
-		.pipe(dest('./'));
+		.pipe(dest('../static/'));
 	cb();
 }
 

@@ -3,7 +3,8 @@ if ($id == "") {
     gum::not_found();
 }
 // 获取tag信息
-$tag = $db->row("SELECT name FROM tag WHERE id=?",["params"=>[$id]]);
+$tag = $db->row("SELECT * FROM tag WHERE id=?",["params"=>[$id]]);
+// print_r($tag);exit;
 if (!$tag) {
     gum::not_found();
 }
@@ -29,39 +30,49 @@ if ($count > 0) {
 
 <div class="layout">
 <?php if (!empty($posts)): ?>
-
+    <?php if ($tag["tag"]=="photo"): ?>
+    <div class="photos">
+        <?php foreach ($posts as $post): ?>
+        <div class="photo">
+            <a href="<?=DOMAIN?>/post/<?=$post["id"]?>.html" class="cover"<?php if (!empty($post["cover"])): ?> style="background-image:url(<?=$post["cover"]?>)"<?php endif;?>></a>
+            <div class="info">
+                <div class="title"><?=$post["title"]?></div>
+                <div class="description"><?=$post["description"]?></div>
+            </div>
+            <?php if ($post["best"]==1): ?>
+                <div class="best">推荐</div>
+            <?php endif;?> 
+        </div>
+        <?php endforeach;?>
+    </div>
+    <?php else:?>
     <ul class="list">
     <?php foreach ($posts as $post): ?>
 
     <li>
-        <span class="link">
-            <a href="<?=DOMAIN?>/post/<?=$post["id"]?>.html"><?=$post["title"]?></a>
-            <?php if ($post["best"]==1): ?>
-            <span class="best">推荐</span>
-            <?php endif;?>
-        </span>
-        <span class="date"><?=date("Y-m-d", $post["time"])?></span>
+        <a href="<?=DOMAIN?>/post/<?=$post["id"]?>.html"><?=$post["title"]?><?php if ($post["best"]==1): ?><span class="best">推荐</span><?php endif;?></a>
+        <span class="date"><?=date("m/d", $post["time"])?></span>
     </li>
 
     <?php endforeach;?>
     </ul>
-
-
-    <?php if ($page_count > 1): ?>
-        <div class="pagination">
-            <?php if ($page_current > 1): ?>
-                <a href="<?=DOMAIN?>/tag/<?=$id?>-<?=$prev_page?>.html">PREV</a>
-            <?php else: ?>
-                <span>PREV</span>
-            <?php endif;?>
-
-            <?php if ($page_current < $page_count): ?>
-                    <a href="<?=DOMAIN?>/tag/<?=$id?>-<?=$next_page?>.html">NEXT</a>
-            <?php else: ?>
-                <span>NEXT</span>
-            <?php endif;?>
-        </div>
     <?php endif;?>
+
+<?php if ($page_count > 1): ?>
+<div class="pagination">
+<?php if ($page_current > 1): ?>
+    <a class="prev" href="<?=DOMAIN?>/tag/<?=$id?>-<?=$prev_page?>.html"></a>
+<?php else:?>
+    <a class="prev disabled"></a>
+<?php endif;?>
+
+<?php if ($page_current < $page_count): ?>
+    <a class="next" href="<?=DOMAIN?>/tag/<?=$id?>-<?=$next_page?>.html"></a>
+<?php else:?>
+    <a class="next disabled"></a>
+<?php endif;?>
+</div>
+<?php endif;?>
 
 <?php else: ?>
     <div class="nodata">找不到数据</div>
