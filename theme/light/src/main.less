@@ -1,8 +1,12 @@
 @primary: #2b97fa;
 @text: #222;
 @gray: #ccc;
-@width:660px;
 
+@font-face {
+	font-family: "DIN";
+	src: url("../fonts/din.eot");
+	src: url("../fonts/din.woff") format("woff"), url("../fonts/din.ttf") format("truetype");
+}
 * {
 	margin: 0;
 	padding: 0;
@@ -60,14 +64,17 @@ textarea {
 }
 
 body {
-	font: 400 18px/1.42 -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Lantinghei SC, Helvetica Neue, Helvetica, Arial, "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", "Source Han Sans CN", STHeitiSC-Light, simsun, WenQuanYi Zen Hei, WenQuanYi Micro Hei, "sans-serif";
+	font: normal 14px/1.4 DIN, -apple-system, BlinkMacSystemFont, Helvetica Neue, PingFang SC, Lantinghei SC, Helvetica Neue, Helvetica, Arial, "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", "Source Han Sans CN", STHeitiSC-Light, simsun, WenQuanYi Zen Hei, WenQuanYi Micro Hei, "sans-serif";
 	color: @text;
 }
 
 header {
 	position: relative;
-	padding: 60px 0 20px 0;
+	padding: 20px 0 0 0;
 	text-align: center;
+	@media (min-width: 800px) {
+		padding: 60px 0 20px 0;
+	}
 	.logo {
 		font-weight: 500;
 		font-size: 3rem;
@@ -98,11 +105,8 @@ header {
 			&:hover {
 				color: @primary;
 			}
-			@media (min-width: 1440px) {
-				font-size: 1.4rem;
-			}
-			@media (max-width: 768px) {
-				font-size: 1.2rem;
+			@media (min-width: 800px) {
+				font-size: 1rem;
 			}
 		}
 
@@ -119,103 +123,89 @@ header {
 
 .layout {
 	margin: 30px auto;
-	width: @width;
-	@media (max-width: 767px) {
-		width: 90%;
-		min-height: 60vh;
+	width: 90%;
+	min-height: 60vh;
+	@media (min-width: 800px) {
+		width: 720px;
 	}
 	&.home {
 		h3.title {
-			margin: 10px 15px;
-			font-weight: 500;
+			margin: 10px 0px;
+
+			font-weight: 600;
 			font-size: 24px;
-			@media (min-width: 1440px) {
-				font-size: 28px;
+			@media (min-width: 800px) {
+				margin: 10px 15px;
 			}
-			@media (max-width: 768px) {
-				margin:10px 0px;
-		   }
 		}
 	}
-	.photos{
-		margin:0 15px;
-		display:flex;
-		justify-content:space-between;
-		flex-wrap:wrap;
-		@media (max-width: 768px) {
-			margin:0px;
-	   }
-		.photo{
-			position:relative;
-			width:~"calc(50% - 15px)";
-			@media (max-width: 768px) {
-				 width:100%;
-				 margin-bottom:10px;
+	.photos {
+		margin: 0px;
+
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		@media (min-width: 800px) {
+			margin: 0 15px;
+		}
+		.photo {
+			position: relative;
+			width: 100%;
+			margin-bottom: 10px;
+
+			@media (min-width: 800px) {
+				width: ~"calc(50% - 15px)";
 			}
-			.cover{
-				display:block;
-				border-radius:8px;
-				height:200px;
-				background:#efefef no-repeat center/cover;
-				&:hover{
-					background-color:#ccc;
-					box-shadow:0 0 0 4px #eee;	
+			.cover {
+				display: block;
+				border-radius: 8px;
+				height: 200px;
+				background: #efefef no-repeat center/cover;
+				&:hover {
+					background-color: #ccc;
+					box-shadow: 0 0 0 4px #eee;
 				}
 			}
-			.info{
-				padding:10px 0;
-				.title{
-					padding-bottom:5px;
+			.info {
+				padding: 10px 0;
+				.title {
+					padding-bottom: 5px;
 					font-weight: 500;
-					font-size:1rem;
-					line-height:1.5;
-					color:@text;
-					@media (min-width: 1440px) {
-						font-size: 1.4rem;
-					}
-					@media (max-width: 768px) {
-						font-size: 1.2rem;
+					font-size: 1rem;
+					line-height: 1.5;
+					color: @text;
+				}
+				.description {
+					font-size: 1rem;
+					height: 70px;
+					color: lighten(@text, 20%);
+
+					@media (min-width: 800px) {
+						display: -webkit-box;
+						-webkit-box-orient: vertical;
+						-webkit-line-clamp: 3;
+						text-overflow: ellipsis;
+						overflow: hidden;
+						height: 52px;
+						font-size: .876rem;
+						line-height: 1.2;
 					}
 				}
-				.description{
-					display: -webkit-box;
-					-webkit-box-orient: vertical;
-					-webkit-line-clamp: 3;
-					text-overflow: ellipsis;
-					overflow: hidden;
-					height: 52px;
-					font-size:80%;
-					line-height:1.2;
-					color:lighten(@text,20%);
-					@media (min-width: 1440px) {
-						font-size: 1.2rem;
-						height: 70px;
-					}
-					@media (max-width: 768px) {
-						display: block;
-						font-size: 1rem;
-						overflow: auto;
-						height:auto;
-						-webkit-line-clamp: unset;
-						text-overflow: unset;
-					}
+				.date {
+					text-align: right;
+					font-size: 80%;
+					line-height: 1.2;
+					color: lighten(@text, 40%);
 				}
-				.date{
-					text-align:right;
-					font-size:80%;
-					line-height:1.2;
-					color:lighten(@text,40%);
-				}
-				
 			}
-			.best{
-				position:absolute;
-				right:10px;
-				top:10px;
+			.best {
+				position: absolute;
+				right: 10px;
+				top: 10px;
 				font-weight: 500;
 				font-size: 80%;
 				background-color: @primary;
-				padding:6px 12px;
+				padding: 6px 12px;
 				border-radius: 8px;
 				line-height: 1;
 				color: #fff;
@@ -224,34 +214,30 @@ header {
 	}
 
 	.list {
+		display: flex;
+		flex-wrap: wrap;
 		list-style: none;
 		margin-bottom: 30px;
 		li {
 			display: flex;
-			padding: 3px 0;
-			&::before {
-				content: "";
-				margin-top:10px;
-				margin-right: 10px;
-				display: inline-block;
-				border-radius: 50%;
-				width: 4px;
-				height: 4px;
-				background-color: @gray;
-				will-change: transform;
-				transition: transform .3s ease;
-				@media (min-width: 1440px) {
-					margin-top:14px;
-					width: 6px;
-					height: 6px;
-				}
-				@media (max-width: 768px) {
-					display:none;
-					margin-top:12px;
+			width: 100%;
+			padding: 0;
+			@media (min-width: 800px) {
+				width: 50%;
+				&::before {
+					content: "";
+					margin-top: 10px;
+					margin-right: 10px;
+					display: inline-block;
+					border-radius: 50%;
 					width: 4px;
 					height: 4px;
+					background-color: @gray;
+					will-change: transform;
+					transition: transform .3s ease;
 				}
 			}
+
 			&:hover {
 				&::before {
 					background-color: @primary;
@@ -262,6 +248,7 @@ header {
 				flex: 1;
 				text-decoration: none;
 				text-transform: uppercase;
+				font-family: DIN;
 				font-size: 1rem;
 				line-height: 1.5;
 				color: @text;
@@ -271,11 +258,14 @@ header {
 				&:hover {
 					color: darken(@primary, 10%);
 				}
-				@media (min-width: 1440px) {
-					font-size: 1.4rem;
-				}
-				@media (max-width: 768px) {
-					font-size: 1.2rem;
+
+				@media (min-width: 800px) {
+					font-size: 1.1rem;
+					text-overflow: ellipsis;
+					white-space: nowrap;
+					height: 24px;
+					width: 100%;
+					overflow: hidden;
 				}
 			}
 			.best {
@@ -294,18 +284,15 @@ header {
 				}
 			}
 			.date {
-				margin-left: 5px;
-				margin-right:20px;
+				margin-right: 0px;
 				text-transform: uppercase;
-				font-family: Din;
+				font-family: DIN;
 				font-size: 80%;
 				color: lighten(@text, 40%);
 				line-height: 30px;
-				@media (min-width: 1440px) {
-					font-size: 1.2rem;
-				}
-				@media (max-width: 768px) {
-					margin-right:0px;
+				@media (min-width: 800px) {
+					margin-left: 5px;
+					margin-right: 20px;
 				}
 			}
 		}
@@ -315,28 +302,27 @@ header {
 		justify-content: space-between;
 		font-size: 1rem;
 		padding: 5px;
-		
-		
+
 		a {
-			height:40px;
-			width:40px;
+			height: 40px;
+			width: 40px;
 			color: @text;
-			border-radius:20px;
-			color:#fff;
-			will-change:transform;
-			transition:transform .3s ease-in-out;
-			&.prev{
-				background:@primary url(prev.svg) no-repeat center/20px auto;
+			border-radius: 20px;
+			color: #fff;
+			will-change: transform;
+			transition: transform .3s ease-in-out;
+			&.prev {
+				background: @primary url(prev.svg) no-repeat center/20px auto;
 			}
-			&.next{
-				background:@primary url(next.svg) no-repeat center/20px auto;
+			&.next {
+				background: @primary url(next.svg) no-repeat center/20px auto;
 			}
-			&.disabled{
+			&.disabled {
 				background-color: #ccc;
-				pointer-events:none;
+				pointer-events: none;
 			}
 			&:hover {
-				transform:scale(1.1);
+				transform: scale(1.1);
 				background-color: @primary;
 			}
 		}
@@ -347,7 +333,7 @@ header {
 			color: @gray;
 		}
 	}
- 
+
 	// 文章详细页
 	article {
 		margin: 20px auto;
@@ -365,7 +351,7 @@ header {
 			margin-bottom: 20px;
 			// padding-top:1.5rem;
 			font-size: .876rem;
-			color: @gray;
+			color: @text;
 			span:before {
 				content: "/ ";
 				font-size: 10px;
@@ -451,15 +437,14 @@ header {
 			text-align: center;
 			color: #999;
 		}
-		
 	}
-	
 }
 
 footer {
 	text-align: center;
 	padding: 20px;
 	font-size: 10px;
+	font-family: DIN;
 	line-height: 20px;
 	color: #666;
 	@media (max-width: 768px) {
@@ -493,7 +478,7 @@ footer {
 		background-color: @primary;
 		animation: progress 1s ease-in-out;
 		@media (max-width: 768px) {
-			display:none;
+			display: none;
 		}
 	}
 	@keyframes progress {
@@ -513,15 +498,15 @@ footer {
 	line-height: 20px;
 	color: #666;
 	@media (min-width: 1440px) {
-		font-size: 1.4rem;
+		font-size: 1.2rem;
 	}
 	@media (max-width: 768px) {
-		font-size: 1.2rem;
+		font-size: 1rem;
 		margin-left: 0px;
 	}
 	a {
 		margin-right: 5px;
-		margin-bottom:5px;
+		margin-bottom: 5px;
 		text-decoration: none;
 		color: @text;
 		padding-right: 20px;

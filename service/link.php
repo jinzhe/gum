@@ -26,11 +26,17 @@ class link {
     }
 // 根据关键字搜索列表
     function search() {
-        $page_index = (int) gum::query("page_index", 1);
-        $page_size  = (int) gum::query("page_size", 20);
-        $keyword    = gum::query("keyword");
-        $orderby    = gum::query("orderby", "sort");
-        $sortby     = gum::query("sortby", "ASC");
+        $page_index = gum::query("page_index", [
+            "default" => 1,
+            "int"     => true,
+        ]);
+        $page_size = gum::query("page_size", [
+            "default" => 20,
+            "int"     => true,
+        ]);
+        $keyword = gum::query("keyword");
+        $orderby = gum::query("orderby", "sort");
+        $sortby  = gum::query("sortby", "ASC");
 
         $sql = "SELECT * FROM link WHERE 1=1";
 

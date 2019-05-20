@@ -11,24 +11,6 @@ class post {
             "user", "tag", "upload",
         ];
     }
-    public static function install() {
-        return [
-            "CREATE TABLE `post` (
-            `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-            `title` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
-            `content` text CHARACTER SET utf8 NOT NULL,
-            `author` varchar(50) CHARACTER SET utf8 NOT NULL,
-            `cover` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
-            `view` int(4) unsigned NOT NULL DEFAULT '0',
-            `time` int(10) unsigned NOT NULL DEFAULT '0',
-            `best` tinyint(1) unsigned NOT NULL DEFAULT '0',
-            `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
-            `tag_id` bigint(20) unsigned NOT NULL DEFAULT '0',
-            `tag_name` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '',
-            PRIMARY KEY (`id`)
-            ) ENGINE=MyISAM AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;",
-        ];
-    }
 
     // 初始化
     public static function init() {
@@ -163,7 +145,7 @@ class post {
         user::check($this->db, ["level" => 255]);
         $id          = gum::query("id");
         $cover       = gum::query("cover", ["strip_tags" => true]);
-        $cover_id      = gum::query("cover_id", ["int" => true]);
+        $cover_id    = gum::query("cover_id", ["int" => true]);
         $title       = gum::query("title", ["strip_tags" => true]);
         $content     = gum::query("content");
         $author      = gum::query("author", ["strip_tags" => true]);
@@ -182,7 +164,7 @@ class post {
         $action = false;
         $data   = [
             "cover"       => $cover,
-            "cover_id"       => $cover_id,
+            "cover_id"    => $cover_id,
             "title"       => $title,
             "content"     => $content,
             "author"      => $author,
