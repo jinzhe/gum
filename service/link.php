@@ -69,7 +69,10 @@ class link {
 
         $id       = gum::query("id");
         $image    = gum::query("image");
-        $image_id = gum::query("image_id");
+        $image_id = gum::query("image_id",[
+            "int"=>true,
+            "default"=>0
+        ]);
         $title    = gum::query("title");
         $url      = gum::query("url");
         $tag      = gum::query("tag");
