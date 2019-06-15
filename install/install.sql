@@ -14,7 +14,7 @@ CREATE TABLE `link` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO `link` (`id`, `title`, `image`,`image_id`, `url`, `tag`, `sort`, `time`, `status`) VALUES(1,'小林子','',0,'https://xlzi.cn','link',1,2147483647,1),(2,'傻瓜','',0,'http://shagua.name','link',2,1544092212,1),(3,'幸福彼岸','','http://zee.kim','link',0,1555002780,1);
+INSERT INTO `link` (`id`, `title`, `image`,`image_id`, `url`, `tag`, `sort`, `time`, `status`) VALUES(1,'小林子','',0,'https://xlzi.cn','link',1,2147483647,1),(2,'傻瓜','',0,'http://shagua.name','link',2,1544092212,1),(3,'幸福彼岸','',0,'http://zee.kim','link',0,1555002780,1);
 
 DROP TABLE IF EXISTS `post`;
 
