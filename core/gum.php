@@ -48,9 +48,9 @@ class gum {
 
     // 初始化页面
     public static function init($options = array()) {
-        // php 5.6以上版本
-        if (version_compare(PHP_VERSION, '5.6.0', '<')) {
-            die('PHP version must be higher then v5.6.0.');
+        // php 7以上版本
+        if (version_compare(PHP_VERSION, '7.0.0', '<')) {
+            die('PHP version must be higher then v7.0.0.');
         }
         // 容错
         error_reporting(DEBUG ? E_ALL : 0);
@@ -647,7 +647,7 @@ class gum {
     // 检测是否合法提交（在自己的服务器提交）
     public static function referer() {
         if (empty($_SERVER['HTTP_REFERER']) || (preg_replace("/https?:\/\/([^\:\/]+).*/i", "\\1", $_SERVER['HTTP_REFERER']) != preg_replace("/([^\:]+).*/", "\\1", $_SERVER['HTTP_HOST']))) {
-            self::notFound();
+            self::not_found();
         }
     }
 

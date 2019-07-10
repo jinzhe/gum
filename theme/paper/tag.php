@@ -12,7 +12,7 @@ $title        = $tag["name"] . " - ";
 $active       = $id;
 $posts        = [];
 $page_size    = 10;
-$page_current = $page;
+$page_current = $page??1;
 $sql          = "SELECT * FROM post WHERE status=1 AND tag_id='" . $id . "'";
 $count        = $db->count($sql); //先查数量
 if ($count > 0) {

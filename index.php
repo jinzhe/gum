@@ -2,26 +2,25 @@
 require "config.php";
 require "core/gum.php";
 gum::init();
-$db     = new db();
-$uri    = explode('/', parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
-$router = $uri[1];
-if ($router == "" || $router == "/index.php" || $router == "/index.html") {
-    require "theme/" . THEME . "/index.php";
-} else {
-    $action = $uri[2] ?? "";
-    $action = str_replace(".html", "", $action); //清理无用.html
-    $file   = "theme/" . THEME . "/" . $router . ".php";
-    if (file::has($file)) {
-        if (strpos($action, "-") != false) {
-            $params = explode("-", $action);
-            $id     = $params[0];
-            $page   = $params[1] ?? 1;
-        } else {
-            $id   = $action;
-            $page = 1;
+$db=new db();
+
+$rules =include_once "theme/" . THEME . "/router.php";
+$uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+foreach ($rules as $k => $v) {
+    if (preg_match("|" . $v["regexp"] . "|U", $uri)) { //匹配当前访问url
+        preg_match_all("|" . $v["regexp"] . "|U", $uri, $matches);
+        if (isset($v["params"])) {
+            foreach ($v["params"] as $kk => $vv) {
+                $$vv = $matches[$kk + 1][0];
+            }
         }
-        require $file;
-    } else {
-        gum::not_found();
+        $theme_file   = "theme/" . THEME . "/" . $v["file"] . ".php";
+        $file=$v["file"];
+        if (file::has($theme_file)) {
+           include_once $theme_file; 
+        }else{
+            gum::not_found();
+        }
+        break;
     }
 }

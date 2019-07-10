@@ -37,7 +37,7 @@
 <link rel="alternate" type="application/rss+xml" title="<?=TITLE?> RSS 2.0" href="<?=DOMAIN?>/rss.php">
 <title><?=@$title?><?=TITLE?></title>
 </head>
-<body<?php if($router == "" || $router == "index.php" ||$router == "tag" || $router == "index.html"):?> class="home"<?php endif;?>>
+<body<?php if($file == "index"):?> class="home"<?php endif;?>>
 
 <header class="header">
   <a href="<?=DOMAIN?>" class="logo"><?=TITLE?></a>
@@ -48,6 +48,6 @@
 <?php $nav_tags = $db->rows("SELECT * FROM tag WHERE status=1 ORDER BY sort ASC");?>
 <?php foreach ($nav_tags as $nav_key => $nav_tag): ?>
   <a href="<?=DOMAIN?>/tag/<?=$nav_tag["id"]?>.html" <?=(isset($active) && $active == $nav_tag["id"] ? "class='active'" : "");?>><?=$nav_tag["name"]?></a>
-<?php endforeach;?>
+<?php endforeach;?>  <a href="<?=DOMAIN?>/about" <?=($file == 'about' ? "class='active'" : "");?>>关于</a>
 </nav>
 

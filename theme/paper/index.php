@@ -37,7 +37,9 @@ $description = DESCRIPTION;
                 <span class="best">推荐</span>
                 <?php endif;?></a></h2>
                 </header>
+                
                 <section class="entry-content">
+                <?php if(!empty($post["cover"])):?><img src="<?=$post['cover']?>" class="entry-cover"><?php endif;?>    
                 <p><?=empty($post["description"])?gum::short_text($post["content"]):$post["description"]?></p>
                 </section>
                 <footer class="entry-footer">

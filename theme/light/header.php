@@ -50,7 +50,7 @@
       <span></span>
     <?php endif;?>
     <a href="<?=DOMAIN?>/tag/<?=$nav_tag["id"]?>.html" <?=(isset($active) && $active == $nav_tag["id"] ? "class='active'" : "");?>><?=$nav_tag["name"]?></a>
-  <?php endforeach;?>
+  <?php endforeach;?><span></span><a href="<?=DOMAIN?>/about" <?=($file == 'about' ? "class='active'" : "");?>>关于</a>
   </nav>
   </header>
 
