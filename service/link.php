@@ -37,7 +37,8 @@ class link {
         $keyword = gum::query("keyword");
         $orderby = gum::query("orderby", "sort");
         $sortby  = gum::query("sortby", "ASC");
-        $user       = self::info($this->db);
+        $status     = gum::query("status");
+        $user       = user::info($this->db);
         if ($user && $user["level"] == 255) {
             $sql = "SELECT * FROM link WHERE 1=1";
             if ($status != "") {
