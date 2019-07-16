@@ -1,11 +1,12 @@
 <?php
-define('VERSION', 'v0.0.16 20190505');
+define('VERSION', 'v0.0.17 20190710');
 
 define('ROOT', str_replace("/core", "/", dirname(__FILE__)));
 
 require "check.php";
 require "format.php";
 require "file.php";
+require "rsa.php";
 require "db.php";
 
 // 入口类
@@ -246,35 +247,6 @@ class gum {
         return $newstr;
     }
 
-    /**
-     * 创建SQL IN语法
-     *
-     * @param array $item_list        数组
-     * @param string $field_name    字段
-     * @return    string
-     */
-    public static function sqlIn($item_list, $field_name = '') {
-        if (empty($item_list)) {
-            return $field_name . " IN ('') ";
-        } else {
-            if (!is_array($item_list)) {
-                $item_list = explode(',', $item_list);
-            }
-            $item_list     = array_unique($item_list);
-            $item_list_tmp = '';
-            foreach ($item_list AS $item) {
-                if ($item !== '') {
-                    $item_list_tmp .= $item_list_tmp ? ",'$item'" : "'$item'";
-                }
-            }
-            if (empty($item_list_tmp)) {
-                return $field_name . " IN ('') ";
-            } else {
-                return $field_name . ' IN (' . $item_list_tmp . ') ';
-            }
-        }
-    }
-
     // 发送邮件
     public static function mail($options) {
         if (!isset($options['charset'])) {
@@ -377,16 +349,7 @@ class gum {
         fputs($fp, "QUIT\r\n");
         return true;
     }
-    /**
-     * 发送短信
-     *
-     * @param int $length        长度
-     * @return    string
-     */
-    public static function sms($options = []) {
-
-    }
-
+ 
     /**
      * 获取随机字符
      *

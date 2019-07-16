@@ -192,9 +192,4 @@ class format {
 		return $result;
 		#return preg_replace("/[^a-z0-9]*/",'',$result);
 	}
-
-	public static function markdown($content) {
-
-	}
-
 }

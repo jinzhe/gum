@@ -11,9 +11,23 @@
 </html>
 
 <script>
-window.addEventListener("load",function(){
-    document.querySelector(".nav-toggle").addEventListener("click",function(){
-        document.querySelector("body").classList.toggle('blur');
-    },false);
-});
+var body=document.querySelector("body");
+var nav=document.querySelector(".nav-toggle");
+var search=document.querySelector(".search-toggle");
+var searchBoxClose=document.querySelector(".search-box span");
+var searchBoxInput=document.querySelector(".search-box input");
+nav.addEventListener("click",function(){
+    body.classList.toggle('blur-nav');
+},false);
+search.addEventListener("click",function(){
+    body.classList.add('blur-search');
+},false);
+searchBoxClose.addEventListener("click",function(){
+    body.classList.remove('blur-search');
+},false);
+searchBoxInput.addEventListener("keyup",function(e){
+    if(e.keyCode==13 && this.value.trim()!=""){
+        location.href="<?=DOMAIN?>/search/"+encodeURIComponent(this.value)+".html";
+    }
+},false);
 </script>

@@ -46,6 +46,7 @@ if (!class_exists('user')) {
 
         // 获取数据列表
         function search() {
+            user::check($this->db);
             $page_index = (int) gum::query("page_index", 1);
             $page_size  = (int) gum::query("page_size", 20);
             $fields     = gum::query("fields");
@@ -62,7 +63,7 @@ if (!class_exists('user')) {
                     $sql .= " AND status=$status";
                 }
             } else {
-                $sql = "SELECT * FROM user WHERE status=1";
+                $sql = "SELECT * FROM user WHERE status=1 AND level=0";
             }
 
             // 关键字搜索

@@ -6,7 +6,7 @@ return [
     ],
     [
         "file"   => "tag",
-        "regexp" => "^/tag/((?!-).).html$",
+        "regexp" => "^/tag/(?!.*-)(.*).html$",
         "params" => ["id"],
     ],
     [

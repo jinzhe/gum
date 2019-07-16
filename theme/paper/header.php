@@ -37,17 +37,24 @@
 <link rel="alternate" type="application/rss+xml" title="<?=TITLE?> RSS 2.0" href="<?=DOMAIN?>/rss.php">
 <title><?=@$title?><?=TITLE?></title>
 </head>
-<body<?php if($file == "index"):?> class="home"<?php endif;?>>
+<body<?php if($file != "post"):?> class="home"<?php endif;?>>
 
 <header class="header">
   <a href="<?=DOMAIN?>" class="logo"><?=TITLE?></a>
+  <button class="search-toggle" type="button"></button>
   <button class="nav-toggle" type="button"></button>
 </header>
 <nav>
-
 <?php $nav_tags = $db->rows("SELECT * FROM tag WHERE status=1 ORDER BY sort ASC");?>
 <?php foreach ($nav_tags as $nav_key => $nav_tag): ?>
   <a href="<?=DOMAIN?>/tag/<?=$nav_tag["id"]?>.html" <?=(isset($active) && $active == $nav_tag["id"] ? "class='active'" : "");?>><?=$nav_tag["name"]?></a>
 <?php endforeach;?>  <a href="<?=DOMAIN?>/about" <?=($file == 'about' ? "class='active'" : "");?>>关于</a>
 </nav>
+
+<div class="search-layout">
+  <div class="search-box">
+    <input type="text" placeholder="关键字">
+    <span></span>
+  </div>
+</div>
 

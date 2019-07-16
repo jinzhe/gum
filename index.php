@@ -6,6 +6,11 @@ $db=new db();
 
 $rules =include_once "theme/" . THEME . "/router.php";
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+// 检测非法注入
+if (check::safe($uri)) {
+    gum::not_found("Access denied!");
+}
+
 foreach ($rules as $k => $v) {
     if (preg_match("|" . $v["regexp"] . "|U", $uri)) { //匹配当前访问url
         preg_match_all("|" . $v["regexp"] . "|U", $uri, $matches);

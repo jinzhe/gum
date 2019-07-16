@@ -37,8 +37,16 @@ class link {
         $keyword = gum::query("keyword");
         $orderby = gum::query("orderby", "sort");
         $sortby  = gum::query("sortby", "ASC");
-
-        $sql = "SELECT * FROM link WHERE 1=1";
+        $user       = self::info($this->db);
+        if ($user && $user["level"] == 255) {
+            $sql = "SELECT * FROM link WHERE 1=1";
+            if ($status != "") {
+                $sql .= " AND status=$status";
+            }
+        } else {
+            $sql = "SELECT * FROM link WHERE status=1";
+        }
+       
 
         if ($keyword != "") {
             $sql .= " AND (INSTR(title,'" . $keyword . "') OR INSTR(url,'" . $keyword . "') OR INSTR(tag,'" . $keyword . "'))";

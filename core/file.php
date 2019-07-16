@@ -582,4 +582,24 @@ class file {
             return false;
         }
     }
+
+    public static function image_main_color($image){
+        $rTotal = $gTotal = $bTotal = $total = 0;
+        $i      = imagecreatefromjpeg($image);
+        for ($x = 0; $x < imagesx($i); $x++) {
+            for ($y = 0; $y < imagesy($i); $y++) {
+                $rgb    = imagecolorat($i, $x, $y);
+                $rTotal += ($rgb >> 16) & 0xFF;
+                $gTotal += ($rgb >> 8) & 0xFF;
+                $bTotal += $rgb & 0xFF;
+                $total++;
+            }
+        }
+ 
+        return array(
+            'r' => round($rTotal / $total),
+            'g' => round($gTotal / $total),
+            'b' => round($bTotal / $total),
+        );
+    }
 }
