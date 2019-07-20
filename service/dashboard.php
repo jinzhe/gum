@@ -17,6 +17,11 @@ class dashboard {
         ]);
     }
 
+    function noop(){
+        user::check($this->db);
+        gum::json(["code" => 200]);
+    }
+
     function info() {
         user::check($this->db);
         gum::json([
