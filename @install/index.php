@@ -25,11 +25,7 @@ if ($_POST) {
     $db_user     = trim($_POST['db_user']);
     $db_password = trim($_POST['db_password']);
     $db_name     = trim($_POST['db_name']);
-    $title       = trim($_POST['title']);
-    $keywords    = trim($_POST['keywords']);
-    $description = trim($_POST['description']);
-    $icp         = trim($_POST['icp']);
-    $copyright   = trim($_POST['copyright']);
+
     $domain      = trim($_POST['domain']);
     $account     = trim($_POST['account']);
     $password    = trim($_POST['password']);
@@ -38,9 +34,6 @@ if ($_POST) {
     }
     if ($domain == "") {
         die("域名不能为空");
-    }
-    if ($title == "") {
-        die("标题不能为空");
     }
     if ($account == "") {
         die("管理员不能为空");
