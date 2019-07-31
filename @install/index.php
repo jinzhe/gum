@@ -87,6 +87,7 @@ if ($_POST) {
             "account"            => $account,
             "password"           => gum::hash($password),
             "level"              => 255,
+            "permission"         => "super",
             "nickname"           => "管理员",
             "photo"              => "",
             "email"              => "",
