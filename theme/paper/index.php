@@ -1,6 +1,6 @@
 <?php
-$keywords    = KEYWORDS;
-$description = DESCRIPTION;
+$keywords    = $config["keywords"];
+$description = $config["description"];
 ?>
 <?php include 'header.php';?>
 

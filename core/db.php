@@ -22,7 +22,7 @@ class db {
             die($e->getMessage());
         }
     }
-    public static function create($type = DB_TYPE, $db = DB_NAME, $password = DB_PASSWORD, $user = DB_USER, $host = DB_HOST, $port = DB_PORT, $charset = 'utf8') {
+    public static function create($type = DB_TYPE, $db = DB_NAME, $password = DB_PASSWORD, $user = DB_USER, $host = DB_HOST, $port = DB_PORT, $charset = 'utf8mb4') {
         $p = new PDO("mysql:host=$host;port=$port;charset=$charset", $user, $password);
         $p->query("CREATE DATABASE $db");
         return new db($type, $db, $password, $user, $host, $port, $charset);

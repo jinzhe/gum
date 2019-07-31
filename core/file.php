@@ -583,23 +583,48 @@ class file {
         }
     }
 
-    public static function image_main_color($image){
+    public static function image_main_color($image) {
         $rTotal = $gTotal = $bTotal = $total = 0;
         $i      = imagecreatefromjpeg($image);
         for ($x = 0; $x < imagesx($i); $x++) {
             for ($y = 0; $y < imagesy($i); $y++) {
-                $rgb    = imagecolorat($i, $x, $y);
+                $rgb = imagecolorat($i, $x, $y);
                 $rTotal += ($rgb >> 16) & 0xFF;
                 $gTotal += ($rgb >> 8) & 0xFF;
                 $bTotal += $rgb & 0xFF;
                 $total++;
             }
         }
- 
+
         return array(
             'r' => round($rTotal / $total),
             'g' => round($gTotal / $total),
             'b' => round($bTotal / $total),
         );
+    }
+
+    // 获取列表
+    public static function list($dir,$options=[]) {
+        $dir=rtrim($dir,"/");
+        $temp = [];
+        if (false != ($handle = opendir($dir))) {
+            while (false !== ($file = readdir($handle))) {
+                if ($file != "." && $file != "..") {
+                    if(isset($options["dir"])){
+                        if(is_dir($dir."/".$file)){
+                            array_push($temp, $file);
+                        }
+                    }elseif(isset($options["file"])){
+                        if(is_file($dir."/".$file)){
+                            array_push($temp, $file);
+                        }
+                    }else{
+                        array_push($temp, $file);
+                    }
+                }
+            }
+            closedir($handle);
+        }
+        return $temp;
     }
 }

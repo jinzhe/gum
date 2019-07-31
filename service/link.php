@@ -74,7 +74,10 @@ class link {
 
     // 添加 & 更新
     function save() {
-        user::check($this->db, ["level" => 255]);
+        user::check($this->db, [
+            "level" => 255,
+            "permission"=>"link"
+        ]);
 
         $id       = gum::query("id");
         $image    = gum::query("image");
@@ -120,7 +123,10 @@ class link {
 
     // 删除
     function delete() {
-        user::check($this->db, ["level" => 255]);
+        user::check($this->db, [
+            "level" => 255,
+            "permission"=>"link"
+        ]);
 
         $id = gum::query("id");
         if ($id == "") {
@@ -135,7 +141,10 @@ class link {
     }
     // 更新排序
     function update_sort() {
-        user::check($this->db, ["level" => 255]);
+        user::check($this->db, [
+            "level" => 255,
+            "permission"=>"link"
+        ]);
         $ids = gum::query("ids");
         if ($ids == "") {
             gum::json(["code" => 400]);

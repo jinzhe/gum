@@ -52,7 +52,6 @@ $db->update("post", "view=view+1", "id='" . $id . "'");
 	<?php endif;?>
 </div>
 
-
 </div>
 <?php if (strpos($post["content"], "language-") != false): //只有内容包含代码块才引用?>
 		<link rel="stylesheet" href="<?=DOMAIN?>/theme/light/static/prism.css">

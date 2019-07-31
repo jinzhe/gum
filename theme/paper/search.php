@@ -2,7 +2,7 @@
 if ($keyword == "") {
     gum::not_found();
 }
-
+$keyword=urldecode($keyword);
 $title        = $keyword . " - ";
 $posts        = [];
 $page_size    = 10;

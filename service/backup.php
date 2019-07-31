@@ -66,6 +66,7 @@ class backup {
     function restore() {
         user::check($this->db, [
             "level" => 255,
+            "permission"=>"backup"
         ]);
         $file = urldecode(gum::query("file"));
         $file = ROOT . $file;

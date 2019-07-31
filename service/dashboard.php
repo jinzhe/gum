@@ -10,19 +10,22 @@ class dashboard {
         new dashboard();
     }
 
-    function __construct() {
+    public function __construct() {
         $this->db = new db();
         gum::init([
             "bind" => $this,
         ]);
     }
+    public function version() {
+        gum::json(["code" => 200,"version"=>VERSION]);
+    }
 
-    function noop(){
+    public function noop() {
         user::check($this->db);
         gum::json(["code" => 200]);
     }
 
-    function info() {
+    public function info() {
         user::check($this->db);
         gum::json([
             "code"   => 200,
@@ -43,12 +46,45 @@ class dashboard {
                 "disk_free_space"     => round((disk_free_space(".") / (1024 * 1024)), 2) . 'M',
                 "mysql_version"       => $this->db->row("SELECT version() as version")["version"],
                 "extensions"          => get_loaded_extensions(),
+                "theme_dir"           => file_get_contents(ROOT . "theme/default.txt"),
+                "theme_dirs"          => file::list(ROOT . "theme", ["dir" => true]),
+                "version"             => VERSION,
             ],
         ]);
     }
 
+    public function theme() {
+        user::check($this->db, ["level" => 255]);
+        $dir = gum::query("dir");
+        // 检测是否存在目录
+        if (!in_array($dir, file::list(ROOT . "theme", ["dir" => true]))) {
+            gum::json([
+                "code" => 500,
+                "info" => "非法参数",
+            ]);
+        }
+        $theme_dir    = file_get_contents("theme/default.txt");
+        if(!empty($theme_dir)){
+            $theme_config = include_once "theme/" . $theme_dir . "/config.php";
+            foreach ($theme_config["config"] as $key => $value) {
+                $data = [
+                    "type"        => $value["type"],
+                    "key"         => $key,
+                    "value"       => $value["value"],
+                    "description" => $value["description"],
+                    "status"      => 1,
+                ];
+                $this->db->insert("config", $data);
+            }
+            file_put_contents(ROOT . "theme/default.txt", $dir);
+        }
+
+        gum::json([
+            "code" => 200,
+        ]);
+    }
     // 清理upload附件
-    function clear() {
+    public function clear() {
         user::check($this->db, ["level" => 255]);
         $rows = $this->db->rows("SELECT `path` FROM upload where bind_id='0'");
         if (count($rows) == 0) {

@@ -84,7 +84,10 @@ class tag {
 
     // 创建 & 更新 帖子
     function save() {
-        user::check($this->db, ["level" => 255]);
+        user::check($this->db, [
+            "level" => 255,
+            "permission"=>"tag"
+        ]);
         $id     = gum::query("id");
         $name   = gum::query("name");
         $tag    = gum::query("tag");
@@ -113,7 +116,10 @@ class tag {
 
     // 删除帖子
     function delete() {
-        user::check($this->db, ["level" => 255]);
+        user::check($this->db, [
+            "level" => 255,
+            "permission"=>"tag"
+        ]);
 
         $id = gum::query("id");
         if ($id == "") {
@@ -153,7 +159,10 @@ class tag {
 
     // 更新排序
     function update_sort() {
-        user::check($this->db, ["level" => 255]);
+        user::check($this->db, [
+            "level" => 255,
+            "permission"=>"tag"
+        ]);
         $ids = gum::query("ids");
         if ($ids == "") {
             gum::json(["code" => 400]);

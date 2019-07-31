@@ -1,12 +1,11 @@
 <?php
-define('VERSION', 'v0.0.17 20190710');
+define('VERSION', 'V0.1 R190801');
 
 define('ROOT', str_replace("/core", "/", dirname(__FILE__)));
 
 require "check.php";
 require "format.php";
 require "file.php";
-require "rsa.php";
 require "db.php";
 
 // 入口类
@@ -15,7 +14,7 @@ class gum {
     // 初始化
     public static function start() {
         // 是否关闭服务
-        if (!STATUS_SERVICE) {
+        if (!OPEN) {
             gum::json(["code" => 0, "info" => "SERVICE IS CLOSED!"]);
         }
         if (DEBUG) {
@@ -35,9 +34,9 @@ class gum {
         $file = ROOT . "service/" . $class . ".php";
         if (file::has($file)) {
             require $file; // 加载访问的服务
-            $dependServices = call_user_func($class . '::depend'); // 读取依赖
+            $depends = call_user_func($class . '::depend'); // 读取依赖
             // 加载所有依赖服务
-            foreach ($dependServices as $depend) {
+            foreach ($depends as $depend) {
                 require ROOT . "service/" . $depend . ".php";
             }
             call_user_func($class . '::init');
@@ -49,6 +48,10 @@ class gum {
 
     // 初始化页面
     public static function init($options = array()) {
+        // 是否关闭服务
+        if (!OPEN) {
+            gum::json(["code" => 0, "info" => "SERVICE IS CLOSED!"]);
+        }
         // php 7以上版本
         if (version_compare(PHP_VERSION, '7.0.0', '<')) {
             die('PHP version must be higher then v7.0.0.');
@@ -62,10 +65,8 @@ class gum {
         // SESSION开启
         if (isset($options['session'])) {
             @session_start();
-            if (version_compare(PHP_VERSION, '7.0.0') >= 0) {
-                @ini_set('session.lazy_write', 0);
-                @ini_set('session.use_trans_sid', 1);
-            }
+            @ini_set('session.lazy_write', 0);
+            @ini_set('session.use_trans_sid', 1);
         }
 
         header("X-Powered-By:Gum " . VERSION);
@@ -102,10 +103,6 @@ class gum {
     }
     /**
      * JSON输出
-     *
-     * @param array $data 数组
-     * @param defined $mode 常量
-     * @return    void
      */
     public static function json($data) {
         header("content-type: application/json;charset=utf-8");

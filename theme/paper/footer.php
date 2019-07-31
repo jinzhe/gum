@@ -1,10 +1,9 @@
 <footer class="footer">
 <a href="https://github.com/jinzhe/gum" target="_blank" title="Powered by GUM">&copy;</a> <?=date("Y")?>
 &nbsp;
-<?=COPYRIGHT?>
+<?=$config["copyright"]?>
 &nbsp;
-<a href="http://www.miitbeian.gov.cn" target="_blank"><?=ICP?></a>
-&nbsp;Theme by <a href="https://github.com/nanxiaobei/hugo-paper" target="_blank">Paper</a>
+<a href="http://www.miitbeian.gov.cn" target="_blank"><?=$config["icp"]?></a>
 </footer>
 <div class="progress"></div>
 </body>
@@ -16,14 +15,18 @@ var nav=document.querySelector(".nav-toggle");
 var search=document.querySelector(".search-toggle");
 var searchBoxClose=document.querySelector(".search-box span");
 var searchBoxInput=document.querySelector(".search-box input");
-nav.addEventListener("click",function(){
+var tap='ontouchstart' in document?'touchstart':'click';
+
+nav.addEventListener(tap,function(){
     body.classList.toggle('blur-nav');
 },false);
-search.addEventListener("click",function(){
+search.addEventListener(tap,function(){
     body.classList.add('blur-search');
 },false);
-searchBoxClose.addEventListener("click",function(){
-    body.classList.remove('blur-search');
+searchBoxClose.addEventListener(tap,function(){
+    setTimeout(function(){
+        body.classList.remove('blur-search');
+    },100);
 },false);
 searchBoxInput.addEventListener("keyup",function(e){
     if(e.keyCode==13 && this.value.trim()!=""){

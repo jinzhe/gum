@@ -142,7 +142,10 @@ class post {
 
     // 创建 & 更新 帖子
     function save() {
-        user::check($this->db, ["level" => 255]);
+        user::check($this->db, [
+            "level" => 255,
+            "permission"=>"post"
+        ]);
         $id          = gum::query("id");
         $cover       = gum::query("cover", ["strip_tags" => true]);
         $cover_id    = gum::query("cover_id", ["int" => true]);
@@ -201,7 +204,10 @@ class post {
 
     // 删除帖子
     function delete() {
-        user::check($this->db, ["level" => 255]);
+        user::check($this->db, [
+            "level" => 255,
+            "permission"=>"post"
+        ]);
         $ids = gum::query("ids");
 
         if ($ids == "") {

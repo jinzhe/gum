@@ -9,13 +9,13 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="white">
-<meta name="apple-mobile-web-app-title" content="<?=TITLE?>">
+<meta name="apple-mobile-web-app-title" content="<?=$config["title"]?>">
 <meta name="format-detection" content="telephone=no">
 <meta name="format-detection" content="email=no">
 <meta name="theme-color" content="#ffffff">
 
 <?php if (isset($post)): ?>
-<meta property="og:site_name" content="<?=TITLE?>">
+<meta property="og:site_name" content="<?=$config["title"]?>">
 <meta property="og:type" content="article">
 <meta property="og:title" content="<?=htmlspecialchars($post["title"])?>">
 <meta property="og:url" content="<?=DOMAIN?>/post/<?=$post["id"]?>.html">
@@ -34,13 +34,13 @@
 <?php endif;?>
 <link rel="icon" href="data:image/ico;base64,aWNv">
 <link rel="stylesheet" href="<?=DOMAIN?>/theme/paper/static/main.css">
-<link rel="alternate" type="application/rss+xml" title="<?=TITLE?> RSS 2.0" href="<?=DOMAIN?>/rss.php">
-<title><?=@$title?><?=TITLE?></title>
+<link rel="alternate" type="application/rss+xml" title="<?=$config["title"]?> RSS 2.0" href="<?=DOMAIN?>/rss.php">
+<title><?=@$title?><?=$config["title"]?></title>
 </head>
 <body<?php if($file != "post"):?> class="home"<?php endif;?>>
 
 <header class="header">
-  <a href="<?=DOMAIN?>" class="logo"><?=TITLE?></a>
+  <a href="<?=DOMAIN?>" class="logo"><?=$config["title"]?></a>
   <button class="search-toggle" type="button"></button>
   <button class="nav-toggle" type="button"></button>
 </header>
