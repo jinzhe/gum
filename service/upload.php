@@ -11,27 +11,12 @@ class upload {
         "user",
         "post",
         "link",
+        "config",
     ];
     // 依赖文件
     public static function depend() {
         return [
             "user",
-        ];
-    }
-
-    public static function install() {
-        return [
-            "CREATE TABLE `upload` (
-            `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-            `path` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
-            `name` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
-            `type` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
-            `size` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
-            `time` int(10) unsigned NOT NULL DEFAULT '0',
-            `bind_id` bigint(20) NOT NULL DEFAULT '0',
-            `bind_type` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT '',
-            PRIMARY KEY (`id`)
-            ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;",
         ];
     }
 

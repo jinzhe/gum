@@ -29,7 +29,6 @@ CREATE TABLE `link` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '状态',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-INSERT INTO `link` (`id`, `title`, `image`,`image_id`, `url`, `tag`, `sort`, `time`, `status`) VALUES(1,'小林子','',0,'https://xlzi.cn','link',1,2147483647,1),(2,'傻瓜','',0,'http://shagua.name','link',2,1544092212,1),(3,'幸福彼岸','','http://zee.kim','link',0,1555002780,1);
 DROP TABLE IF EXISTS `post`;
 CREATE TABLE `post` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
