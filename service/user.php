@@ -3,7 +3,7 @@ if (!class_exists('user')) {
 
     class user {
         // 输出可显示的json字段
-        const FIELDS = 'id,account,nickname,photo,level,tel,tel_verification,email,email_verification,status';
+        const FIELDS = 'id,account,nickname,photo,level,permission,tel,tel_verification,email,email_verification,status';
         // 依赖文件
         public static function depend() {
             return ['upload'];
@@ -37,7 +37,7 @@ if (!class_exists('user')) {
             new user();
         }
 
-        function __construct() {
+        public function __construct() {
             $this->db = new db();
             gum::init([
                 "bind" => $this,
@@ -45,10 +45,10 @@ if (!class_exists('user')) {
         }
 
         // 获取数据列表
-        function search() {
+        public function search() {
             user::check($this->db);
-            $page_index = (int) gum::query("page_index", 1);
-            $page_size  = (int) gum::query("page_size", 20);
+            $page_index = (int)gum::query("page_index", 1);
+            $page_size  = (int)gum::query("page_size", 20);
             $fields     = gum::query("fields");
             $begin      = gum::query("begin");
             $end        = gum::query("end");
@@ -101,6 +101,7 @@ if (!class_exists('user')) {
                 ];
                 if ($user && $user["level"] == 255) {
                     $safe_fields[] = 'status';
+                    $safe_fields[] = 'permission';
                 }
                 // 检查是否是安全的字段
                 if ($fields != "") {
@@ -131,7 +132,7 @@ if (!class_exists('user')) {
                 gum::json(["code" => 403, "info" => "token is empty"]);
             }
             if (isset($options["level"])) {
-                $sql = "SELECT id,login_time FROM user WHERE token='$token' AND level>=" . $options["level"];
+                $sql = "SELECT id,login_time,permission FROM user WHERE token='$token' AND level>=" . $options["level"];
             } else {
                 $sql = "SELECT id,login_time FROM user WHERE token='$token'";
             }
@@ -145,6 +146,15 @@ if (!class_exists('user')) {
             if ($row == false) {
                 gum::json(["code" => 403]);
             }
+            // 验证权限
+            if (isset($options["level"]) && isset($options["permission"]) && $options["level"] == 255) {
+                if ($row["permission"] != "super") {
+                    $permissions = explode(",", $row["permission"]);
+                    if (!in_array($options["permission"], $permissions)) {
+                        gum::json(["code" => 403]);
+                    }
+                }
+            }
             // 7天自动过期
             if (time() - $row["login_time"] > 7 * 24 * 3600) {
                 gum::json(["code" => 403]);
@@ -152,10 +162,19 @@ if (!class_exists('user')) {
         }
 
         // 获取一个用户信息
-        function get() {
+        public function get() {
             user::check($this->db, ["level" => 255]);
             $id     = gum::query("id");
             $result = $this->db->row("SELECT " . self::FIELDS . " FROM user WHERE id=" . $id);
+            if ($result == false) {
+                gum::json(["code" => 500]);
+            }
+            gum::json(["code" => 200, "result" => $result]);
+        }
+        // 获取一个用户信息(前端)
+        public function get_info() {
+            $token  = gum::query("token");
+            $result = $this->db->row("SELECT " . self::FIELDS . " FROM user WHERE status=1 AND token='" . $token . "'");
             if ($result == false) {
                 gum::json(["code" => 500]);
             }
@@ -175,10 +194,10 @@ if (!class_exists('user')) {
             return $row;
         }
         // 登录
-        function login() {
-            if (!STATUS_LOGIN) {
-                gum::json(["code" => 0, "info" => "登陆服务关闭"]);
-            }
+        public function login() {
+            // if (!STATUS_LOGIN) {
+            //     gum::json(["code" => 0, "info" => "登陆服务关闭"]);
+            // }
             $account  = gum::query("account");
             $password = gum::query("password");
             // 过滤登录字符串
@@ -186,9 +205,7 @@ if (!class_exists('user')) {
                 gum::json(["code" => 400, "info" => "账号密码不能为空"]);
             }
 
-            $row = $this->db->row("SELECT " . self::FIELDS . " FROM user WHERE account=? AND password=? AND status=1", [
-                "params" => [$account, gum::hash($password)],
-            ]);
+            $row = $this->db->row("SELECT " . self::FIELDS . " FROM user WHERE (account='".$account."' OR email='".$account."' OR tel='".$account."') AND password='".gum::hash($password)."' AND status=1");
             // print_r($row);exit;
             if ($row != false) {
                 $token = gum::uuid();
@@ -208,17 +225,17 @@ if (!class_exists('user')) {
         }
 
         // 登出
-        function logout() {
+        public function logout() {
             user::check($this->db);
             $token = gum::query("token");
             $this->db->update("user", ["token" => ""], "token='" . $token . "'");
         }
 
         // 注册
-        function join() {
-            if (!STATUS_JOIN) {
-                gum::json(["code" => 0, "info" => "注册服务关闭"]);
-            }
+        public function join() {
+            // if (!STATUS_JOIN) {
+            //     gum::json(["code" => 0, "info" => "注册服务关闭"]);
+            // }
             $account  = gum::query("account");
             $password = gum::query("password");
             $status   = gum::query("status", "1");
@@ -250,7 +267,7 @@ if (!class_exists('user')) {
             }
         }
         // 忘记密码 user_id code time type
-        function forget() {
+        public function forget() {
             $account = gum::query("account");
             if ($account == "") {
                 gum::json(["code" => 400, "info" => "账号不能为空"]);
@@ -308,7 +325,7 @@ if (!class_exists('user')) {
         }
 
         // 绑定邮箱
-        function bind_email() {
+        public function bind_email() {
             user::check($this->db);
 
             $id    = gum::query("id");
@@ -351,7 +368,7 @@ if (!class_exists('user')) {
         }
 
         // 邮箱绑定验证
-        function verify_email() {
+        public function verify_email() {
             $code = gum::query("code");
             // 检查是否存在这个账号
             $row = $this->db->row("SELECT * FROM user_verification WHERE code='$code'");
@@ -364,58 +381,77 @@ if (!class_exists('user')) {
             }
         }
 
-        // 发送短信验证码
-        function send_verify_sms() {
-            user::check($this->db);
+        // 发送短信验证码入库
 
-            $id  = gum::query("id");
-            $tel = gum::query("tel");
-            if ($tel == "" || $id == "") {
+        public function send_code() {
+            $type   = gum::query("type"); // 1.EMAIL 2.TEL
+            $target = gum::query("target"); // 1.注册 2.忘记密码 3.更换手机
+            $value  = gum::query("value"); //邮箱地址或者电话号码
+            $id     = gum::query("id", "0"); //会员id
+
+            if ($value == "") {
                 gum::json(["code" => 400]);
             }
-            // 检查是否存在这个账号
-            $row = $this->db->row("SELECT id FROM user WHERE id='$id'");
-            if ($row == false) {
-                gum::json(["code" => 501, "info" => "账号不存在"]);
-            }
-            $code = mt_rand(1000, 9999);
 
+            // 更换手机时候
+            if ($target == "3") {
+                if ($id == "") {
+                    gum::json(["code" => 400]);
+                }
+                // 检查是否存在这个账号
+                $row = $this->db->row("SELECT id FROM user WHERE id='$id'");
+                if ($row == false) {
+                    gum::json(["code" => 501, "info" => "账号不存在"]);
+                }
+            }
+
+            $code = mt_rand(1000, 9999);
+            $token=gum::uuid();
             $action = false;
             $data   = [
-                "type"    => "tel",
+                "type"    => $type,
+                "target"  => $target,
                 "code"    => $code,
+                "value"   => $value,
+                "token"   => $token,
                 "time"    => time(),
                 "status"  => 0,
                 "user_id" => $id,
             ];
-            $action = $this->db->insert("user_verification", $data);
-            gum::sms([
-                "to"      => $tel,
-                "content" => "$code",
-            ]);
+            $action = $this->db->insert("user_code", $data);
+            // 发送短信
+            if ($type == "2") {
+                // gum::sms([
+                //     "to"      => $tel,
+                //     "content" => "$code",
+                // ]);
+            }
             if ($action) {
-                gum::json(["code" => 200]);
+                gum::json(["code" => 200,"token"=>$token]);
             } else {
                 gum::json(["code" => 500]);
             }
         }
 
         // 绑定手机号
-        function verify_tel() {
+        public function verify_tel() {
+            $tel  = gum::query("tel");
             $code = gum::query("code");
             // 检查是否存在这个账号
-            $row = $this->db->row("SELECT * FROM user_verification WHERE code='$code'");
+            $row = $this->db->row("SELECT * FROM user_verification WHERE value='$tel' AND code='$code' AND time>" . time() - 7200);
             if ($row == false) {
                 echo ("非法参数");
             } else {
                 // 更新这个邮箱为已经验证
-                $this->db->update("user", ["tel_verification" => 1], "id='" . $row["user_id"] . "'");
+                $this->db->update("user", [
+                    "tel_verification" => 1,
+                ], "id='" . $row["user_id"] . "'");
                 echo "验证绑定邮箱成功";
             }
         }
 
         // 更换密码（用户）
-        function change_password() {
+        public function change_password() {
             user::check($this->db);
 
             $id          = gum::query("id");
@@ -443,7 +479,7 @@ if (!class_exists('user')) {
             gum::json($json);
         }
         // 更换密码（用户）
-        function update_password() {
+        public function update_password() {
             user::check($this->db, ["level" => 255]);
 
             $id       = gum::query("id");
@@ -465,9 +501,12 @@ if (!class_exists('user')) {
             gum::json($json);
         }
         // 创建 & 更新
-        function save() {
+        public function save() {
 
-            user::check($this->db, ["level" => 255]);
+            user::check($this->db, [
+                "level"      => 255,
+                "permission" => "super",
+            ]);
 
             $id                 = gum::query("id");
             $account            = gum::query("account");
@@ -475,6 +514,7 @@ if (!class_exists('user')) {
             $photo              = gum::query("photo");
             $password           = gum::query("password");
             $level              = gum::query("level");
+            $permission         = gum::query("permission");
             $email              = gum::query("email");
             $tel                = gum::query("tel");
             $email_verification = gum::query("email_verification");
@@ -494,6 +534,7 @@ if (!class_exists('user')) {
                 "status"             => $status,
                 "photo"              => $photo,
                 "level"              => $level,
+                "permission"         => $permission,
             ];
 
             if ($password != "") {
@@ -525,9 +566,10 @@ if (!class_exists('user')) {
             }
         }
         // 删除
-        function delete() {
+        public function delete() {
             user::check($this->db, [
-                "level" => 255,
+                "level"      => 255,
+                "permission" => "super",
             ]);
 
             $ids = gum::query("ids");
