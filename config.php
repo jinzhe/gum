@@ -16,9 +16,9 @@ define('DB_NAME', 'cms');
 // 邮件发送
 define('SMTP_SERVER', 'ssl://smtp.exmail.qq.com');
 define('SMTP_PORT', 465);
-define('SMTP_USER', 'smtp@zee.kim');
-define('SMTP_PASSWORD', 'Fuck2019');
-define('SMTP_MAIL', 'zee.kim@qq.com');
+define('SMTP_USER', '');
+define('SMTP_PASSWORD', '');
+define('SMTP_MAIL', '');
 
 // 上传相关
 define('UPLOAD_IMAGE_OPACITY', 80); //图片质量 1～100
