@@ -76,6 +76,7 @@ class config {
         $description = gum::query("description");
         $status      = gum::query("status");
         $type      = gum::query("type");
+        $ids         = gum::query("ids");
         if ($key == "") {
             gum::json(["code" => 400]);
         }
@@ -95,7 +96,9 @@ class config {
             $action = $this->db->insert("config", $data);
         } else {
             $action = $this->db->update("config", $data, "`key`='$key'");
+            upload::remove_bind($this->db, "config", $key);
         }
+        upload::bind($this->db, "config", $key,$ids);
         if ($action) {
             gum::json(["code" => 200]);
         } else {

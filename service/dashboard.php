@@ -86,14 +86,14 @@ class dashboard {
     // 清理upload附件
     public function clear() {
         user::check($this->db, ["level" => 255]);
-        $rows = $this->db->rows("SELECT `path` FROM upload where bind_id='0'");
+        $rows = $this->db->rows("SELECT `path` FROM upload where bind_id='0' OR bind_id=''");
         if (count($rows) == 0) {
             gum::json(["code" => 400, "info" => "不需要清理"]);
         }
         foreach ($rows as $row) {
             @unlink(ROOT . $row["path"]);
         }
-        $this->db->delete("upload", "bind_id=0");
+        $this->db->delete("upload", "bind_id='0' OR bind_id=''");
         gum::json(["code" => 200]);
     }
 }

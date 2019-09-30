@@ -69,7 +69,7 @@ CREATE TABLE `upload` (
   `size` varchar(50) NOT NULL DEFAULT '' COMMENT '文件大小byte单位',
   `time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上传时间',
   `bind_type` varchar(10) NOT NULL DEFAULT '' COMMENT '上传服务类型',
-  `bind_id` varchar(50) NOT NULL DEFAULT '0' COMMENT '上传服务关联id',
+  `bind_id` varchar(50) NOT NULL DEFAULT '' COMMENT '上传服务关联id',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 DROP TABLE IF EXISTS `user`;
