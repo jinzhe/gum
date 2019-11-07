@@ -405,6 +405,7 @@ class file {
             "application/pdf"                                                           => "pdf",
             "application/zip"                                                           => "zip",
             "application/x-rar-compressed"                                              => "rar",
+            "application/x-rar"                                                         => "rar",
             "application/vnd.ms-powerpoint"                                             => "ppt",
             "application/vnd.ms-excel"                                                  => "xls",
             "application/msword"                                                        => "doc",
@@ -414,9 +415,13 @@ class file {
             "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"         => "xlsx",
             "application/vnd.openxmlformats-officedocument.presentationml.presentation" => "pptx",
         ];
+
         $upload = $options['upload'];
-        $from   = $upload['tmp_name'];
-        $to     = $options['to'];
+
+        // print_r($upload);exit;
+
+        $from = $upload['tmp_name'];
+        $to   = $options['to'];
 
         // 没有$_FILES对象果断拒绝
         if (!isset($upload)) {
@@ -604,21 +609,21 @@ class file {
     }
 
     // 获取列表
-    public static function list($dir,$options=[]) {
-        $dir=rtrim($dir,"/");
+    public static function ls($dir, $options = []) {
+        $dir  = rtrim($dir, "/");
         $temp = [];
         if (false != ($handle = opendir($dir))) {
             while (false !== ($file = readdir($handle))) {
                 if ($file != "." && $file != "..") {
-                    if(isset($options["dir"])){
-                        if(is_dir($dir."/".$file)){
+                    if (isset($options["dir"])) {
+                        if (is_dir($dir . "/" . $file)) {
                             array_push($temp, $file);
                         }
-                    }elseif(isset($options["file"])){
-                        if(is_file($dir."/".$file)){
+                    } elseif (isset($options["file"])) {
+                        if (is_file($dir . "/" . $file)) {
                             array_push($temp, $file);
                         }
-                    }else{
+                    } else {
                         array_push($temp, $file);
                     }
                 }

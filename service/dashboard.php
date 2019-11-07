@@ -17,7 +17,7 @@ class dashboard {
         ]);
     }
     public function version() {
-        gum::json(["code" => 200,"version"=>VERSION]);
+        gum::json(["code" => 200, "version" => VERSION]);
     }
 
     public function noop() {
@@ -47,7 +47,7 @@ class dashboard {
                 "mysql_version"       => $this->db->row("SELECT version() as version")["version"],
                 "extensions"          => get_loaded_extensions(),
                 "theme_dir"           => file_get_contents(ROOT . "theme/default.txt"),
-                "theme_dirs"          => file::list(ROOT . "theme", ["dir" => true]),
+                "theme_dirs"          => file::ls(ROOT . "theme", ["dir" => true]),
                 "version"             => VERSION,
             ],
         ]);
@@ -63,8 +63,8 @@ class dashboard {
                 "info" => "非法参数",
             ]);
         }
-        $theme_dir    = file_get_contents("theme/default.txt");
-        if(!empty($theme_dir)){
+        $theme_dir = file_get_contents("theme/default.txt");
+        if (!empty($theme_dir)) {
             $theme_config = include_once "theme/" . $theme_dir . "/config.php";
             foreach ($theme_config["config"] as $key => $value) {
                 $data = [
