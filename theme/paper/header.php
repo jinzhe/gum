@@ -9,46 +9,46 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="white">
-<meta name="apple-mobile-web-app-title" content="<?=$config["title"]?>">
+<meta name="apple-mobile-web-app-title" content="<?=$config["title"] ?>">
 <meta name="format-detection" content="telephone=no">
 <meta name="format-detection" content="email=no">
 <meta name="theme-color" content="#ffffff">
-
+<link rel="icon" href="favicon.ico">
 <?php if (isset($post)): ?>
-<meta property="og:site_name" content="<?=$config["title"]?>">
+<meta property="og:site_name" content="<?=$config["title"] ?>">
 <meta property="og:type" content="article">
-<meta property="og:title" content="<?=htmlspecialchars($post["title"])?>">
-<meta property="og:url" content="<?=DOMAIN?>/post/<?=$post["id"]?>.html">
-<meta property="og:image" content="<?=htmlspecialchars($post["cover"])?>">
-<meta property="og:description" content="<?=$description?>">
-<?php endif;?>
+<meta property="og:title" content="<?=htmlspecialchars($post["title"]) ?>">
+<meta property="og:url" content="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html">
+<meta property="og:image" content="<?=htmlspecialchars($post["cover"]) ?>">
+<meta property="og:description" content="<?=$description ?>">
+<?php endif; ?>
 
 <?php if (!empty($keywords)): ?>
-<meta name="keywords" content="<?=$keywords?>">
-<?php endif;?>
+<meta name="keywords" content="<?=$keywords ?>">
+<?php endif; ?>
 <?php if (!empty($description)): ?>
-<meta name="description" content="<?=$description?>">
-<?php endif;?>
+<meta name="description" content="<?=$description ?>">
+<?php endif; ?>
 <?php if (!empty($post["author"])): ?>
-<meta name="author" content="<?=htmlspecialchars($post["author"])?>">
-<?php endif;?>
+<meta name="author" content="<?=htmlspecialchars($post["author"]) ?>">
+<?php endif; ?>
 <link rel="icon" href="data:image/ico;base64,aWNv">
-<link rel="stylesheet" href="<?=DOMAIN?>/theme/paper/static/main.css">
-<link rel="alternate" type="application/rss+xml" title="<?=$config["title"]?> RSS 2.0" href="<?=DOMAIN?>/rss.php">
-<title><?=@$title?><?=$config["title"]?></title>
+<link rel="stylesheet" href="<?=DOMAIN ?>/theme/paper/static/main.css">
+<link rel="alternate" type="application/rss+xml" title="<?=$config["title"] ?> RSS 2.0" href="<?=DOMAIN ?>/rss.php">
+<title><?=@$title ?><?=$config["title"] ?></title>
 </head>
-<body<?php if($file != "post"):?> class="home"<?php endif;?>>
+<body<?php if ($file != "post"): ?> class="home"<?php endif; ?>>
 
 <header class="header">
-  <a href="<?=DOMAIN?>" class="logo"><?=$config["title"]?></a>
+  <div class="logo"><a href="<?=DOMAIN ?>" ><?=$config["title"] ?></a></div>
   <button class="search-toggle" type="button"></button>
   <button class="nav-toggle" type="button"></button>
 </header>
 <nav>
-<?php $nav_tags = $db->rows("SELECT * FROM tag WHERE status=1 ORDER BY sort ASC");?>
+<?php $nav_tags = $db->rows("SELECT * FROM tag WHERE status=1 ORDER BY sort ASC"); ?>
 <?php foreach ($nav_tags as $nav_key => $nav_tag): ?>
-  <a href="<?=DOMAIN?>/tag/<?=$nav_tag["id"]?>.html" <?=(isset($active) && $active == $nav_tag["id"] ? "class='active'" : "");?>><?=$nav_tag["name"]?></a>
-<?php endforeach;?>  <a href="<?=DOMAIN?>/about" <?=($file == 'about' ? "class='active'" : "");?>>关于</a>
+  <a href="<?=DOMAIN ?>/tag/<?=$nav_tag["id"] ?>.html" <?=(isset($active) && $active == $nav_tag["id"] ? "class='active'" : ""); ?>><?=$nav_tag["name"] ?></a>
+<?php endforeach; ?>  <a href="<?=DOMAIN ?>/about" <?=($file == 'about' ? "class='active'" : ""); ?>>关于</a>
 </nav>
 
 <div class="search-layout">

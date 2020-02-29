@@ -24,7 +24,7 @@ class upload {
         new upload();
     }
 
-    function __construct() {
+    public function __construct() {
         $this->db = new db();
         gum::init([
             "bind" => $this,
@@ -41,7 +41,7 @@ class upload {
     }
 // 根据自定义json结构请求返回数据
     // {"bind_id":10,"bind_type":"post"}
-    function data() {
+    public function data() {
         $data = gum::query("data");
         if ($data == "") {
             gum::json(["code" => 500]);
@@ -55,7 +55,7 @@ class upload {
         if (isset($data->bind_id) && isset($data->bind_type)) {
             $result["bind"] = $this->db->rows("SELECT id,path,name,type FROM upload WHERE bind_id='" . $data->bind_id . "' AND bind_type='" . $data->bind_type . "'");
             foreach ($result["bind"] as &$row) {
-                $row["url"] = DOMAIN ."/" . $row["path"];
+                $row["url"] = DOMAIN . "/" . $row["path"];
                 if (in_array($row["type"], ["image/jpeg", "image/png", "image/gif"])) {
                     $row["image"] = true;
                 } else {
@@ -68,7 +68,7 @@ class upload {
     }
 
     // 上传文件
-    function go() {
+    public function go() {
         user::check($this->db);
         @ini_set('memory_limit', '1024M');
         if (isset($_FILES["file"]["name"])) {
@@ -162,8 +162,8 @@ class upload {
                             file::thumbnail([
                                 "source"  => $path . $file,
                                 "target"  => $path . str_replace("." . $find, "_" . $item, $file) . ".jpg",
-                                "width"   => (int) $size[0],
-                                "height"  => (int) $size[1],
+                                "width"   => (int)$size[0],
+                                "height"  => (int)$size[1],
                                 "opacity" => UPLOAD_IMAGE_OPACITY,
                             ]);
                         }
@@ -175,8 +175,8 @@ class upload {
                     $original_size = explode("x", $original);
                     file::thumbnail([
                         "source"  => $path . $file,
-                        "width"   => (int) $original_size[0],
-                        "height"  => (int) $original_size[1],
+                        "width"   => (int)$original_size[0],
+                        "height"  => (int)$original_size[1],
                         "opacity" => UPLOAD_IMAGE_OPACITY,
                     ]);
                 }
@@ -240,7 +240,7 @@ class upload {
     }
 
     // 删除文件
-    function delete() {
+    public function delete() {
         user::check($this->db, ["level" => 255]);
 
         $id = gum::query("id");

@@ -9,30 +9,6 @@ if (!class_exists('user')) {
             return ['upload'];
         }
 
-        public static function install() {
-            return [
-                "CREATE TABLE `user` (
-                `id` smallint(3) unsigned NOT NULL AUTO_INCREMENT,
-                `account` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '自定义账号',
-                `password` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '密码',
-                `level` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '0普通会员 255 超级管理',
-                `nickname` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '昵称',
-                `photo` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '',
-                `email` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '邮箱',
-                `email_verification` tinyint(1) NOT NULL DEFAULT '0',
-                `tel` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '' COMMENT '手机',
-                `tel_verification` tinyint(1) NOT NULL DEFAULT '0',
-                `join_ip` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
-                `join_time` int(10) unsigned NOT NULL DEFAULT '0',
-                `login_ip` varchar(50) CHARACTER SET utf8 NOT NULL,
-                `login_time` int(10) unsigned NOT NULL DEFAULT '0',
-                `status` tinyint(1) unsigned NOT NULL DEFAULT '0',
-                `token` varchar(100) CHARACTER SET utf8 NOT NULL,
-                PRIMARY KEY (`id`)
-                ) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4;",
-            ];
-        }
-
         public static function init() {
             new user();
         }
@@ -205,7 +181,7 @@ if (!class_exists('user')) {
                 gum::json(["code" => 400, "info" => "账号密码不能为空"]);
             }
 
-            $row = $this->db->row("SELECT " . self::FIELDS . " FROM user WHERE (account='".$account."' OR email='".$account."' OR tel='".$account."') AND password='".gum::hash($password)."' AND status=1");
+            $row = $this->db->row("SELECT " . self::FIELDS . " FROM user WHERE (account='" . $account . "' OR email='" . $account . "' OR tel='" . $account . "') AND password='" . gum::hash($password) . "' AND status=1");
             // print_r($row);exit;
             if ($row != false) {
                 $token = gum::uuid();
@@ -238,85 +214,67 @@ if (!class_exists('user')) {
             // }
             $account  = gum::query("account");
             $password = gum::query("password");
-            $status   = gum::query("status", "1");
-            if ($account == "" || $password == "") {
-                gum::json(["code" => 400]);
+            $nickname = gum::query("nickname");
+            $token    = gum::query("token");
+            $code     = gum::query("code");
+            if ($account == "" || $password == "" || $nickname == "" || $token == "" || $code == "") {
+                gum::json(["code" => 400, "info" => "缺少参数"]);
             }
-            $token  = gum::uuid();
+            // 判断是否在code表中
+            $row = $this->db->row("SELECT * FROM user_code WHERE value='$account' AND code='$code' AND token='$token' AND status=0");
+            if (!$row) {
+                gum::json(["code" => 401, "info" => "非法注册"]);
+            }
+            $uuid   = gum::uuid();
             $action = false;
             $data   = [
-                "token"      => $token,
+                "token"      => $uuid,
                 "account"    => $account,
                 "password"   => gum::hash($password),
                 "level"      => 0,
-                "nickname"   => "",
+                "permission" => "",
+                "nickname"   => $nickname,
                 "photo"      => "",
                 "email"      => "",
-                "tel"        => "",
+                "tel"        => $account,
                 "join_ip"    => gum::ip(),
                 "join_time"  => time(),
                 "login_ip"   => gum::ip(),
                 "login_time" => time(),
-                "status"     => $status,
+                "status"     => 1,
             ];
             $action = $this->db->insert("user", $data);
+            $this->db->update("user_code", ["status" => 1], "token='$token'");
             if ($action) {
-                gum::json(["code" => 200, "token" => $token]);
+                gum::json(["code" => 200, "token" => $uuid]);
             } else {
                 gum::json(["code" => 500]);
             }
         }
         // 忘记密码 user_id code time type
         public function forget() {
-            $account = gum::query("account");
-            if ($account == "") {
-                gum::json(["code" => 400, "info" => "账号不能为空"]);
+            $account  = gum::query("account");
+            $password = gum::query("password");
+            $token    = gum::query("token");
+            $code     = gum::query("code");
+            if ($account == "" || $token == "" || $code == "") {
+                gum::json(["code" => 400, "info" => "参数丢失"]);
             }
             // 检查是否存在这个账号
-            $row = $this->db->row("SELECT id FROM user WHERE account='$account'");
+            $row = $this->db->row("SELECT id FROM user WHERE tel='$account'");
             if ($row == false) {
                 gum::json(["code" => 501, "info" => "账号不存在"]);
             }
-            $type  = gum::query("type", "email"); //email or tel
-            $value = gum::query("value");
-            if ($type == "" || $value == "") {
-                gum::json(["code" => 400]);
-            }
-            if ($type == "email") {
-                $code = gum::uuid();
-            } elseif ($type == "tel") {
-                $code = mt_rand(1000, 9999); //手机验证码
-            }
 
-            $action = false;
-            $data   = [
-                "type"    => $type,
-                "code"    => $code,
-                "time"    => time(),
-                "status"  => 0,
-                "user_id" => $row["id"],
-
+            // 判断是否在code表中
+            $row = $this->db->row("SELECT * FROM user_code WHERE value='$account' AND code='$code' AND token='$token' AND status=0");
+            if (!$row) {
+                gum::json(["code" => 401, "info" => "非法账号"]);
+            }
+            $data = [
+                "password" => gum::hash($password),
             ];
-            $action = $this->db->insert("user_verification", $data);
-
-            if ($type == "email") {
-                gum::mail([
-                    "to"       => $value,
-                    "subject"  => "找回密码",
-                    "body"     => "$code",
-                    "from"     => SMTP_USER,
-                    "server"   => SMTP_SERVER,
-                    "port"     => SMTP_PORT,
-                    "user"     => SMTP_USER,
-                    "password" => SMTP_PASSWORD,
-                ]);
-            } elseif ($type == "tel") {
-                gum::sms([
-                    "to"      => $value,
-                    "content" => "$code",
-                ]);
-            }
-
+            $action = $this->db->update("user", $data, "tel='$account'");
             if ($action) {
                 gum::json(["code" => 200]);
             } else {
@@ -384,29 +342,50 @@ if (!class_exists('user')) {
         // 发送短信验证码入库
 
         public function send_code() {
-            $type   = gum::query("type"); // 1.EMAIL 2.TEL
+            $type   = gum::query("type"); // 1.EMAIL 2.TEL,3.账号id
             $target = gum::query("target"); // 1.注册 2.忘记密码 3.更换手机
             $value  = gum::query("value"); //邮箱地址或者电话号码
             $id     = gum::query("id", "0"); //会员id
 
-            if ($value == "") {
+            if ($type == "" || $target == "" || $value == "") {
                 gum::json(["code" => 400]);
             }
-
+            if ($type == "1") {
+                $type_name = "email";
+            } elseif ($type == "2") {
+                $type_name = "tel";
+            } else {
+                $type_name = "account";
+            }
+            // 注册的时候检测
+            if ($type == "2" && $target == "1") {
+                // 检查是否存在这个账号
+                $is_join = $this->db->count("SELECT id FROM user WHERE $type_name='$value'");
+                if ($is_join > 0) {
+                    gum::json(["code" => 501, "info" => "账号已存在"]);
+                }
+            }
             // 更换手机时候
             if ($target == "3") {
                 if ($id == "") {
                     gum::json(["code" => 400]);
                 }
                 // 检查是否存在这个账号
-                $row = $this->db->row("SELECT id FROM user WHERE id='$id'");
-                if ($row == false) {
-                    gum::json(["code" => 501, "info" => "账号不存在"]);
+                $is_exists = $this->db->count("SELECT id FROM user WHERE id='$id'");
+                if ($is_exists == 0) {
+                    gum::json(["code" => 502, "info" => "账号不存在"]);
                 }
             }
 
-            $code = mt_rand(1000, 9999);
-            $token=gum::uuid();
+            // 检测发送验证码上限(每天10次)
+            if ($type == "2") {
+                $upper_limit = $this->db->count("SELECT * FROM user_code WHERE value='$value' AND time>" . (time() - (3600 * 24)));
+                if ($upper_limit >= 10) {
+                    gum::json(["code" => 502, "info" => "已达到每日发送上限"]);
+                }
+            }
+            $code   = mt_rand(1000, 9999);
+            $token  = gum::uuid();
             $action = false;
             $data   = [
                 "type"    => $type,
@@ -427,9 +406,9 @@ if (!class_exists('user')) {
                 // ]);
             }
             if ($action) {
-                gum::json(["code" => 200,"token"=>$token]);
+                gum::json(["code" => 200, "token" => $token]);
             } else {
-                gum::json(["code" => 500]);
+                gum::json(["code" => 500, "info" => "注册失败"]);
             }
         }
 
@@ -454,20 +433,22 @@ if (!class_exists('user')) {
         public function change_password() {
             user::check($this->db);
 
-            $id          = gum::query("id");
-            $token       = gum::query("token");
-            $oldPassword = gum::query("oldPassword");
-            $newPassword = gum::query("newPassword");
-
+            $id    = gum::query("id");
+            $token = gum::query("token");
+            $old   = gum::query("old");
+            $new   = gum::query("new");
+            if (empty($old) || empty($new)) {
+                gum::json(["code" => 401, "info" => "密码不能为空"]);
+            }
             // 旧密码验证
             $row = $this->db->row("SELECT password FROM user WHERE token='$token'");
             // var_dump($row);exit;
-            if ($row == false || $oldPassword != $row["password"]) {
-                gum::json(["code" => 401]);
+            if ($row == false || gum::hash($old) != $row["password"]) {
+                gum::json(["code" => 401, "info" => "旧密码不正确"]);
             }
-            $action = false;
-            $data   = [
-                "password" => gum::hash($newPassword),
+
+            $data = [
+                "password" => gum::hash($new),
             ];
             $action = $this->db->update("user", $data, "token='$token'");
             $json   = [];
@@ -478,17 +459,20 @@ if (!class_exists('user')) {
             }
             gum::json($json);
         }
-        // 更换密码（用户）
+        // 更换密码（管理员）
         public function update_password() {
             user::check($this->db, ["level" => 255]);
 
-            $id       = gum::query("id");
-            $token    = gum::query("token");
-            $password = gum::query("password");
-
-            $action = false;
-            $data   = [
-                "password" => gum::hash($password),
+            $id    = gum::query("id");
+            $token = gum::query("token");
+            $old   = gum::query("old");
+            $new   = gum::query("new");
+            $row   = $this->db->row("SELECT password FROM user WHERE token='$token'");
+            if ($row["password"] != gum::hash($old)) {
+                gum::json(["code" => 501, "info" => "旧密码不正确"]);
+            }
+            $data = [
+                "password" => gum::hash($new),
             ];
             $action = $this->db->update("user", $data, "token='$token'");
             $json   = [];

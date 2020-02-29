@@ -1,5 +1,5 @@
 <?php
-define('VERSION', 'V0.2 R190930');
+define('VERSION', 'V0.3 R200223');
 
 define('ROOT', str_replace("/core", "/", dirname(__FILE__)));
 
@@ -84,7 +84,7 @@ class gum {
         // 过滤请求参数
         if (count($_REQUEST) > 0) {
             foreach ($_REQUEST as $key => $value) {
-                $_REQUEST[$key] = htmlentities((string) $value, ENT_QUOTES, "UTF-8");
+                $_REQUEST[$key] = htmlentities((string)$value, ENT_QUOTES, "UTF-8");
             }
         }
 
@@ -346,7 +346,7 @@ class gum {
         fputs($fp, "QUIT\r\n");
         return true;
     }
- 
+
     /**
      * 获取随机字符
      *
@@ -492,7 +492,7 @@ class gum {
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
         }
-        if (self::check_ip($ip)) {
+        if (self::__check_ip($ip)) {
             return $ip;
         } else {
             return '0.0.0.0';
@@ -504,7 +504,7 @@ class gum {
      *
      * @return    bool
      */
-    private static function check_ip($ip) {
+    private static function __check_ip($ip) {
         if (!filter_var($ip, FILTER_VALIDATE_IP)) {
             return false;
         } else {

@@ -57,7 +57,7 @@ class dashboard {
         user::check($this->db, ["level" => 255]);
         $dir = gum::query("dir");
         // 检测是否存在目录
-        if (!in_array($dir, file::list(ROOT . "theme", ["dir" => true]))) {
+        if (!in_array($dir, file::ls(ROOT . "theme", ["dir" => true]))) {
             gum::json([
                 "code" => 500,
                 "info" => "非法参数",
