@@ -3,7 +3,7 @@ $keywords    = $config["keywords"];
 $description = $config["description"];
 
 $posts        = [];
-$page_size    = 9;
+$page_size    = 11;
 $page_current = $page ?? 1;
 $sql          = "SELECT * FROM post WHERE status=1";
 $count        = $db->count($sql); //先查数量
