@@ -3,7 +3,7 @@ $keywords    = $config["keywords"];
 $description = $config["description"];
 
 $posts        = [];
-$page_size    = 10;
+$page_size    = 9;
 $page_current = $page ?? 1;
 $sql          = "SELECT * FROM post WHERE status=1";
 $count        = $db->count($sql); //先查数量
@@ -20,10 +20,26 @@ if ($count > 0) {
 <?php include 'header.php'; ?>
 
 <div class="layout home">
+<?php $swipers = $db->rows("SELECT * FROM post WHERE status=1 AND cover!='' ORDER BY id DESC LIMIT 5"); ?>
 
     <?php if (count($posts) > 0): ?>
 
         <div class="post-entries">
+
+        <?php if (count($swipers) > 0): ?>
+    <div class="swiper-container">
+
+        <div class="swiper-wrapper">
+            <?php foreach ($swipers as $swiper): ?>
+            <div class="swiper-slide" style="background-image:url(<?=$swiper["cover"] ?>)"><a href="<?=DOMAIN ?>/post/<?=$swiper["id"] ?>.html"><p><?=$swiper["title"] ?></p></a></div>
+            <?php endforeach; ?>
+        </div>
+
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+    <?php endif; ?>
             <?php foreach ($posts as $post): ?>
             <article class="post-entry">
                 <header class="entry-header">
@@ -76,6 +92,21 @@ if ($count > 0) {
 <?php endforeach; ?>
 </div>
 </div>
-
-
+<link rel="stylesheet" href="<?=DOMAIN ?>/theme/paper/static/swiper.css">
+<script src="<?=DOMAIN ?>/theme/paper/static/swiper.js"></script>
+<script>
+var mySwiper = new Swiper('.swiper-container', {
+  autoplay: {
+    delay: 5000,
+  },
+  pagination: {
+    el: '.swiper-pagination',
+    type: 'bullets',
+  },
+  navigation: {
+    nextEl: '.swiper-button-next',
+    prevEl: '.swiper-button-prev',
+  },
+});
+</script>
 <?php include 'footer.php'; ?>

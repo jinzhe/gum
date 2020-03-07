@@ -40,16 +40,18 @@
 <body<?php if ($file != "post"): ?> class="home"<?php endif; ?>>
 
 <header class="header">
-  <div class="logo"><a href="<?=DOMAIN ?>" ><?=$config["title"] ?></a></div>
-  <button class="search-toggle" type="button"></button>
-  <button class="nav-toggle" type="button"></button>
-</header>
-<nav>
+  <div class="logo"><a href="<?=DOMAIN ?>">
+  <img src="<?=DOMAIN ?>/theme/paper/static/logo.svg"></a></div>
+  <nav>
 <?php $nav_tags = $db->rows("SELECT * FROM tag WHERE status=1 ORDER BY sort ASC"); ?>
 <?php foreach ($nav_tags as $nav_key => $nav_tag): ?>
   <a href="<?=DOMAIN ?>/tag/<?=$nav_tag["id"] ?>.html" <?=(isset($active) && $active == $nav_tag["id"] ? "class='active'" : ""); ?>><?=$nav_tag["name"] ?></a>
 <?php endforeach; ?>  <a href="<?=DOMAIN ?>/about" <?=($file == 'about' ? "class='active'" : ""); ?>>关于</a>
 </nav>
+
+  <button class="search-toggle" type="button"></button>
+  <!-- <button class="nav-toggle" type="button"></button> -->
+</header>
 
 <div class="search-layout">
   <div class="search-box">
