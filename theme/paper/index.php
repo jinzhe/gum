@@ -3,7 +3,7 @@ $keywords    = $config["keywords"];
 $description = $config["description"];
 
 $posts        = [];
-$page_size    = 11;
+$page_size    = 20;
 $page_current = $page ?? 1;
 $sql          = "SELECT * FROM post WHERE status=1";
 $count        = $db->count($sql); //先查数量
@@ -20,50 +20,35 @@ if ($count > 0) {
 <?php include 'header.php'; ?>
 
 <div class="layout home">
-<?php $swipers = $db->rows("SELECT * FROM post WHERE status=1 AND cover!='' ORDER BY id DESC LIMIT 5"); ?>
+<?php if (count($posts) > 0): ?>
 
-    <?php if (count($posts) > 0): ?>
-
-        <div class="post-entries">
-
-        <?php if (count($swipers) > 0): ?>
-    <div class="swiper-container">
-
-        <div class="swiper-wrapper">
-            <?php foreach ($swipers as $swiper): ?>
-            <div class="swiper-slide" style="background-image:url(<?=$swiper["cover"] ?>)"><a href="<?=DOMAIN ?>/post/<?=$swiper["id"] ?>.html"><p><?=$swiper["title"] ?></p></a></div>
-            <?php endforeach; ?>
-        </div>
-
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-    </div>
+<div class="post-entries">
+<?php foreach ($posts as $post): ?>
+<article class="post-entry<?php if (empty($post["cover"])): ?> no-cover<?php endif; ?>">
+    <?php if (!empty($post["cover"])): ?>
+    <div  class="entry-cover" style="background-image:url(<?=$post['cover'] ?>)"></div>
     <?php endif; ?>
-            <?php foreach ($posts as $post): ?>
-            <article class="post-entry">
-                <header class="entry-header">
-                    <h2><?=$post["title"] ?></a></h2>
-                </header>
-                <?php if (!empty($post["cover"])): ?>
-                    <div  class="entry-cover" style="background-image:url(<?=$post['cover'] ?>)"></div>
-                <?php endif; ?>
-                <section class="entry-content">
 
-                <p><?=empty($post["description"]) ? gum::short_text($post["content"]) : $post["description"] ?></p>
-                </section>
+    <header class="entry-header">
+        <h2><?=$post["title"] ?></a></h2>
+    </header>
 
-                <footer class="entry-footer">
-                    <time><?=date("Y年m月d日", $post["time"]) ?></time>
-                    <span>阅读 <?=number_format($post["view"]) ?></span>
-                </footer>
-                <a class="entry-link" href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"></a>
-                <?php if ($post["best"] == 1): ?>
-                    <div class="entry-best">推荐</div>
-                <?php endif; ?>
-            </article>
-            <?php endforeach; ?>
-            </div>
+    <section class="entry-content">
+    <p><?=empty($post["description"]) ? gum::short_text($post["content"]) : $post["description"] ?></p>
+    </section>
+
+    <footer class="entry-footer">
+        <time><?=date("Y年m月d日", $post["time"]) ?></time>
+        <span>阅读 <?=number_format($post["view"]) ?></span>
+    </footer>
+
+    <a class="entry-link" href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"></a>
+    <?php if ($post["best"] == 1): ?>
+        <div class="entry-best">推荐</div>
+    <?php endif; ?>
+</article>
+<?php endforeach; ?>
+</div>
 
     <?php if ($page_count > 1): ?>
 <div class="pagination">

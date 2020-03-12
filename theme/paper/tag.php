@@ -32,26 +32,30 @@ if ($count > 0) {
 <?php if (!empty($posts)): ?>
     <div class="post-entries">
     <?php foreach ($posts as $post): ?>
+<article class="post-entry<?php if (empty($post["cover"])): ?> no-cover<?php endif; ?>">
+    <?php if (!empty($post["cover"])): ?>
+    <div  class="entry-cover" style="background-image:url(<?=$post['cover'] ?>)"></div>
+    <?php endif; ?>
 
-    <article class="post-entry">
-        <header class="entry-header">
-            <h2><?=$post["title"] ?></h2>
-        </header>
-        <?php if (!empty($post["cover"])): ?>
-                    <div  class="entry-cover" style="background-image:url(<?=$post['cover'] ?>)"></div>
-                <?php endif; ?>
-        <section class="entry-content">
-        <p><?=empty($post["description"]) ? gum::short_text($post["content"]) : $post["description"] ?></p>
-        </section>
-        <footer class="entry-footer">
-            <time><?=date("d F, Y", $post["time"]) ?></time>
-        </footer>
-        <?php if ($post["best"] == 1): ?>
-                    <div class="entry-best">推荐</div>
-                <?php endif; ?>
-        <a class="entry-link" href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"></a>
-    </article>
-    <?php endforeach; ?>
+    <header class="entry-header">
+        <h2><?=$post["title"] ?></a></h2>
+    </header>
+
+    <section class="entry-content">
+    <p><?=empty($post["description"]) ? gum::short_text($post["content"]) : $post["description"] ?></p>
+    </section>
+
+    <footer class="entry-footer">
+        <time><?=date("Y年m月d日", $post["time"]) ?></time>
+        <span>阅读 <?=number_format($post["view"]) ?></span>
+    </footer>
+
+    <a class="entry-link" href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"></a>
+    <?php if ($post["best"] == 1): ?>
+        <div class="entry-best">推荐</div>
+    <?php endif; ?>
+</article>
+<?php endforeach; ?>
             </div>
 
 <?php if ($page_count > 1): ?>
