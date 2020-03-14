@@ -20,6 +20,26 @@ if ($count > 0) {
 <?php include 'header.php'; ?>
 
 <div class="layout home">
+
+<?php $swipers = $db->rows("SELECT * FROM post WHERE status=1 AND cover!='' ORDER BY id DESC LIMIT 5"); ?>
+
+
+
+        <?php if (count($swipers) > 0): ?>
+    <div class="swiper-container">
+
+        <div class="swiper-wrapper">
+            <?php foreach ($swipers as $swiper): ?>
+            <div class="swiper-slide" style="background-image:url(<?=$swiper["cover"] ?>)"><a href="<?=DOMAIN ?>/post/<?=$swiper["id"] ?>.html"><p><?=$swiper["title"] ?></p></a></div>
+            <?php endforeach; ?>
+        </div>
+
+        <div class="swiper-pagination"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+    </div>
+    <?php endif; ?>
+
 <?php if (count($posts) > 0): ?>
 
 <div class="post-entries">
@@ -81,17 +101,32 @@ if ($count > 0) {
 <script src="<?=DOMAIN ?>/theme/paper/static/swiper.js"></script>
 <script>
 var mySwiper = new Swiper('.swiper-container', {
-  autoplay: {
-    delay: 5000,
+    slidesPerView: 1,
+    breakpoints: {
+    // when window width is >= 320px
+    320: {
+      slidesPerView: 1,
+      spaceBetween: 20
+    },
+
+    // when window width is >= 640px
+    640: {
+      slidesPerView: 4,
+      spaceBetween: 30
+    }
   },
-  pagination: {
-    el: '.swiper-pagination',
-    type: 'bullets',
-  },
-  navigation: {
-    nextEl: '.swiper-button-next',
-    prevEl: '.swiper-button-prev',
-  },
+    spaceBetween: 20,
+    autoplay: {
+        delay: 5000,
+    },
+    pagination: {
+        el: '.swiper-pagination',
+        type: 'bullets',
+    },
+    navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+    },
 });
 </script>
 <?php include 'footer.php'; ?>
