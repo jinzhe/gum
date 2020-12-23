@@ -67,9 +67,6 @@ return [
             "regexp" => "^/post/(.*).html$",
             "params" => ["id"],
         ],
-        [
-            "file"   => "about",
-            "regexp" => "^/about$",
-        ],
+    
     ],
 ];

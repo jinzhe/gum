@@ -21,7 +21,7 @@ if ($count > 0) {
     $prev_page    = $page_current - 1 < 1 ? 1 : $page_current - 1;
     $next_page    = $page_current + 1 > $page_count ? $page_count : $page_current + 1;
     $rows         = $db->rows($sql . " ORDER BY id DESC LIMIT " . (($page_current - 1) * $page_size) . "," . $page_size); //获取ID(索引)
-    $ids          = implode(array_column($rows, 'id'), ","); //取出id集合字符串
+    $ids          = implode(",",array_column($rows, 'id')); //取出id集合字符串
     $posts        = $db->rows("SELECT * FROM post WHERE id IN (" . $ids . ") ORDER BY id DESC");
 }
 ?>
@@ -32,28 +32,17 @@ if ($count > 0) {
 <?php if (!empty($posts)): ?>
     <div class="post-entries">
     <?php foreach ($posts as $post): ?>
-<article class="post-entry<?php if (empty($post["cover"])): ?> no-cover<?php endif; ?>">
-    <?php if (!empty($post["cover"])): ?>
-    <div  class="entry-cover" style="background-image:url(<?=$post['cover'] ?>)"></div>
-    <?php endif; ?>
-
-    <header class="entry-header">
-        <h2><?=$post["title"] ?></a></h2>
-    </header>
-
-    <section class="entry-content">
-    <p><?=empty($post["description"]) ? gum::short_text($post["content"]) : $post["description"] ?></p>
-    </section>
-
-    <footer class="entry-footer">
-        <time><?=date("Y年m月d日", $post["time"]) ?></time>
+        <article class="detail">
+    <div class="title"><a  href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"><?=$post["title"] ?></a></div>
+    <div class="meta">
+        <time>发表于 <?=date("Y年m月d日", $post["time"]) ?></time>
         <span>阅读 <?=number_format($post["view"]) ?></span>
-    </footer>
+        <?php if (!empty($post["author"])): ?>
+            <span>作者 <?=$post["author"] ?></span>
+		<?php endif; ?>
 
-    <a class="entry-link" href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"></a>
-    <?php if ($post["best"] == 1): ?>
-        <div class="entry-best">推荐</div>
-    <?php endif; ?>
+    </div>
+	<section><?=empty($post["description"]) ? gum::short_text($post["content"]) : $post["description"] ?></section>
 </article>
 <?php endforeach; ?>
             </div>

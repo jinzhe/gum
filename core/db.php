@@ -2,7 +2,7 @@
 // last update 2019/03/21
 class db {
     public $link;
-    function __construct($type = DB_TYPE, $db = DB_NAME, $password = DB_PASSWORD, $user = DB_USER, $host = DB_HOST, $port = DB_PORT, $charset = 'utf8') {
+    function __construct($type = DB_TYPE, $db = DB_NAME, $password = DB_PASSWORD, $user = DB_USER, $host = DB_HOST, $port = DB_PORT, $charset = 'utf8mb4') {
         try {
             switch ($type) {
             case 'sqlite':

@@ -41,8 +41,8 @@ class format {
 			$str = '';
 			// 按照中文读写习惯，每4个字为一段进行转化，i一直在减
 			for ($j = 0; $j < 4 && $i >= 0; $j++, $i--) {
-				$u   = $int{$i} > 0 ? $uni[$j] : ''; // 非0的数字后面添加单位
-				$str = $chs[$int{$i}] . $u . $str;
+				$u   = $int[$i] > 0 ? $uni[$j] : ''; // 非0的数字后面添加单位
+				$str = $chs[$int[$i]] . $u . $str;
 			}
 			//echo $str."|".($k - 2)."<br>";
 			$str = rtrim($str, '0'); // 去掉末尾的0
@@ -69,8 +69,8 @@ class format {
 			}
 
 			for ($i = 0, $cnt = strlen($dec); $i < $cnt; $i++) {
-				$u = $dec{$i} > 0 ? $dec_uni[$i] : ''; // 非0的数字后面添加单位
-				$res .= $chs[$dec{$i}] . $u;
+				$u = $dec[$i] > 0 ? $dec_uni[$i] : ''; // 非0的数字后面添加单位
+				$res .= $chs[$dec[$i]] . $u;
 			}
 			$res = rtrim($res, '0'); // 去掉末尾的0
 			$res = preg_replace("/0+/", "零", $res); // 替换多个连续的0

@@ -15,7 +15,7 @@ if ($count > 0) {
     $prev_page    = $page_current - 1 < 1 ? 1 : $page_current - 1;
     $next_page    = $page_current + 1 > $page_count ? $page_count : $page_current + 1;
     $rows         = $db->rows($sql . " ORDER BY id DESC LIMIT " . (($page_current - 1) * $page_size) . "," . $page_size); //获取ID(索引)
-    $ids          = implode(array_column($rows, 'id'), ","); //取出id集合字符串
+    $ids          = implode( ",",array_column($rows, 'id')); //取出id集合字符串
     $posts        = $db->rows("SELECT * FROM post WHERE id IN (" . $ids . ") ORDER BY id DESC");
 }
 ?>

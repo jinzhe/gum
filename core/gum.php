@@ -1,5 +1,5 @@
 <?php
-define('VERSION', 'V0.3 R200223');
+define('VERSION', 'V0.4 R201222');
 
 define('ROOT', str_replace("/core", "/", dirname(__FILE__)));
 

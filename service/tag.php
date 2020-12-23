@@ -36,7 +36,7 @@ class tag {
         if ($total > 0) {
             $page_index = max(min($page_index, ceil($total / $page_size)), 1);
             $rows       = $this->db->rows($sql . " ORDER BY $orderby $sortby LIMIT " . (($page_index - 1) * $page_size) . "," . $page_size); //获取ID(索引)
-            $ids        = implode(array_column($rows, 'id'), ","); //取出id集合字符串
+            $ids        = implode(",",array_column($rows, 'id')); //取出id集合字符串
             $data       = $this->db->rows("SELECT * FROM tag WHERE id IN (" . $ids . ") ORDER BY $orderby $sortby");
         }
         gum::json([

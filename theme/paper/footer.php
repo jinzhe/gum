@@ -1,11 +1,7 @@
 <footer class="footer">
-<a href="https://github.com/jinzhe/gum" target="_blank" title="Powered by GUM">&copy;</a> <?=date("Y") ?>
-&nbsp;
-<?=$config["copyright"] ?>
-&nbsp;
-<a href="http://www.miitbeian.gov.cn" target="_blank"><?=$config["icp"] ?></a>
+
 </footer>
-<div class="progress"></div>
+ 
 <div class="up"></div>
 </body>
 </html>
@@ -14,9 +10,9 @@
 var d=document;
 var body=d.querySelector("body");
 var up=d.querySelector(".up");
-var search=d.querySelector(".search-toggle");
-var searchBoxClose=d.querySelector(".search-box span");
-var searchBoxInput=d.querySelector(".search-box input");
+// var search=d.querySelector(".search-toggle");
+// var searchBoxClose=d.querySelector(".search-box span");
+// var searchBoxInput=d.querySelector(".search-box input");
 var tap='ontouchstart' in d?'touchstart':'click';
 
 window.addEventListener("scroll",function(e){
@@ -39,19 +35,19 @@ up.addEventListener(tap,function(){
     })();
 },false);
 
-search.addEventListener(tap,function(){
-    body.classList.add('blur-search');
-},false);
+// search.addEventListener(tap,function(){
+//     body.classList.add('blur-search');
+// },false);
 
-searchBoxClose.addEventListener(tap,function(){
-    setTimeout(function(){
-        body.classList.remove('blur-search');
-    },100);
-},false);
+// searchBoxClose.addEventListener(tap,function(){
+//     setTimeout(function(){
+//         body.classList.remove('blur-search');
+//     },100);
+// },false);
 
-searchBoxInput.addEventListener("keyup",function(e){
-    if(e.keyCode==13 && this.value.trim()!=""){
-        location.href="<?=DOMAIN ?>/search/"+encodeURIComponent(this.value)+".html";
-    }
-},false);
+// searchBoxInput.addEventListener("keyup",function(e){
+//     if(e.keyCode==13 && this.value.trim()!=""){
+//         location.href="<?=DOMAIN ?>/search/"+encodeURIComponent(this.value)+".html";
+//     }
+// },false);
 </script>

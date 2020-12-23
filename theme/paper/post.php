@@ -21,9 +21,9 @@ $db->update("post", "view=view+1", "id='" . $id . "'");
 
 <div class="layout">
 <article class="detail">
-    <div class="title"><?=$post["title"] ?></div>
+    <div class="title"><a><?=$post["title"] ?></a></div>
     <div class="meta">
-        <time>发表于 <?=date("Y年m月d日", $post["time"]) ?></time>
+        <time><?=date("Y/m/d", $post["time"]) ?></time>
         <span>阅读 <?=number_format($post["view"]) ?></span>
         <?php if (!empty($post["author"])): ?>
             <span>作者 <?=$post["author"] ?></span>

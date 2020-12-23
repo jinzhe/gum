@@ -13,62 +13,36 @@ if ($count > 0) {
     $prev_page    = $page_current - 1 < 1 ? 1 : $page_current - 1;
     $next_page    = $page_current + 1 > $page_count ? $page_count : $page_current + 1;
     $rows         = $db->rows($sql . " ORDER BY id DESC LIMIT " . (($page_current - 1) * $page_size) . "," . $page_size); //获取ID(索引)
-    $ids          = implode(array_column($rows, 'id'), ","); //取出id集合字符串
+    $ids          = implode(",",array_column($rows, 'id')); //取出id集合字符串
     $posts        = $db->rows("SELECT * FROM post WHERE id IN (" . $ids . ") ORDER BY id DESC");
 }
 ?>
 <?php include 'header.php'; ?>
 
-<div class="layout home">
+<div class="layout">
 
-<?php $swipers = $db->rows("SELECT * FROM post WHERE status=1 AND cover!='' ORDER BY id DESC LIMIT 5"); ?>
+<?php $swipers = $db->rows("SELECT * FROM post WHERE status=1 AND cover!='' ORDER BY id DESC LIMIT 8"); ?>
 
 
 
-        <?php if (count($swipers) > 0): ?>
-    <div class="swiper-container">
-
-        <div class="swiper-wrapper">
-            <?php foreach ($swipers as $swiper): ?>
-            <div class="swiper-slide" style="background-image:url(<?=$swiper["cover"] ?>)"><a href="<?=DOMAIN ?>/post/<?=$swiper["id"] ?>.html"><p><?=$swiper["title"] ?></p></a></div>
-            <?php endforeach; ?>
-        </div>
-
-        <div class="swiper-pagination"></div>
-        <div class="swiper-button-prev"></div>
-        <div class="swiper-button-next"></div>
-    </div>
-    <?php endif; ?>
+ 
 
 <?php if (count($posts) > 0): ?>
 
-<div class="post-entries">
+ 
 <?php foreach ($posts as $post): ?>
-<article class="post-entry<?php if (empty($post["cover"])): ?> no-cover<?php endif; ?>">
-    <?php if (!empty($post["cover"])): ?>
-    <div  class="entry-cover" style="background-image:url(<?=$post['cover'] ?>)"></div>
-    <?php endif; ?>
-
-    <header class="entry-header">
-        <h2><?=$post["title"] ?></a></h2>
-    </header>
-
-    <section class="entry-content">
-    <p><?=empty($post["description"]) ? gum::short_text($post["content"]) : $post["description"] ?></p>
-    </section>
-
-    <footer class="entry-footer">
-        <time><?=date("Y年m月d日", $post["time"]) ?></time>
+<article class="detail">
+    <div class="title"><a  href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"><?=$post["title"] ?></a></div>
+    <div class="meta">
+        <time>发表于 <?=date("Y年m月d日", $post["time"]) ?></time>
         <span>阅读 <?=number_format($post["view"]) ?></span>
-    </footer>
+     
 
-    <a class="entry-link" href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"></a>
-    <?php if ($post["best"] == 1): ?>
-        <div class="entry-best">推荐</div>
-    <?php endif; ?>
+    </div>
+	<section><?=empty($post["description"]) ? gum::short_text($post["content"]) : $post["description"] ?></section>
 </article>
 <?php endforeach; ?>
-</div>
+ 
 
     <?php if ($page_count > 1): ?>
 <div class="pagination">
@@ -97,36 +71,5 @@ if ($count > 0) {
 <?php endforeach; ?>
 </div>
 </div>
-<link rel="stylesheet" href="<?=DOMAIN ?>/theme/paper/static/swiper.css">
-<script src="<?=DOMAIN ?>/theme/paper/static/swiper.js"></script>
-<script>
-var mySwiper = new Swiper('.swiper-container', {
-    slidesPerView: 1,
-    breakpoints: {
-    // when window width is >= 320px
-    320: {
-      slidesPerView: 1,
-      spaceBetween: 20
-    },
-
-    // when window width is >= 640px
-    640: {
-      slidesPerView: 4,
-      spaceBetween: 30
-    }
-  },
-    spaceBetween: 20,
-    autoplay: {
-        delay: 5000,
-    },
-    pagination: {
-        el: '.swiper-pagination',
-        type: 'bullets',
-    },
-    navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-    },
-});
-</script>
+ 
 <?php include 'footer.php'; ?>

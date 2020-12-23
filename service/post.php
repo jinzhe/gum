@@ -72,7 +72,7 @@ class post {
         if ($total > 0) {
             $page_index  = max(min($page_index, ceil($total / $page_size)), 1);
             $rows        = $this->db->rows($sql . " ORDER BY $orderby $sortby LIMIT " . (($page_index - 1) * $page_size) . "," . $page_size); //获取ID(索引)
-            $ids         = implode(array_column($rows, 'id'), ","); //取出id集合字符串
+            $ids         = implode( ",",array_column($rows, 'id')); //取出id集合字符串
             $safe_fields = ['id', 'cover', 'title', 'author', 'keywords', 'description', 'view', 'time', 'best', 'tag_id', 'tag_name'];
             if ($user && $user["level"] == 255) {
                 $safe_fields[] = 'status';
