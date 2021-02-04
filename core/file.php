@@ -342,7 +342,7 @@ class file {
 
     // 创建文件夹或文件
     public static function create($path = './', $data = '', $flag = 0) {
-        self::mkdirs($path);
+        self::mkdirs(dirname($path));
         file_put_contents($path, $data, $flag);
     }
 
@@ -452,6 +452,7 @@ class file {
         if (in_array($upload['type'], ["image/jpeg", "image/gif", "image/png"]) && !$info) {
             return false;
         }
+        // echo $to;
         // 创建文件夹
         self::mkdirs($to);
 
@@ -472,7 +473,7 @@ class file {
             // 创建画布
             if (function_exists('imagecreatetruecolor') && function_exists('imagecopyresampled')) {
                 $canvas     = imagecreatetruecolor($info[0], $info[1]);
-                $background = imagecolorallocatealpha($canvas, 0, 0, $info[0], $info[1]);
+                $background = imagecolorallocatealpha($canvas, 0, 0, 0,0);
                 imagefill($canvas, 0, 0, $background);
                 imagealphablending($canvas, false);
                 imagesavealpha($canvas, true);

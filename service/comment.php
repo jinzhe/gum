@@ -8,24 +8,24 @@
 
 class comment {
     // 依赖文件
-    public static function depend() {
+    static function depend() {
         return [
             "user", "upload",
         ];
     }
 
-    public static function init() {
+    static function init() {
         new comment();
     }
 
-    public function __construct() {
+    function __construct() {
         $this->db = new db();
         gum::init([
             "bind" => $this,
         ]);
     }
 
-    public function search() {
+    function search() {
         $page_index = gum::query("page_index", [
             "default" => 1,
             "int"     => true,
@@ -75,7 +75,7 @@ class comment {
     }
 
     // 发布
-    public function publish() {
+    function publish() {
         // user::check($this->db);
         $bind_type   = gum::query("bind_type");
         $bind_value = gum::query("bind_value");
@@ -142,7 +142,7 @@ class comment {
         }
     }
     // 发布
-    public function reply() {
+    function reply() {
         user::check($this->db, ["level" => 255]);
 
         $id      = gum::query("id", ["default" => 0, "int" => true]);
@@ -167,7 +167,7 @@ class comment {
     }
 
     // 删除
-    public function delete() {
+    function delete() {
         user::check($this->db, ["level" => 255]);
 
         $id = gum::query("id");

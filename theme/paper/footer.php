@@ -51,3 +51,20 @@ up.addEventListener(tap,function(){
 //     }
 // },false);
 </script>
+<?php 
+$result = ob_get_contents();
+ob_end_clean();
+if($theme_file_name=='post'){
+    file::create(ROOT."post/".$id.".html",$result);
+}elseif($theme_file_name=='tag'){
+    if($page_current>1){
+        file::create(ROOT."tag/".$id."-".$page.".html",$result);
+    }else{
+        file::create(ROOT."tag/".$id.".html",$result);
+        file::create(ROOT."tag/".$id."-1.html",$result);
+    }
+}elseif($theme_file_name=='index'){
+    file::create(ROOT."/index.html",$result);
+}
+echo $result;
+?>

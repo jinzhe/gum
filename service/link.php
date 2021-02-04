@@ -8,13 +8,13 @@
 
 class link {
     // 依赖文件
-    public static function depend() {
+    static function depend() {
         return [
             "user", "upload",
         ];
     }
 
-    public static function init() {
+    static function init() {
         new link();
     }
 
@@ -155,8 +155,6 @@ class link {
             $this->db->update("link", "sort=$sort", "id=" . $id);
             $sort++;
         }
-
         gum::json(["code" => 200]);
-
     }
 }

@@ -14,17 +14,17 @@ class upload {
         "config",
     ];
     // 依赖文件
-    public static function depend() {
+    static function depend() {
         return [
             "user",
         ];
     }
 
-    public static function init() {
+    static function init() {
         new upload();
     }
 
-    public function __construct() {
+    function __construct() {
         $this->db = new db();
         gum::init([
             "bind" => $this,
@@ -41,7 +41,7 @@ class upload {
     }
 // 根据自定义json结构请求返回数据
     // {"bind_id":10,"bind_type":"post"}
-    public function data() {
+    function data() {
         $data = gum::query("data");
         if ($data == "") {
             gum::json(["code" => 500]);
@@ -68,7 +68,7 @@ class upload {
     }
 
     // 上传文件
-    public function go() {
+    function go() {
         user::check($this->db);
         @ini_set('memory_limit', '1024M');
         if (isset($_FILES["file"]["name"])) {
@@ -218,7 +218,7 @@ class upload {
     }
 
     // 绑定关系
-    public static function bind($db, $bind_type, $bind_id, $ids) {
+    static function bind($db, $bind_type, $bind_id, $ids) {
         $db->update("upload", [
             "bind_type" => $bind_type,
             "bind_id"   => $bind_id,
@@ -226,7 +226,7 @@ class upload {
     }
 
     // 解除绑定
-    public static function remove_bind($db, $bind_type, $bind_id, $ids = "") {
+    static function remove_bind($db, $bind_type, $bind_id, $ids = "") {
         if ($ids != "") {
             $where = "id IN ($ids)";
         } else {
@@ -240,7 +240,7 @@ class upload {
     }
 
     // 删除文件
-    public function delete() {
+    function delete() {
         user::check($this->db, ["level" => 255]);
 
         $id = gum::query("id");

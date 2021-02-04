@@ -6,14 +6,14 @@
  */
 class post {
     // 依赖文件
-    public static function depend() {
+    static function depend() {
         return [
             "user", "tag", "upload",
         ];
     }
 
     // 初始化
-    public static function init() {
+    static function init() {
         new post();
     }
 
@@ -128,10 +128,20 @@ class post {
         }
         gum::json(["code" => 200, "result" => $result]);
     }
-
+    // 更新阅读数量
+    function update_view() {
+        $id     = gum::query("id", ["int" => true]);
+        if ($id == "") {
+            gum::json(["code" => 400]);
+        }
+        $this->db->exec("UPDATE post SET view=view+1 WHERE id=" . $id);
+    }
     // 一条帖子
     function get() {
-        $id     = gum::query("id");
+        $id     = gum::query("id", ["int" => true]);
+        if ($id == "") {
+            gum::json(["code" => 400]);
+        }
         $result = $this->db->row("SELECT * FROM post WHERE id=" . $id);
         if ($result == false) {
             gum::json(["code" => 500]);
@@ -188,6 +198,21 @@ class post {
             $data["update_time"] = time();
             $action              = $this->db->update("post", $data, "id=$id");
             upload::remove_bind($this->db, "post", $id);
+            // 删除子页面
+            $delete_post_path=ROOT."post/".$id.".html";
+            if(file::has($delete_post_path)){
+                file::delete($delete_post_path);
+            }
+        }
+        // 删除tag
+        $delete_tag_path=ROOT."post/".$tag_id.".html";
+        if(file::has($delete_tag_path)){
+            file::delete($delete_tag_path);
+        }
+        // 删除首页
+        $delete_index_path=ROOT."index.html";
+        if(file::has($delete_index_path)){
+            file::delete($delete_index_path);
         }
         // 缩图绑定
         if ($cover_id != "") {
@@ -217,6 +242,15 @@ class post {
         foreach ($ids_array as $id) {
             tag::remove_bind($this->db, "post", $id);
             upload::remove_bind($this->db, "post", $id);
+            $delete_path=ROOT."post/".$id.".html";
+            if(file::has($delete_path)){
+                file::delete($delete_path);
+            }
+        }
+        // 删除首页
+        $delete_index_path=ROOT."index.html";
+        if(file::has($delete_index_path)){
+            file::delete($delete_index_path);
         }
         $success = $this->db->delete("post", "id IN ($ids)");
 

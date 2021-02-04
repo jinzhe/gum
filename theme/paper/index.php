@@ -20,13 +20,6 @@ if ($count > 0) {
 <?php include 'header.php'; ?>
 
 <div class="layout">
-
-<?php $swipers = $db->rows("SELECT * FROM post WHERE status=1 AND cover!='' ORDER BY id DESC LIMIT 8"); ?>
-
-
-
- 
-
 <?php if (count($posts) > 0): ?>
 
  
@@ -39,7 +32,10 @@ if ($count > 0) {
      
 
     </div>
-	<section><?=empty($post["description"]) ? gum::short_text($post["content"]) : $post["description"] ?></section>
+    <section><?=empty($post["description"]) ? gum::short_text($post["content"]) : $post["description"] ?></section>
+    <?php if (!empty($post["cover"])): ?>
+        <img src="<?=$post["cover"] ?>" class="cover">
+    <?php endif; ?>
 </article>
 <?php endforeach; ?>
  

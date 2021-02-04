@@ -7,13 +7,13 @@
 
 class config {
     // 依赖文件
-    public static function depend() {
+    static function depend() {
         return [
             "user","upload"
         ];
     }
 
-    public static function install() {
+    static function install() {
         return [
             "CREATE TABLE `config` (
             `key` varchar(50) CHARACTER SET utf8 NOT NULL DEFAULT '',
@@ -25,11 +25,11 @@ class config {
         ];
     }
 
-    public static function init() {
+    static function init() {
         new config();
     }
 
-    public function __construct() {
+    function __construct() {
         $this->db = new db();
         gum::init([
             "bind" => $this,
@@ -37,7 +37,7 @@ class config {
     }
 
  
-    public function gets() {
+    function gets() {
         $keys        = gum::query("keys");
         $sql="SELECT * FROM config WHERE status=1";
         if(!empty($keys)){
@@ -54,7 +54,7 @@ class config {
     }
 
  
-    public static function get($db,$keys=[]) {
+    static function get($db,$keys=[]) {
         $sql="SELECT `key`,`value` FROM config WHERE status=1";
         if(!empty($keys)){
             $sql.=" AND `key` IN (".implode(",",$keys).")";
@@ -66,7 +66,7 @@ class config {
         return $result;
     }
 
-    public function save() {
+    function save() {
         user::check($this->db, [
             "level" => 255,
             "permission"=>"config"
@@ -107,7 +107,7 @@ class config {
     }
 
     // 删除
-    public function delete() {
+    function delete() {
         user::check($this->db, [
             "level" => 255,
             "permission"=>"config"

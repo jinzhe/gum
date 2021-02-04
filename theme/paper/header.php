@@ -1,3 +1,4 @@
+<?php ob_start();?>
 <!DOCTYPE html>
 <html lang="zh-Hans">
 <head>
@@ -37,24 +38,26 @@
 <link rel="alternate" type="application/rss+xml" title="<?=$config["title"] ?> RSS 2.0" href="<?=DOMAIN ?>/rss.php">
 <title><?=@$title ?><?=$config["title"] ?></title>
 </head>
-<body<?php if ($file != "post"): ?> class="home"<?php endif; ?>>
+<body>
 
 <div class="side">
-  <div class="logo"><a href="<?=DOMAIN ?>">
-  <img src="<?=DOMAIN ?>/theme/paper/static/logo.svg"></a></div>
-  <div class="txt"><?=$config["about-content"]?></div>
-  <nav>
-<?php $nav_tags = $db->rows("SELECT * FROM tag WHERE status=1 ORDER BY sort ASC"); ?>
-<?php foreach ($nav_tags as $nav_key => $nav_tag): ?>
-  <a href="<?=DOMAIN ?>/tag/<?=$nav_tag["id"] ?>.html" <?=(isset($active) && $active == $nav_tag["id"] ? "class='active'" : ""); ?>><?=$nav_tag["name"] ?></a>
-<?php endforeach; ?>
-</nav>
-<div class="copyright txt">
-  <a href="https://github.com/jinzhe/gum" target="_blank" title="Powered by GUM">&copy;</a> <?=date("Y") ?>
-  &nbsp;
-  <?=$config["copyright"] ?>
-  &nbsp;
-  <a href="http://www.miitbeian.gov.cn" target="_blank"><?=$config["icp"] ?></a>
-</div>
+  <div class="side-inner">
+    <div class="logo"><a href="<?=DOMAIN ?>">
+    <img src="<?=DOMAIN ?>/theme/paper/static/logo.svg"></a></div>
+    <div class="txt"><?=$config["about-content"]?></div>
+    <nav>
+  <?php $nav_tags = $db->rows("SELECT * FROM tag WHERE status=1 ORDER BY sort ASC"); ?>
+  <?php foreach ($nav_tags as $nav_key => $nav_tag): ?>
+    <a href="<?=DOMAIN ?>/tag/<?=$nav_tag["id"] ?>.html" <?=(isset($active) && $active == $nav_tag["id"] ? "class='active'" : ""); ?>><?=$nav_tag["name"] ?></a>
+  <?php endforeach; ?>
+  </nav>
+  <div class="copyright txt">
+    <a href="https://github.com/jinzhe/gum" target="_blank" title="Powered by GUM">&copy;</a> <?=date("Y") ?>
+    &nbsp;
+    <?=$config["copyright"] ?>
+    &nbsp;
+    <a href="http://www.miitbeian.gov.cn" target="_blank"><?=$config["icp"] ?></a>
+  </div>
+  </div>
 </div>
 

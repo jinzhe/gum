@@ -19,6 +19,7 @@ foreach ($theme_config["router"] as $k => $v) {
                 $$vv = $matches[$kk + 1][0];
             }
         }
+        $theme_file_name=$v["file"];
         $theme_file = "theme/" . $theme_dir . "/" . $v["file"] . ".php";
         $file       = $v["file"];
         if (file::has($theme_file)) {

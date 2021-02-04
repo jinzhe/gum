@@ -1,5 +1,5 @@
 <?php
-define('VERSION', 'V0.4 R201222');
+define('VERSION', 'V0.5.1 R210204');
 
 define('ROOT', str_replace("/core", "/", dirname(__FILE__)));
 
@@ -25,7 +25,7 @@ class gum {
             header('HTTP/1.1 206 Partial Content');
             exit;
         }
-        $class = gum::query("class");
+        $class = gum::query("class") or gum::query("service");
         if ($class == "") {
             gum::json(["code" => 0]);
         }
@@ -70,7 +70,7 @@ class gum {
         }
 
         header("X-Powered-By:Gum " . VERSION);
-        header("Access-Control-Allow-Origin: *");
+        // header("Access-Control-Allow-Origin: *");
         header("Access-Control-Max-Age: 3600");
 
         if (isset($options['headers'])) {

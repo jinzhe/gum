@@ -1,11 +1,11 @@
 <?php
 class tag {
-    public static function depend() {
+    static function depend() {
         return [
             "user",
         ];
     }
-    public static function init() {
+    static function init() {
         new tag();
     }
 

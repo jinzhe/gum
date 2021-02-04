@@ -1,12 +1,12 @@
 <?php
 class backup {
     // 依赖文件
-    public static function depend() {
+    static function depend() {
         return [
             "user",
         ];
     }
-    public static function init() {
+    static function init() {
         new backup();
     }
 

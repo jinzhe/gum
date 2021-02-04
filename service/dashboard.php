@@ -1,31 +1,31 @@
 <?php
 class dashboard {
     // 依赖文件
-    public static function depend() {
+    static function depend() {
         return [
             "user",
         ];
     }
-    public static function init() {
+    static function init() {
         new dashboard();
     }
 
-    public function __construct() {
+    function __construct() {
         $this->db = new db();
         gum::init([
             "bind" => $this,
         ]);
     }
-    public function version() {
+    function version() {
         gum::json(["code" => 200, "version" => VERSION]);
     }
 
-    public function noop() {
+    function noop() {
         user::check($this->db);
         gum::json(["code" => 200]);
     }
 
-    public function info() {
+    function info() {
         user::check($this->db);
         gum::json([
             "code"   => 200,
@@ -53,7 +53,7 @@ class dashboard {
         ]);
     }
 
-    public function theme() {
+    function theme() {
         user::check($this->db, ["level" => 255]);
         $dir = gum::query("dir");
         // 检测是否存在目录
@@ -84,16 +84,24 @@ class dashboard {
         ]);
     }
     // 清理upload附件
-    public function clear() {
+    function clear() {
         user::check($this->db, ["level" => 255]);
+        if(file::has(ROOT."index.html")){
+            unlink(ROOT . "index.html");
+        }
+        foreach (glob(ROOT."tag/*") as $file) {
+            unlink($file);
+        }
+        foreach (glob(ROOT."post/*") as $file) {
+            unlink($file);
+        }
         $rows = $this->db->rows("SELECT `path` FROM upload where bind_id='0' OR bind_id=''");
-        if (count($rows) == 0) {
-            gum::json(["code" => 400, "info" => "不需要清理"]);
+        if (count($rows) > 0) {
+            foreach ($rows as $row) {
+                unlink(ROOT . $row["path"]);
+            }
+            $this->db->delete("upload", "bind_id='0' OR bind_id=''");
         }
-        foreach ($rows as $row) {
-            @unlink(ROOT . $row["path"]);
-        }
-        $this->db->delete("upload", "bind_id='0' OR bind_id=''");
         gum::json(["code" => 200]);
     }
 }
