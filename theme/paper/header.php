@@ -55,7 +55,7 @@
     <a href="https://github.com/jinzhe/gum" target="_blank" title="Powered by GUM">&copy;</a> <?=date("Y") ?>
     &nbsp;
     <?=$config["copyright"] ?>
-    &nbsp;
+    <br>
     <a href="http://www.miitbeian.gov.cn" target="_blank"><?=$config["icp"] ?></a>
   </div>
   </div>

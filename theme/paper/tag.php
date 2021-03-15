@@ -30,19 +30,13 @@ if ($count > 0) {
 
 <div class="layout home">
 <?php if (!empty($posts)): ?>
-    <div class="post-entries">
     <?php foreach ($posts as $post): ?>
-        <article class="detail">
-    <div class="title"><a  href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"><?=$post["title"] ?></a></div>
-    <div class="meta">
-        <time>发表于 <?=date("Y年m月d日", $post["time"]) ?></time>
-        <span>阅读 <?=number_format($post["view"]) ?></span>
-        <?php if (!empty($post["author"])): ?>
-            <span>作者 <?=$post["author"] ?></span>
-		<?php endif; ?>
-
-    </div>
-	<section><?=empty($post["description"]) ? gum::short_text($post["content"]) : $post["description"] ?></section>
+<article>
+    <a class="title" href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"><?=$post["title"] ?></a>
+    <section><?=empty($post["description"]) ? gum::short_text($post["content"]) : $post["description"] ?></section>
+    <?php if (!empty($post["cover"])): ?>
+        <img src="<?=$post["cover"] ?>" class="cover">
+    <?php endif; ?>
 </article>
 <?php endforeach; ?>
             </div>

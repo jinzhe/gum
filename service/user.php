@@ -432,8 +432,6 @@ if (!class_exists('user')) {
         // 更换密码（用户）
         function change_password() {
             user::check($this->db);
-
-            $id    = gum::query("id");
             $token = gum::query("token");
             $old   = gum::query("old");
             $new   = gum::query("new");
@@ -462,8 +460,6 @@ if (!class_exists('user')) {
         // 更换密码（管理员）
         function update_password() {
             user::check($this->db, ["level" => 255]);
-
-            $id    = gum::query("id");
             $token = gum::query("token");
             $old   = gum::query("old");
             $new   = gum::query("new");

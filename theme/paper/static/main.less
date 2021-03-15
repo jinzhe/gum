@@ -124,7 +124,7 @@ body {
         display: block;
       }
       img {
-        width: 60%;
+        width: 50%;
       }
     }
     .txt {
@@ -137,11 +137,15 @@ body {
       }
     }
     .copyright {
+      display: none;
       position: absolute;
       left: 0;
       right: 0;
       bottom: 0;
       font-size: 0.6rem;
+      @media (min-width: 992px) {
+        display: block;
+      }
     }
     nav {
       margin: 0 20px;
@@ -315,38 +319,42 @@ body {
 
 // 文章详细页
 article {
-  margin: 2rem auto;
+  
   padding-bottom: 2rem;
-  border-bottom: 1px solid #eee;
-  @media (min-width: 992px) {
-  }
-  & > .title {
-    margin-bottom: 0.8rem;
+ 
+  .title{
+    text-indent: -0.5rem;
+    font-size: 1.8rem;
     font-weight: 600;
-    font-size: 2rem;
-    font-family: @font;
-    line-height: 1.2;
     text-transform: uppercase;
+    line-height: 1.2;
+    margin-bottom: 1rem;
     color: @A;
-    a {
-      display: inline;
-      padding: 0rem;
-      color: @A;
-      &::after {
-        content: "";
-        display: block;
-        margin-top: 0.5rem;
-        width: 2rem;
-        height: 0.4rem;
-        border-radius: 0.4rem;
-        background: @A;
-        transition: 0.3s;
-      }
-    }
-  }
 
-  & > .meta {
-    margin-bottom: 20px;
+
+    &::before,&::after{
+      content: '';
+      display: inline-block;
+      width:0.5rem;
+      height:0.5rem;
+      transition: 0.3s;
+    }
+    &::before {
+      border:0.15rem solid @A;
+      border-right:none;
+      border-bottom:none;
+      transform: translate(0,-22px);
+    }
+    &::after {
+      transform: translate(-0.25rem,12px);
+      border:0.15rem solid @A;
+      border-top:none;
+      border-left:none;
+    }
+ 
+  }
+  .meta {
+    text-align: center;
     font-size: 1rem;
     color: @B;
     span:before {
@@ -357,6 +365,7 @@ article {
     }
   }
 
+
   & > section {
     word-break: break-all;
     word-wrap: break-word;
@@ -364,9 +373,25 @@ article {
     line-height: 1.8;
     color: @A;
     a {
+      text-decoration: none;
+      position: relative;
+      padding: 0rem;
       color: @A;
-      text-decoration: underline;
-      line-height: 1.2;
+      &::after {
+        content: '';
+        position: absolute;
+        z-index: -1;
+        top:60%;
+        left: -0.2em;
+        right: -0.2em;
+        bottom: -0.2rem;
+        transition: top 200ms cubic-bezier(0, 0.8, 0.13, 1);
+        background-color: rgb(180 220 245 / 46%);
+      }
+      &[href]:hover::after{
+        top: 0%;
+      }
+      
     }
     h1 {
       margin-top: 40px;

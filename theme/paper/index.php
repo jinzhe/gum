@@ -24,14 +24,8 @@ if ($count > 0) {
 
  
 <?php foreach ($posts as $post): ?>
-<article class="detail">
-    <div class="title"><a  href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"><?=$post["title"] ?></a></div>
-    <div class="meta">
-        <time>发表于 <?=date("Y年m月d日", $post["time"]) ?></time>
-        <span>阅读 <?=number_format($post["view"]) ?></span>
-     
-
-    </div>
+<article>
+    <a class="title" href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"><?=$post["title"] ?></a>
     <section><?=empty($post["description"]) ? gum::short_text($post["content"]) : $post["description"] ?></section>
     <?php if (!empty($post["cover"])): ?>
         <img src="<?=$post["cover"] ?>" class="cover">

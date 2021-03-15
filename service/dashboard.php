@@ -30,7 +30,7 @@ class dashboard {
         gum::json([
             "code"   => 200,
             "result" => [
-                "time"                => date("Y-m-d h:i:s", time()),
+                "time"                => date("Y-m-d H:i:s", time()),
                 "language"            => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
                 "os"                  => @PHP_OS,
                 "php_version"         => @PHP_VERSION,

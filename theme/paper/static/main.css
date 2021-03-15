@@ -116,7 +116,7 @@ body {
   display: block;
 }
 .side .side-inner .logo img {
-  width: 60%;
+  width: 50%;
 }
 .side .side-inner .txt {
   text-align: center;
@@ -128,11 +128,17 @@ body {
   color: rgba(255, 255, 255, 0.5);
 }
 .side .side-inner .copyright {
+  display: none;
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
   font-size: 0.6rem;
+}
+@media (min-width: 992px) {
+  .side .side-inner .copyright {
+    display: block;
+  }
 }
 .side .side-inner nav {
   margin: 0 20px;
@@ -304,40 +310,43 @@ body {
   background-position: center 50px;
 }
 article {
-  margin: 2rem auto;
   padding-bottom: 2rem;
-  border-bottom: 1px solid #eee;
 }
-article > .title {
-  margin-bottom: 0.8rem;
+article .title {
+  text-indent: -0.5rem;
+  font-size: 1.8rem;
   font-weight: 600;
-  font-size: 2rem;
-  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans GB", "PingFang SC", "Helvetica, Arial", "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", "Source Han Sans CN", STHeitiSC-Light, "WenQuanYi Zen Hei", "WenQuanYi Micro Hei", sans-serif;
-  line-height: 1.2;
   text-transform: uppercase;
+  line-height: 1.2;
+  margin-bottom: 1rem;
   color: #292734;
 }
-article > .title a {
-  display: inline;
-  padding: 0rem;
-  color: #292734;
-}
-article > .title a::after {
-  content: "";
-  display: block;
-  margin-top: 0.5rem;
-  width: 2rem;
-  height: 0.4rem;
-  border-radius: 0.4rem;
-  background: #292734;
+article .title::before,
+article .title::after {
+  content: '';
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
   transition: 0.3s;
 }
-article > .meta {
-  margin-bottom: 20px;
+article .title::before {
+  border: 0.15rem solid #292734;
+  border-right: none;
+  border-bottom: none;
+  transform: translate(0, -22px);
+}
+article .title::after {
+  transform: translate(-0.25rem, 12px);
+  border: 0.15rem solid #292734;
+  border-top: none;
+  border-left: none;
+}
+article .meta {
+  text-align: center;
   font-size: 1rem;
   color: rgba(41, 39, 52, 0.56);
 }
-article > .meta span:before {
+article .meta span:before {
   content: "/ ";
   font-size: 10px;
   color: rgba(0, 0, 0, 0.1);
@@ -351,9 +360,24 @@ article > section {
   color: #292734;
 }
 article > section a {
+  text-decoration: none;
+  position: relative;
+  padding: 0rem;
   color: #292734;
-  text-decoration: underline;
-  line-height: 1.2;
+}
+article > section a::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 60%;
+  left: -0.2em;
+  right: -0.2em;
+  bottom: -0.2rem;
+  transition: top 200ms cubic-bezier(0, 0.8, 0.13, 1);
+  background-color: rgba(180, 220, 245, 0.46);
+}
+article > section a[href]:hover::after {
+  top: 0%;
 }
 article > section h1 {
   margin-top: 40px;

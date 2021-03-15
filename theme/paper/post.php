@@ -20,19 +20,22 @@ $db->update("post", "view=view+1", "id='" . $id . "'");
 ?><?php include 'header.php'; ?>
 <div class="layout">
 <article class="detail">
-    <div class="title"><a><?=$post["title"] ?></a></div>
+    <a  class="title"><?=$post["title"] ?></a>
+
+	<section><?=str_replace('<pre class="language-', '<pre class="line-numbers language-', str_replace('<img', '<img loading="lazy"', $post["content"])) ?></section>
     <div class="meta">
 		<time>发表于 <?=date("Y年m月d日", $post["time"]) ?></time>
         <span>阅读 <?=number_format($post["view"]) ?></span>
         <?php if (!empty($post["author"])): ?>
             <span>作者 <?=$post["author"] ?></span>
 		<?php endif; ?>
+		<?php if (!empty($post["update_time"])): ?>
+			<span>编辑于 <?=date("Y/m/d H:i", $post["update_time"]) ?></span>
+		<?php endif; ?>
     </div>
-	<section><?=str_replace('<pre class="language-', '<pre class="line-numbers language-', str_replace('<img', '<img loading="lazy"', $post["content"])) ?></section>
-
-	<?php if (!empty($post["update_time"])): ?>
-		<div class="update-time">[编辑于 <?=date("Y/m/d H:i", $post["update_time"]) ?>]</div>
-	<?php endif; ?>
+	
+		
+	
 
 </article>
 
