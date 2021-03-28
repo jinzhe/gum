@@ -417,7 +417,7 @@ if (!class_exists('user')) {
             $tel  = gum::query("tel");
             $code = gum::query("code");
             // 检查是否存在这个账号
-            $row = $this->db->row("SELECT * FROM user_verification WHERE value='$tel' AND code='$code' AND time>" . time() - 7200);
+            $row = $this->db->row("SELECT * FROM user_verification WHERE value='$tel' AND code='$code' AND time>" . (time() - 7200));
             if ($row == false) {
                 echo ("非法参数");
             } else {
