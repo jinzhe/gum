@@ -16,7 +16,7 @@ foreach ($posts as $post){
 <?php include 'header.php'; ?>
 <style>
 main{
-  max-width:620px;
+  max-width:720px;
   margin:0 auto;
   padding:1rem;
 }

@@ -69,7 +69,7 @@ body {
 header{
   display:flex;
   align-items:center;
-  max-width:620px;
+  max-width:720px;
   margin:0 auto;
   padding:1.5rem;
   font-size:1rem;
@@ -107,7 +107,7 @@ header section{
   }
 }
 footer{
-  max-width:620px;
+  max-width:720px;
   margin:0 auto;
   padding:1rem;
   font-size:0.6rem;

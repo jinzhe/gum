@@ -20,7 +20,7 @@ $db->update("post", "view=view+1", "id='" . $id . "'");
 ?><?php include 'header.php'; ?>
 <style>
 article{
-  max-width:620px;
+  max-width:720px;
   margin:0 auto;
   padding:1rem;
 }
