@@ -137,17 +137,20 @@ class file {
         }
         $srcW = $info[0]; //获取原始图片宽度
         $srcH = $info[1]; //获取原始图片高度
-        if ($info[2] == 1) { //gif
+        if ($info[2] == 1) {
+            //gif
             if (function_exists("imagecreatefromgif")) {
                 $im = imagecreatefromgif($options["source"]);
             } else {
                 return false;
             }
-        } elseif ($info[2] == 2) { //jpg
+        } elseif ($info[2] == 2) {
+            //jpg
             if (function_exists("imagecreatefromjpeg")) {
                 $im = imagecreatefromjpeg($options["source"]);
 
-                if (extension_loaded('exif')) { // 处理ios 照片旋转
+                if (extension_loaded('exif')) {
+                    // 处理ios 照片旋转
                     $exif = exif_read_data($options["source"]);
                     if (!empty($exif['Orientation'])) {
                         switch ($exif['Orientation']) {
@@ -170,7 +173,8 @@ class file {
             } else {
                 return false;
             }
-        } elseif ($info[2] == 3) { //png
+        } elseif ($info[2] == 3) {
+            //png
             if (function_exists("imagecreatefrompng")) {
                 $im = imagecreatefrompng($options["source"]);
             } else {
@@ -395,9 +399,12 @@ class file {
             "video/mp4"                                                                 => "mp4",
             "video/quicktime"                                                           => "mov",
             "video/x-ms-wmv"                                                            => "wmv",
+            "video/webm"                                                                => "webm",
             "video/x-flv"                                                               => "flv",
             "image/photoshop"                                                           => "psd",
             "audio/mpeg"                                                                => "mp3",
+            "image/x-icon"                                                              => "ico",
+            "image/webp"                                                                => "webp",
             "image/jpeg"                                                                => "jpg",
             "image/png"                                                                 => "png",
             "image/gif"                                                                 => "gif",
@@ -473,7 +480,7 @@ class file {
             // 创建画布
             if (function_exists('imagecreatetruecolor') && function_exists('imagecopyresampled')) {
                 $canvas     = imagecreatetruecolor($info[0], $info[1]);
-                $background = imagecolorallocatealpha($canvas, 0, 0, 0,0);
+                $background = imagecolorallocatealpha($canvas, 0, 0, 0, 0);
                 imagefill($canvas, 0, 0, $background);
                 imagealphablending($canvas, false);
                 imagesavealpha($canvas, true);
