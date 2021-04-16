@@ -3,6 +3,7 @@
     <?php $links = $db->rows("SELECT * FROM link  WHERE status=1 ORDER BY sort ASC,id ASC"); ?>
     <?php foreach ($links as $link): ?>
     <a href="<?=$link["url"] ?>" target="_blank"><?=$link["title"] ?></a>
+    <img src="<?=DOMAIN ?>/theme/archive/static/link.svg" width="12" align="absmiddle">
     <?php endforeach; ?>
     <br>
     <a href="https://github.com/jinzhe/gum" target="_blank" title="Powered by GUM">&copy;</a> <?=date("Y") ?>

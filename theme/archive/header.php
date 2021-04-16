@@ -35,8 +35,8 @@
 <?php if (!empty($post["author"])): ?>
 <meta name="author" content="<?=htmlspecialchars($post["author"]) ?>">
 <?php endif; ?>
-<link rel="icon" href="data:image/ico;base64,aWNv">
- 
+
+<link rel="icon" type="image/svg+xml" href="<?=DOMAIN ?>/theme/archive/static/logo.svg" />
 <link rel="alternate" type="application/rss+xml" title="<?=$config["title"] ?>" href="<?=DOMAIN ?>/rss.php">
 <title><?=@$title ?><?=$config["title"] ?></title>
 <style>

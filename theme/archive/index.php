@@ -36,8 +36,21 @@ main dl dd{
    padding:0.5rem;
    border-bottom:1px dotted #ccc;
 }
+main dl dd::before{
+  content:"";
+  margin-top:10px;
+  width:3px;
+  height:3px;
+  background:#fff;
+  border-radius:50%;
+  box-shadow:0 0 0 2px #000;
+  margin-right:10px;
+}
 main dl dd:hover{
-    background-color:#fbfbfb;
+  background-color:#fbfbfb;
+}
+main dl dd:hover ::before{
+  transform:scale(1.5);
 }
 main dl dd span.date{
     white-space: nowrap;
@@ -48,6 +61,7 @@ main dl dd span.date{
    color:rgba(0,0,0,.4);
 }
 main dl dd a{
+  flex:1;
   font-weight:500;
   letter-spacing: 0.06rem;
   text-transform:uppercase;
@@ -56,7 +70,6 @@ main dl dd a{
   color:#000;
 }
 main dl dd a:hover{
- 
     color:#000;
 }
 </style>
@@ -67,7 +80,6 @@ main dl dd a:hover{
 <?php foreach ($posts as $post): ?>
 <dd>
     <a href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"><?=$post["title"] ?></a>
-    <span class="space"></span>
     <span class="date"><?=date("M d",$post['time'])?></span>
 </dd>
 <?php endforeach; ?>

@@ -50,39 +50,8 @@ article > section{
 	line-height: 1.6;
 	color: #555;
 }
-article > section h1 {
-  margin-top: 40px;
-  margin-bottom: 32px;
-}
-article > section h2 {
-  margin-top: 32px;
-  margin-bottom: 24px;
-}
-article > section h3,
-article > section h4,
-article > section h5,
-article > section h6 {
-  margin-top: 24px;
-  margin-bottom: 12px;
-}
-article > section h1 {
-  font-size: 40px;
-}
-article > section h2 {
-  font-size: 32px;
-}
-article > section h3 {
-  font-size: 24px;
-}
-article > section h4 {
-  font-size: 16px;
-}
-article > section h5 {
-  font-size: 14px;
-}
-article > section h6 {
-  font-size: 12px;
-}
+ 
+ 
 article > section del {
   text-decoration: none;
   background: linear-gradient(to right, #292734 100%, transparent 0) 0 50% / 1px 1px repeat-x;
