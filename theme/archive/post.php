@@ -20,9 +20,11 @@ $db->update("post", "view=view+1", "id='" . $id . "'");
 ?><?php include 'header.php'; ?>
 <style>
 article{
-  max-width:720px;
+  max-width:800px;
+  min-height:500px;
   margin:0 auto;
   padding:1rem;
+  color:#000;
 }
 article > aside{
 	margin-bottom:0.5rem;
@@ -48,7 +50,7 @@ article > section{
 	font-size: 1rem;
 	letter-spacing: 0.06rem;
 	line-height: 1.6;
-	color: #555;
+	color: #000;
 }
  
  
@@ -68,7 +70,7 @@ article > section table {
 }
 article > section ul,
 article > section ol {
-  padding-left: 20px;
+  padding-left: 30px;
 }
 article > section li {
   margin-top: 5px;
@@ -162,16 +164,11 @@ article > section blockquote p:last-child {
   margin-bottom: 0;
 }
 article > section a[href] {
-	box-shadow: inset 0 -4px 0 #ceebe7;
-	transition-property: background-color;
-    transition-duration: 0.4s;
-    transition-timing-function: ease-out;
-	line-height:1;
+	color: #67cdcc;
+	text-decoration:underline;
 }
  
-article > section a[href]:hover{
-	background-color: #ceebe7;
-}
+ 
 
 </style>
 

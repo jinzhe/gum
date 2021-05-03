@@ -16,7 +16,7 @@ foreach ($posts as $post){
 <?php include 'header.php'; ?>
 <style>
 main{
-  max-width:720px;
+  max-width:800px;
   margin:0 auto;
   padding:1rem;
 }
@@ -33,7 +33,7 @@ main dl dt{
 main dl dd{
    display:flex;
    justify-content:space-between;
-   padding:0.5rem;
+   padding:0.5rem 1rem;
    border-bottom:1px dotted #ccc;
 }
 main dl dd::before{
@@ -48,16 +48,20 @@ main dl dd::before{
 }
 main dl dd:hover{
   background-color:#fbfbfb;
+  border-bottom:1px dotted #000;
 }
-main dl dd:hover ::before{
-  transform:scale(1.5);
+main dl dd:hover::before{
+  background-color:#000;
+}
+main dl dd:hover .date{
+  color:#000;
 }
 main dl dd span.date{
     white-space: nowrap;
     padding-top:0.3rem;
   text-transform:uppercase;
   font-family:DIN;
-   font-size:0.5rem;
+   font-size:0.8rem;
    color:rgba(0,0,0,.4);
 }
 main dl dd a{
@@ -65,8 +69,6 @@ main dl dd a{
   font-weight:500;
   letter-spacing: 0.06rem;
   text-transform:uppercase;
- 
- 
   color:#000;
 }
 main dl dd a:hover{
@@ -78,10 +80,7 @@ main dl dd a:hover{
 <dl>
 <dt><?=$year?></dt>
 <?php foreach ($posts as $post): ?>
-<dd>
-    <a href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"><?=$post["title"] ?></a>
-    <span class="date"><?=date("M d",$post['time'])?></span>
-</dd>
+<dd><a href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"><?=$post["title"] ?></a><span class="date"><?=date("M d",$post['time'])?></span></dd>
 <?php endforeach; ?>
 </dl>
 <?php endforeach; ?>

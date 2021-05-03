@@ -1,14 +1,39 @@
- 
+<style>
+footer{
+  box-sizing:border-box;
+  margin:auto;
+  max-width:800px;
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content:space-between;
+  padding:40px 10px;
+  text-align:center;
+  font-size:0.7rem;
+  border-radius:50px;
+  color:rgba(0,0,0,.4);
+  /* background:#000; */
+  color:#999;
+}
+@media (max-width: 768px) {
+  footer{
+    
+    font-size:0.8rem;
+  }
+}
+</style>
 <footer>
-    <?php $links = $db->rows("SELECT * FROM link  WHERE status=1 ORDER BY sort ASC,id ASC"); ?>
-    <?php foreach ($links as $link): ?>
-    <a href="<?=$link["url"] ?>" target="_blank"><?=$link["title"] ?></a>
-    <img src="<?=DOMAIN ?>/theme/archive/static/link.svg" width="12" align="absmiddle">
-    <?php endforeach; ?>
-    <br>
-    <a href="https://github.com/jinzhe/gum" target="_blank" title="Powered by GUM">&copy;</a> <?=date("Y") ?>
-    <?=$config["copyright"] ?>
-    <a href="http://www.miitbeian.gov.cn" target="_blank"><?=$config["icp"] ?></a>
+<div class="link">
+<?php $links = $db->rows("SELECT * FROM link  WHERE status=1 ORDER BY sort ASC,id ASC"); ?>
+<?php foreach ($links as $link): ?>
+<a href="<?=$link["url"] ?>" target="_blank"><?=$link["title"] ?></a>
+<?php endforeach; ?>
+</div>
+<div>
+  <a href="https://github.com/jinzhe/gum" target="_blank" title="Powered by GUM">&copy;</a> <?=date("Y") ?>
+  <?=$config["copyright"] ?>
+  <a href="http://www.miitbeian.gov.cn" target="_blank"><?=$config["icp"] ?></a>
+</div>
 </footer>
 </body>
 </html>
