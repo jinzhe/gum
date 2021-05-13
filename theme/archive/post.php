@@ -30,7 +30,7 @@ article > aside{
 	margin-bottom:0.5rem;
 	font-family:DIN;
 	text-transform:uppercase;
-	font-size: 0.6rem;
+	font-size: 0.8rem;
 	color:rgba(0,0,0,.3);
 }
 article > h1{
@@ -132,13 +132,12 @@ article > section hr::before {
   letter-spacing: 20px;
   transform: translate(10px, -40px);
 }
-article > section iframe,
+
 article > section video {
   width: 100%;
   height: auto;
 }
 @media (min-width: 992px) {
-  article > section iframe,
   article > section video {
     display: block;
     max-width: 50%;

@@ -17,7 +17,6 @@ footer{
 }
 @media (max-width: 768px) {
   footer{
-    
     font-size:0.8rem;
   }
 }
@@ -40,10 +39,10 @@ footer{
 <?php 
 $result = ob_get_contents();
 ob_end_clean();
-if($theme_file_name=='post'){
-    file::create(ROOT."post/".$id.".html",$result);
-}elseif($theme_file_name=='index'){
-    file::create(ROOT."/index.html",$result);
-}
+// if($theme_file_name=='post'){
+//     file::create(ROOT."post/".$id.".html",$result);
+// }elseif($theme_file_name=='index'){
+//     file::create(ROOT."/index.html",$result);
+// }
 echo $result;
 ?>

@@ -58,16 +58,20 @@ body {
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Hiragino Sans GB", "PingFang SC", "Helvetica, Arial", "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", "Source Han Sans CN", STHeitiSC-Light, "WenQuanYi Zen Hei", "WenQuanYi Micro Hei", sans-serif;
   color: #000;
+  background: linear-gradient(-45deg,#fff 25%,#fafafa 25%,#fafafa 50%,#fafafa 50%,#fff 75%,#fafafa 75%);
+  background-size:4px 4px ;
 }
 header{
   position: relative;
   background-color:#000;
+  background: linear-gradient(45deg,#000 25%,#111 25%,#111 50%,#000 50%,#000 75%,#111 75%);
+  background-size:10px 10px;
   padding:50px 20px;
   font-size:1rem;
   text-align:center;
   color:rgba(255,255,255,.8);
 }
- 
+
 header .logo{
   margin:auto;
   font-family:SourceHanSerifCN-Bold,'Microsoft JhengHei',STFangsong;
@@ -84,8 +88,5 @@ header section{
 <header>
   <a href="<?=DOMAIN?>" class="logo"><?=$config["title"] ?></a>
   <section><?=$config["about-content"]?></section>
-  <!-- <svg viewBox="0 0 1000 30" style="width:100%;transform:translateY(100%)">
-    <path d="m0,0l-0,30l1000,-30l-1000,0z"  fill="#000"/>
-  </svg> -->
 </header>
 
