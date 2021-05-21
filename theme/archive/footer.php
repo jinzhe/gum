@@ -9,11 +9,22 @@ footer{
   justify-content:space-between;
   padding:40px 10px;
   text-align:center;
-  font-size:0.7rem;
+  font-size:0.8rem;
   border-radius:50px;
-  color:rgba(0,0,0,.4);
-  /* background:#000; */
-  color:#999;
+  color:var(--text);
+}
+footer a{
+  color:var(--text);
+}
+footer a:hover{
+  color:var(--active);
+}
+footer .link{
+  margin:10px;
+}
+footer .link a{
+  font-weight:bold;
+  font-size:1rem;
 }
 @media (max-width: 768px) {
   footer{

@@ -24,23 +24,23 @@ article{
   min-height:500px;
   margin:0 auto;
   padding:1rem;
-  color:#000;
+  color:var(--text);
 }
 article > aside{
 	margin-bottom:0.5rem;
 	font-family:DIN;
 	text-transform:uppercase;
 	font-size: 0.8rem;
-	color:rgba(0,0,0,.3);
+	color:var(--gray);
 }
 article > h1{
 	display:inline-block;
 	margin-bottom:1rem;
-	box-shadow: inset 0 -10px 0 #ceebe7;
+	box-shadow: inset 0 -10px 0 var(--alpha);
 	text-transform:uppercase;
 	font-family:DIN;
 	line-height:1.2;
-	color:#000;
+	color:var(--text);
 }
 article > section{
 	text-align: justify;
@@ -50,7 +50,7 @@ article > section{
 	font-size: 1rem;
 	letter-spacing: 0.06rem;
 	line-height: 1.6;
-	color: #000;
+	color: var(--text);
 }
  
  
@@ -127,7 +127,7 @@ article > section hr {
 article > section hr::before {
   content: "...";
   display: inline-block;
-  color: #555;
+  color: var(--gray);;
   font-size: 32px;
   letter-spacing: 20px;
   transform: translate(10px, -40px);
@@ -163,12 +163,9 @@ article > section blockquote p:last-child {
   margin-bottom: 0;
 }
 article > section a[href] {
-	color: #67cdcc;
+	color: var(--link);;
 	text-decoration:underline;
 }
- 
- 
-
 </style>
 
 <article>
