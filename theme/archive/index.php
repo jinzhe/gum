@@ -96,7 +96,7 @@ main dl dd a{
 <dl>
 <dt><?=$year?></dt>
 <?php foreach ($posts as $post): ?>
-<dd><a href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"><?=$post["title"] ?></a><span class="date"><?=date("M d",$post['time'])?></span></dd>
+<dd><a href="<?=DOMAIN ?>/post/<?=$post["id"] ?>.html"><?=$post["title"] ?></a><span class="date"><?=date("m/d",$post['time'])?></span></dd>
 <?php endforeach; ?>
 </dl>
 <?php endforeach; ?>

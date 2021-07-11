@@ -1,8 +1,8 @@
 <?php
 return [
-    "name"   => "Paper",
+    "name"   => "Archive",
     "author" => "Zee Kim",
-    "date"   => "20200217",
+    "date"   => "20210414",
     // 主题需要的全局变量（该变量仅供导入使用）
      "config" => [
         "title"       => [
@@ -36,31 +36,6 @@ return [
         [
             "file"   => "index",
             "regexp" => "^/$",
-        ],
-        [
-            "file"   => "index",
-            "regexp" => "^/page/(.*).html$",
-            "params" => ["page"],
-        ],
-        [
-            "file"   => "tag",
-            "regexp" => "^/tag/(?!.*-)(.*).html$",
-            "params" => ["id"],
-        ],
-        [
-            "file"   => "tag",
-            "regexp" => "^/tag/(.*)-(.*).html$",
-            "params" => ["id", "page"],
-        ],
-        [
-            "file"   => "search",
-            "regexp" => "^/search/(?!.*-)(.*).html$",
-            "params" => ["keyword"],
-        ],
-        [
-            "file"   => "search",
-            "regexp" => "^/search/(.*)-(.*).html$",
-            "params" => ["keyword", "page"],
         ],
         [
             "file"   => "post",
